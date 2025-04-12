@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		
-		
+		<h1>Welcome to the customer home-page!</h1>
 		 <jsp:include page="../logout.jsp" />
 
 	</body>
