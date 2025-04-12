@@ -61,7 +61,10 @@
 		
 		
 		
-		<jsp:include page="../logout.jsp" />
+		<form action="../logout.jsp" method="post" style="margin-top: 30px;">
+    		<input type="submit" value="Logout">
+		</form>
+
 
 	</body>
 </html>

@@ -10,24 +10,12 @@
 		<title>Customer Login Form</title>
 	</head>
 	<body>
-		
-		<h1>Please Log In!</h1>
-	  	<form method="get" action="loginCode.jsp"> 
-        	<div>
-            	<label for="username">Username:</label>
-            	<input type="text" name="username" required>
-        	</div>
-        	<div>
-            	<label for="password">Password:</label>
-            	<input type="password" name="password" required>
-        	</div>
-        	<div>
-            	<button type="submit">Login</button>
-        	</div>
-	    </form>
-	    
-	    <a href="signUp.jsp">Sign Up!</a>
-	   
-
+		<h1>Please log in!</h1>
+		<form action="loginCode.jsp" method="POST">
+			Username: <input type="text" name="username"/> <br/>
+			Password: <input type="password" name="password"/> <br/>
+			<input type="submit" value="Submit"/>
+		</form>
+		<a href="signUp.jsp">Sign Up!</a>
 	</body>
 </html>

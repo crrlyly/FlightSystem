@@ -10,6 +10,9 @@
 		<title>Logout Component</title>
 	</head>
 	<body>
-	    <a style="display:block;" href="<%= request.getContextPath() %>/login.jsp">Logout</a>
+		<%
+			session.invalidate();
+			response.sendRedirect("login.jsp");
+		%>
 	</body>
 </html>

@@ -51,6 +51,7 @@
 
 	            if (result > 0) {
 	                out.println("<h2>Successfully created an account!</h2>");
+	                out.println("<p><a href='login.jsp'>Return to login page</p>");
 	            } else {
 	                out.println("<h2>Account creation failed.</h2>");
 	            }

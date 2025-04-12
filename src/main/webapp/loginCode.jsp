@@ -31,6 +31,7 @@
 			ResultSet rs = stmt.executeQuery();
 			
 			if (rs.next()) {
+				session.setAttribute("user", username); // store username in session object
 	           String role = rs.getString("userType");
 	           out.println("<h2>Login successful for user: " + username + "</h2>");
 	           // Check user role and display appropriate content
@@ -43,11 +44,12 @@
 	           }
 	        } else {
 	            out.println("<h2>Login failed. Incorrect username or password.</h2>");
+	            out.println("<a href='login.jsp'>Please Login</a>");
 	        }
 			// Close connections
 			rs.close();
 			stmt.close();
-			db.closeConnection(con); // Assuming your ApplicationDB class has a method to close connections
+			db.closeConnection(con);
 		} catch (Exception e) {
 		    out.println("An error occurred: " + e.getMessage());
 		    e.printStackTrace();
