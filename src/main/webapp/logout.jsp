@@ -7,9 +7,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Customer Login Form</title>
+		<title>Logout Component</title>
 	</head>
 	<body>
-	    <a href="login.jsp">Logout</a>
+	    <a href="<%= request.getContextPath() %>/login.jsp">Logout</a>
 	</body>
 </html>

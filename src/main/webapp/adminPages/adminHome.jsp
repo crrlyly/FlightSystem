@@ -10,6 +10,7 @@
 		<title>Customer Login Form</title>
 	</head>
 	<body>
+	
 		<h1>Welcome to the admin home-page!</h1>
 		 <jsp:include page="../logout.jsp" />
 
