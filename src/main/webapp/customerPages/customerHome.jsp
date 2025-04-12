@@ -3,6 +3,11 @@
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 
+<%
+    // Get today’s date in yyyy-MM-dd format
+    java.time.LocalDate today = java.time.LocalDate.now();
+%>
+
 <!DOCTYPE>
 <html>
 	<head>
@@ -36,6 +41,11 @@
 			  <option value="roundtrip">Round-trip</option>
 			  <option value="multi">Multi-trip</option>
 			</select>
+			
+			<div>
+			    <label style="display:block;margin-top:20px;" for="departure-date">Date of Departure:</label>
+			    <input type="date" name="departure-date" required min="<%= today %>">
+			</div>
 			
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
