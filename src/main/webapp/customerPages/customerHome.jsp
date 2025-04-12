@@ -47,6 +47,15 @@
 			    <input type="date" name="departure-date" required min="<%= today %>">
 			</div>
 			
+			<select style="display:block;margin-top:20px;" name="class" required>
+			  <option value="" disabled selected>Select boarding class</option>
+			  <option value="oneway">One-way</option>
+			  <option value="roundtrip">Round-trip</option>
+			  <option value="multi">Multi-trip</option>
+			</select>
+			
+			
+			
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
 		
