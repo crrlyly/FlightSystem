@@ -35,11 +35,11 @@
 	           out.println("<h2>Login successful for user: " + username + "</h2>");
 	           // Check user role and display appropriate content
 	           if ("customer".equalsIgnoreCase(role)) {
-	               out.println("<p>Welcome, customer!</p>");
+	        	   response.sendRedirect("customerPages/customerHome.jsp");
 	           } else if ("customerrep".equalsIgnoreCase(role)) {
-	               out.println("<p>Welcome, customer representative!</p>");
+	        	   response.sendRedirect("customerRepPages/repHome.jsp");
 	           } else if ("siteAdmin".equalsIgnoreCase(role)) {
-	               out.println("<p>Welcome, site administrator!</p>");
+	        	   response.sendRedirect("adminPages/adminHome.jsp");
 	           }
 	        } else {
 	            out.println("<h2>Login failed. Incorrect username or password.</h2>");
