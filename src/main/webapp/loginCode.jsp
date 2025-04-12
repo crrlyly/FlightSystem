@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+
+
+<!DOCTYPE>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>User login</title>
+	</head>
+	<body>
+		<% try {
+			
+		    String username = request.getParameter("username");
+		    String password = request.getParameter("password");
+		   
+	
+			//Get the database connection
+			ApplicationDB db = new ApplicationDB();	
+			Connection con = db.getConnection();		
+
+			//Create a SQL statement
+			String sql = "SELECT * FROM user WHERE username=? AND password=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			//Run the query against the database.
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+	           String role = rs.getString("userType");
+	           out.println("<h2>Login successful for user: " + username + "</h2>");
+	           // Check user role and display appropriate content
+	           if ("customer".equalsIgnoreCase(role)) {
+	               out.println("<p>Welcome, customer!</p>");
+	           } else if ("customerrep".equalsIgnoreCase(role)) {
+	               out.println("<p>Welcome, customer representative!</p>");
+	           } else if ("siteAdmin".equalsIgnoreCase(role)) {
+	               out.println("<p>Welcome, site administrator!</p>");
+	           }
+	        } else {
+	            out.println("<h2>Login failed. Incorrect username or password.</h2>");
+	        }
+			// Close connections
+			rs.close();
+			stmt.close();
+			db.closeConnection(con); // Assuming your ApplicationDB class has a method to close connections
+		} catch (Exception e) {
+		    out.println("An error occurred: " + e.getMessage());
+		    e.printStackTrace();
+		}
+		%>
+
+	</body>
+</html>
