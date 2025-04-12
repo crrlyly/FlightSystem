@@ -12,7 +12,37 @@
 	<body>
 		
 		<h1>Welcome to the customer home-page!</h1>
-		 <jsp:include page="../logout.jsp" />
+		
+		<form method="get" action="">
+			<h3>Search Departing Location</h3>
+			<jsp:include page="homePageComponents/searchComponent.jsp">
+			  <jsp:param name="searchType" value="airport" />
+			  <jsp:param name="primaryID" value="port" />
+			  <jsp:param name="input" value="Where from" />
+			  <jsp:param name="searchId" value="departing" />
+			</jsp:include>
+			
+			<h3>Search Arriving Location</h3>
+			<jsp:include page="homePageComponents/searchComponent.jsp">
+			  <jsp:param name="searchType" value="airport" />  
+			  <jsp:param name="primaryID" value="port" />    
+			  <jsp:param name="input" value="Where to" />    
+			  <jsp:param name="searchId" value="arriving" />
+			</jsp:include>
+			
+			<select style="display:block;margin-top:20px;" name="tripType" required>
+			  <option value="" disabled selected>Select trip type</option>
+			  <option value="oneway">One-way</option>
+			  <option value="roundtrip">Round-trip</option>
+			  <option value="multi">Multi-trip</option>
+			</select>
+			
+			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
+		</form>
+		
+		
+		
+		<jsp:include page="../logout.jsp" />
 
 	</body>
 </html>
