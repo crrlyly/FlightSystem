@@ -10,8 +10,6 @@
 		<title>Customer Login Form</title>
 	</head>
 	<body>
-		
-		 <jsp:include page="../logout.jsp" />
-
+	    <a href="login.jsp">Logout</a>
 	</body>
 </html>
