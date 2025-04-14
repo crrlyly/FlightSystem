@@ -16,12 +16,8 @@
 		<div style="margin-top: 20px;">
 			<h2>Manage Users</h2>
 			<ul>
-				<li><a href="adminPages/addCustomerRep.jsp">Add Customer Representative</a></li>
-				<li><a href="adminPages/editCustomerRep.jsp">Edit Customer Representative</a></li>
-				<li><a href="adminPages/deleteCustomerRep.jsp">Delete Customer Representative</a></li>
-				<li><a href="adminPages/addCustomer.jsp">Add Customer</a></li>
-				<li><a href="adminPages/editCustomer.jsp">Edit Customer</a></li>
-				<li><a href="adminPages/deleteCustomer.jsp">Delete Customer</a></li>
+				<li><a href="adminPages/manageCustomerRep.jsp">Manage Customer Representatives</a></li>
+				<li><a href="adminPages/manageCustomer.jsp">Manage Customers</a></li>
 			</ul>
 		</div>
 		
