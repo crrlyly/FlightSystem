@@ -12,13 +12,14 @@
 	<body>
 
 		<h2>Welcome to the Admin Home Page!</h2>
-
-		<div style="margin-top: 10px;">
-			<h3>Manage Users</h3>
-			<ul>
-				<li><a href="adminPages/manageCustomerRep.jsp">Manage Customer Representatives</a></li>
-				<li><a href="adminPages/manageCustomer.jsp">Manage Customers</a></li>
-			</ul>
+		<h3>Manage Users</h3>	
+		<div style="display: flex; align-items: center;">
+			<form action="adminPages/manageCustomerRep.jsp" method="get" style="margin-right: 10px;">
+		      <input type="submit" value="Representative Management Page">
+		    </form>
+		    <form action="adminPages/manageCustomer.jsp" method="get">
+		      <input type="submit" value="Customer Management Page">
+		    </form>
 		</div>
 		
 		<div style="margin-top: 10px;">
@@ -54,24 +55,28 @@
 
 		<div style="margin-top: 10px;">
 			<h3>Reservation Lists</h3>
-			<ul>
-				<li><a href="adminPages/reservations.jsp">Click here to query reservations</a></li>
-			</ul>
+			<form method="get" action="adminPages/reservations.jsp">
+				<input type="submit" value="Reservation Viewing Page">
+			</form>
 		</div>
 
 		<div style="margin-top: 10px;">
 			<h3>Revenue Summaries</h3>
-			<ul>
-				<li><a href="adminPages/revenues.jsp">Click here to query revenues</a></li>
-			</ul>
+			<form method="get" action="adminPages/revenues.jsp">
+				<input type="submit" value="Revenue Summaries Page">
+			</form>
 		</div>
 
 		<div style="margin-top: 10px;">
 			<h3>Top Customers & Flights</h3>
-			<ul>
-				<li><a href="adminPages/mostRevenueCustomer.jsp">Customer with Most Total Revenue</a></li>
-				<li><a href="adminPages/mostActiveFlights.jsp">List of Most Active Flights</a></li>
-			</ul>
+			<div style="margin-top: 10px; display: flex; align-items: center;">
+				<form method="get" action="adminPages/mostRevenueCustomer.jsp" style="margin-right: 10px;">
+					<input type="submit" value="Customer with Most Total Revenue">
+				</form>
+				<form method="get" action="adminPages/mostActiveFlights.jsp">
+					<input type="submit" value="List of Most Active Flights">
+				</form>
+			</div>
 		</div>
 
 		<form action="../logout.jsp" method="post" style="margin-top: 20px;">

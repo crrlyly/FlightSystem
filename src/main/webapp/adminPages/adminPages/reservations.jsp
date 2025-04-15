@@ -162,7 +162,7 @@ th, td{
             Connection con = db.getConnection();
             
             // Query to get tickets for selected flight
-            String ticketQuery = "SELECT * FROM tickets WHERE repName = ? ORDER BY purchase_date_time";
+            String ticketQuery = "SELECT t.* FROM tickets t WHERE t.userID IN (SELECT userID FROM user WHERE TRIM(CONCAT(fname, ' ', lname)) = ?) ORDER BY purchase_date_time";
             PreparedStatement ticketPs = con.prepareStatement(ticketQuery);
             ticketPs.setString(1, selectedCustomer);
             ResultSet ticketRs = ticketPs.executeQuery();
@@ -175,7 +175,7 @@ th, td{
                 ResultSetMetaData metaData = ticketRs.getMetaData();
                 int columnCount = metaData.getColumnCount();
     %>
-                <h3>Tickets for Customer <%= selectedFlightNum %></h3>
+                <h3>Tickets for Customer <%= selectedCustomer %></h3>
                 <table>
                     <tr>
                         <%

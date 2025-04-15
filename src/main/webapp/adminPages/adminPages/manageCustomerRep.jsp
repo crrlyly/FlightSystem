@@ -14,7 +14,14 @@
    </style>
 </head>
 <body>
-   <h2>Customer Representatives</h2>
+   <div style="display: flex; align-items: center;">
+	  <h2>Representatives</h2>
+	  <div style="margin-left: 20px;">
+	  	<form action="../adminHome.jsp" method="get">
+	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	    </form>
+	  </div>
+	</div>
    
 <%
    // Process form submissions
@@ -284,9 +291,4 @@
    }
 %>
 </body>
-   	<div style="margin-top: 30px;">
-    <form action="../adminHome.jsp" method="get">
-        <input type="submit" value="Return to Admin Home">
-    </form>
-	</div>
 </html>
