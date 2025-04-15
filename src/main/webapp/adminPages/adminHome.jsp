@@ -11,18 +11,18 @@
 	</head>
 	<body>
 
-		<h1>Welcome to the Admin Home Page!</h1>
+		<h2>Welcome to the Admin Home Page!</h2>
 
-		<div style="margin-top: 20px;">
-			<h2>Manage Users</h2>
+		<div style="margin-top: 10px;">
+			<h3>Manage Users</h3>
 			<ul>
 				<li><a href="adminPages/manageCustomerRep.jsp">Manage Customer Representatives</a></li>
 				<li><a href="adminPages/manageCustomer.jsp">Manage Customers</a></li>
 			</ul>
 		</div>
 		
-		<div style="margin-top: 20px;">
-	    	<h2>Sales Reports</h2>
+		<div style="margin-top: 10px;">
+	    	<h3>Sales Reports</h3>
 			<form method="get" action="adminPages/salesReport.jsp">
 			    <label for="month">Select Month:</label>
 			    <select name="month" id="month">
@@ -52,33 +52,29 @@
 			</form>
 		</div>
 
-
-		<div style="margin-top: 20px;">
-			<h2>Reservation Lists</h2>
+		<div style="margin-top: 10px;">
+			<h3>Reservation Lists</h3>
 			<ul>
-				<li><a href="adminPages/reservationsByFlight.jsp">Reservations by Flight Number</a></li>
-				<li><a href="adminPages/reservationsByCustomer.jsp">Reservations by Customer Name</a></li>
+				<li><a href="adminPages/reservations.jsp">Click here to query reservations</a></li>
 			</ul>
 		</div>
 
-		<div style="margin-top: 20px;">
-			<h2>Revenue Summaries</h2>
+		<div style="margin-top: 10px;">
+			<h3>Revenue Summaries</h3>
 			<ul>
-				<li><a href="adminPages/revenueByFlight.jsp">Revenue by Flight</a></li>
-				<li><a href="adminPages/revenueByAirline.jsp">Revenue by Airline</a></li>
-				<li><a href="adminPages/revenueByCustomer.jsp">Revenue by Customer</a></li>
+				<li><a href="adminPages/revenues.jsp">Click here to query revenues</a></li>
 			</ul>
 		</div>
 
-		<div style="margin-top: 20px;">
-			<h2>Top Customers & Flights</h2>
+		<div style="margin-top: 10px;">
+			<h3>Top Customers & Flights</h3>
 			<ul>
 				<li><a href="adminPages/mostRevenueCustomer.jsp">Customer with Most Total Revenue</a></li>
 				<li><a href="adminPages/mostActiveFlights.jsp">List of Most Active Flights</a></li>
 			</ul>
 		</div>
 
-		<form action="../logout.jsp" method="post" style="margin-top: 30px;">
+		<form action="../logout.jsp" method="post" style="margin-top: 20px;">
     		<input type="submit" value="Logout">
 		</form>
 
