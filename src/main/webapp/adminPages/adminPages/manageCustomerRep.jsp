@@ -283,7 +283,10 @@
 <%
    }
 %>
-   <br>
-   <a href="../adminHome.jsp">Back to Admin Home</a>
 </body>
+   	<div style="margin-top: 30px;">
+    <form action="../adminHome.jsp" method="get">
+        <input type="submit" value="Return to Admin Home">
+    </form>
+	</div>
 </html>
