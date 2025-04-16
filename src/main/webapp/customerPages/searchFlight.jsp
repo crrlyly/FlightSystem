@@ -11,6 +11,8 @@
 
 <%
 try {
+	
+	Set<Integer> printedFlights = new HashSet<>();
     String departing = request.getParameter("search_departing");
     String arriving = request.getParameter("search_arriving");
     String tripType = request.getParameter("tripType");
@@ -30,42 +32,62 @@ try {
         arrPortID = arriving.substring(arriving.indexOf("(") + 1, arriving.indexOf(")")).trim();
     }
 
-    // Determine the bitmask value for day of the week
-    int dayBit = -1;
+    Set<Integer> dayBits = new HashSet<>();
+    List<LocalDate> searchDates = new ArrayList<>();
+
     if (departureDateStr != null && !departureDateStr.isEmpty()) {
-        LocalDate date = LocalDate.parse(departureDateStr);
-        DayOfWeek dayOfWeek = date.getDayOfWeek(); // MONDAY to SUNDAY
-        int dayIndex = dayOfWeek.getValue();       // MONDAY = 1 ... SUNDAY = 7
-        dayBit = 1 << (dayIndex - 1);              // Convert to bitmask
+        LocalDate selectedDate = LocalDate.parse(departureDateStr);
+
+        int range = "yes".equalsIgnoreCase(flexible) ? 3 : 0;
+        for (int i = -range; i <= range; i++) {
+            LocalDate date = selectedDate.plusDays(i);
+            DayOfWeek dow = date.getDayOfWeek(); // MONDAY = 1 ... SUNDAY = 7
+            int bit = 1 << (dow.getValue() - 1); // Convert to bitmask
+            if (!dayBits.contains(bit)) {
+                dayBits.add(bit);
+                searchDates.add(date);
+            }
+        }
     }
+
 
     // Connect and query DB
     ApplicationDB db = new ApplicationDB();
     Connection con = db.getConnection();
-
+    
     String sql = "SELECT * FROM flight WHERE (operating_days & ?) > 0 AND dep_portID = ? AND arr_portID = ?";
     PreparedStatement stmt = con.prepareStatement(sql);
-    stmt.setInt(1, dayBit);
-    stmt.setString(2, depPortID);
-    stmt.setString(3, arrPortID);
-    ResultSet rs = stmt.executeQuery();
 
-    out.println("<h3>Flights operating on selected day:</h3>");
+    out.println("<h3>Flights found:</h3>");
     boolean anyResults = false;
-    while (rs.next()) {
-        anyResults = true;
-        out.println("<p>Flight #" + rs.getInt("flightNum") +
-                    " | From: " + rs.getString("dep_portID") +
-                    " → To: " + rs.getString("arr_portID") +
-                    " | Price: $" + rs.getDouble("price") +
-                    "</p>");
+
+    for (int bit : dayBits) {
+        stmt.setInt(1, bit);
+        stmt.setString(2, depPortID);
+        stmt.setString(3, arrPortID);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            int flightNum = rs.getInt("flightNum");
+            if (!printedFlights.contains(flightNum)) {
+                printedFlights.add(flightNum);
+                anyResults = true;
+                out.println("<p>Flight #" + flightNum +
+                            " | From: " + rs.getString("dep_portID") +
+                            " → To: " + rs.getString("arr_portID") +
+                            " | Price: $" + rs.getDouble("price") +
+                            "</p>");
+            }
+        }
+
+
+        rs.close();
     }
 
     if (!anyResults) {
-        out.println("<p>No flights found for this route and day.</p>");
+        out.println("<p>No flights found for this route and selected date(s).</p>");
     }
 
-    rs.close();
     stmt.close();
     db.closeConnection(con);
 
