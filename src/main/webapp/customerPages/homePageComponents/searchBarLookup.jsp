@@ -25,6 +25,7 @@
 		String query = request.getParameter("q");
 	    String type = request.getParameter("type");
 	    String id = request.getParameter("id");
+	    String inputID = request.getParameter("inputId");
 
 	    if (query != null && type != null && !query.trim().isEmpty()) {
 	        try {
@@ -44,9 +45,20 @@
 	                String safeLabel = label.replaceAll("'", "\\\\'");
 	                String safeCode = code.replaceAll("'", "\\\\'");
 		%>
-	                <div class="item" onclick="document.getElementById('search_<%= type %>').value='<%= safeLabel %> (<%= safeCode %>)'; document.getElementById('suggestions_<%= type %>').style.display='none';">
-	                    <%= label %> (<%= code %>)
-	                </div>
+	                <%
+						String suggestionsId = "suggestions_" + id;
+					%>
+					<div class="item" onclick="
+					    const input = document.getElementById('<%= inputID %>');
+					    const box = document.getElementById('<%= suggestionsId %>');
+					    if (input) input.value = '<%= safeLabel %> (<%= safeCode %>)';
+					    if (box) box.style.display = 'none';
+					">
+					    <%= label %> (<%= code %>)
+					</div>
+                
+	                
+	                
 		<%
 	            }
 

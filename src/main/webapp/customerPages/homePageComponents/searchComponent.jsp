@@ -9,7 +9,7 @@
 	String placeholder = request.getParameter("input");     // "Where from..."
 	String idKey = request.getParameter("primaryID");
 	String inputId = "search_" + searchId;
-	String suggestionsId = "suggestions_" + searchId;
+	String suggestionsId = "suggestions_" + searchId; 
 %>
 
 <!DOCTYPE>
@@ -54,11 +54,14 @@
 		    }
 
 		    const xhr = new XMLHttpRequest();
-		    xhr.open("GET", "<%= request.getContextPath() %>/customerPages/homePageComponents/searchBarLookup.jsp?type=<%= searchType %>&id=<%= idKey %>&q=" + encodeURIComponent(query), true);
+		    xhr.open("GET", "<%= request.getContextPath() %>/customerPages/homePageComponents/searchBarLookup.jsp?type=<%= searchType %>&inputId=<%=inputId%>&id=<%= idKey %>&q=" + encodeURIComponent(query), true);
+
 		    xhr.onload = function () {
-		      suggestions.innerHTML = xhr.responseText.trim();
-		      suggestions.style.display = xhr.responseText.trim() === "" ? "none" : "block";
-		    };
+	    	  if (xhr.status === 200) {
+	    	    suggestions.style.display = "block";
+	    	    suggestions.innerHTML = xhr.responseText.trim();
+	    	  }
+	    	};
 		    xhr.send();
 		  });
 
