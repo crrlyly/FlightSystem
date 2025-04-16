@@ -12,19 +12,21 @@
 	<body>
 		
 		<button id='modify'>Modify Flights</button>
-		<form id="form" method="get" style="padding-bottom: 10px; display:none;" >
+		<form id="form" method="get" action="flightPageComponents/flightModifyCode.jsp" style="padding-bottom: 10px; display:none;" >
 		    <h3>Sort Options:</h3>
 		    
 		    <label for="sortBy">Sort by:</label>
-		    <select name="sortBy" id="sortBy">
+		    <select name="sortBy" id="sortBy" required>
+		    	<option value="none">None</option>
 		        <option value="price">Price</option>
-		        <option value="takeOffTime">Take-off Time</option>
-		        <option value="landingTime">Landing Time</option>
+		        <option value="departure_time">Take-off Time</option>
+		        <option value="arrival_time">Landing Time</option>
 		        <option value="duration">Flight Duration</option>
 		    </select>
 		
 		    <label for="sortOrder">Order:</label>
-		    <select name="sortOrder" id="sortOrder">
+		    <select name="sortOrder" id="sortOrder" required>
+		    	<option value="none">None</option>
 		        <option value="asc">Ascending</option>
 		        <option value="desc">Descending</option>
 		    </select>
@@ -37,22 +39,35 @@
 		    <label for="maxPrice" style="display: block;">Max Price:</label>
 		    <input type="number" name="maxPrice" step="0.01" min="0" />
 		
-		    <label for="numStops" style="display: block;">Number of Stops:</label>
+		    <!--  <label for="numStops" style="display: block;">Number of Stops:</label>
 		    <select name="numStops">
 		        <option value="">Any</option>
 		        <option value="0">Non-stop</option>
 		        <option value="1">1 stop</option>
 		        <option value="2">2+ stops</option>
-		    </select>
+		    </select> -->
 		
-		    <label for="airline" style="display: block;">Airline:</label>
-		    <select name="airline">
-		        <option value="">Any</option>
-		        <option value="Delta">Delta</option>
-		        <option value="United">United</option>
-		        <option value="American Airlines">American Airlines</option>
-		    </select>
-		
+			
+			<%
+			    Object obj = request.getAttribute("airlineList");
+			%>
+			
+			<label for="airline" style="display: block;">Select an airline:</label>
+			<select name="airline" >
+			    <option value="none"></option>
+			    <%
+			        if (obj instanceof Set<?>) {
+			            for (Object item : (Set<?>) obj) {
+			                String name = String.valueOf(item); // safe conversion
+			    %>
+			                <option value="<%= name %>"><%= name %></option>
+			    <%
+			            }
+			        }
+			    %>
+			</select>
+			
+					
 		    <label for="takeOffStart" style="display: block;">Take-off between:</label>
 		    <input type="time" name="takeOffStart" />
 		    and
@@ -62,10 +77,15 @@
 		    <input type="time" name="landingStart" />
 		    and
 		    <input type="time" name="landingEnd" />
+		    <input type="hidden" name="flightNums" value="<%= request.getAttribute("printedFlightNums") %>">
+		    
 		
-		    <br><br>
-		    <input type="submit" value="Apply Filters & Sort" />
+		    
+		    <input type="submit" style="display: block;" value="Apply Filters & Sort" />
 		</form>
+		
+		
+		
 
 	<script>
 	

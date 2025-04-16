@@ -17,6 +17,7 @@
 	<body>
 		
 		<h1>Welcome to the customer home-page!</h1>
+		<button>View User Profile</button> <!-- to be implemented -->
 		
 		<form method="get" action="searchFlight.jsp">
 			<h3>Search Departing Location</h3>
@@ -59,10 +60,11 @@
 			  <option value="busi">business class</option>
 			</select>
 			
-			
-			
+		
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
+		
+		<a href="">Need help?</a>
 
 		
 		<form action="../logout.jsp" method="post" style="margin-top: 30px;">
