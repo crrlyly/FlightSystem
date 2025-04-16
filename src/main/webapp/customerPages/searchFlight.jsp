@@ -60,6 +60,11 @@ try {
 
     out.println("<h3>Flights found:</h3>");
     boolean anyResults = false;
+    
+    %>
+    	<jsp:include page="flightPageComponents/modifyFlights.jsp" />
+    	<div id="line" style="width: 100%; height: 2px; background-color:black; margin: 10px 0px;"></div>
+    <%
 
     for (int bit : dayBits) {
         stmt.setInt(1, bit);
@@ -76,7 +81,8 @@ try {
                             " | From: " + rs.getString("dep_portID") +
                             " → To: " + rs.getString("arr_portID") +
                             " | Price: $" + rs.getDouble("price") +
-                            "</p>");
+                            "</p>" +
+                            "<button>purchase flight ticket</button>");
             }
         }
 
