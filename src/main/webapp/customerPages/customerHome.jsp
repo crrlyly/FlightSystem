@@ -18,7 +18,7 @@
 		
 		<h1>Welcome to the customer home-page!</h1>
 		
-		<form method="get" action="">
+		<form method="get" action="searchFlight.jsp">
 			<h3>Search Departing Location</h3>
 			<jsp:include page="homePageComponents/searchComponent.jsp">
 			  <jsp:param name="searchType" value="airport" />
@@ -39,19 +39,24 @@
 			  <option value="" disabled selected>Select trip type</option>
 			  <option value="oneway">One-way</option>
 			  <option value="roundtrip">Round-trip</option>
-			  <option value="multi">Multi-trip</option>
 			</select>
 			
-			<div>
+			
+			<div id="non-multi-date">
 			    <label style="display:block;margin-top:20px;" for="departure-date">Date of Departure:</label>
 			    <input type="date" name="departure-date" required min="<%= today %>">
 			</div>
 			
+			<label style="margin-top:10px;">
+			    <input type="checkbox" name="flexible" value="yes"> Flexible dates (+/- 3 days)
+			</label>
+			
+		
 			<select style="display:block;margin-top:20px;" name="class" required>
 			  <option value="" disabled selected>Select boarding class</option>
-			  <option value="oneway">One-way</option>
-			  <option value="roundtrip">Round-trip</option>
-			  <option value="multi">Multi-trip</option>
+			  <option value="first">first class</option>
+			  <option value="eco">economy class</option>
+			  <option value="busi">business class</option>
 			</select>
 			
 			
@@ -65,6 +70,9 @@
     		<input type="submit" value="Logout">
 		</form>
 
-
+	<script>
+		
+	</script>
+	
 	</body>
 </html>

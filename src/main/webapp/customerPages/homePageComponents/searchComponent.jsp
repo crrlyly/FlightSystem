@@ -38,7 +38,7 @@
     </style>
 	</head>
 	<body>
-		<input type="text" id="<%= inputId %>" placeholder="<%= placeholder + "?"%>" autocomplete="off">
+		<input type="text" id="<%= inputId %>" name="<%= inputId %>" placeholder="<%= placeholder + "?"%>" autocomplete="off" required>
 		<div id="<%= suggestionsId %>"></div>
 	
 	<script>
