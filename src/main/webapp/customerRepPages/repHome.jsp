@@ -13,6 +13,7 @@
 		
 		<h1>Welcome to the customer representative home-page!</h1>
 		 <jsp:include page="../logout.jsp" />
+		 <h2>hiloni</h2>
 
 	</body>
 </html>
