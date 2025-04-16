@@ -63,8 +63,7 @@
 			
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
-		
-		<h1>test change</h1>
+
 		
 		<form action="../logout.jsp" method="post" style="margin-top: 30px;">
     		<input type="submit" value="Logout">
