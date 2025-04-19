@@ -10,6 +10,7 @@
 	String idKey = request.getParameter("primaryID");
 	String inputId = "search_" + searchId;
 	String suggestionsId = "suggestions_" + searchId; 
+	String col = request.getParameter("col");
 %>
 
 <!DOCTYPE>

@@ -26,6 +26,7 @@
 			  <jsp:param name="primaryID" value="port" />
 			  <jsp:param name="input" value="Where from" />
 			  <jsp:param name="searchId" value="departing" />
+			  <jsp:param name="col" value="name" />
 			</jsp:include>
 			
 			<h3>Search Arriving Location</h3>
@@ -56,8 +57,8 @@
 			<select style="display:block;margin-top:20px;" name="class" required>
 			  <option value="" disabled selected>Select boarding class</option>
 			  <option value="first">first class</option>
-			  <option value="eco">economy class</option>
-			  <option value="busi">business class</option>
+			  <option value="economy">economy class</option>
+			  <option value="business">business class</option>
 			</select>
 			
 		

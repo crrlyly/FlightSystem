@@ -12,10 +12,8 @@
 
 <%
 try {
-    Set<Integer> printedFlights = new HashSet<>();
     Set<String> airlineList = new HashSet<>();
-    StringBuilder flightHtml = new StringBuilder();
-    StringBuilder returnHtml = new StringBuilder();
+    StringBuilder outputHtml = new StringBuilder();
 
     String departing = request.getParameter("search_departing");
     String arriving = request.getParameter("search_arriving");
@@ -58,10 +56,9 @@ try {
     Connection con = db.getConnection();
     String sql = "SELECT * FROM flight WHERE (operating_days & ?) > 0 AND dep_portID = ? AND arr_portID = ?";
 
-    boolean anyResults = false;
-
     if (!"roundtrip".equalsIgnoreCase(tripType)) {
         PreparedStatement stmt = con.prepareStatement(sql);
+        Set<String> shownFlightNums = new HashSet<>();
         for (int bit : dayBits) {
             stmt.setInt(1, bit);
             stmt.setString(2, depPortID);
@@ -69,36 +66,34 @@ try {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String airlineName = rs.getString("airID");
-                airlineList.add(airlineName);
-                int flightNum = rs.getInt("flightNum");
-                if (!printedFlights.contains(flightNum)) {
-                    printedFlights.add(flightNum);
-                    anyResults = true;
+                String flightNum = rs.getString("flightNum");
+                if (shownFlightNums.contains(flightNum)) continue;
+                shownFlightNums.add(flightNum);
+                String airID = rs.getString("airID");
+                String depPort = rs.getString("dep_portID");
+                String arrPort = rs.getString("arr_portID");
+                String priceStr = rs.getString("price");
+                String depDate = rs.getString("departure_date");
+                String arrDate = rs.getString("arrival_date");
+                String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("departure_time"));
+                String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("arrival_time"));
 
-                    java.sql.Time depTime = rs.getTime("departure_time");
-                    java.sql.Time arrTime = rs.getTime("arrival_time");
-                    java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("hh:mm a");
-                    String formattedDepTime = timeFormat.format(depTime);
-                    String formattedArrTime = timeFormat.format(arrTime);
+                double totalPrice = Double.parseDouble(priceStr) + classSurcharge;
 
-                    double basePrice = rs.getDouble("price");
-                    double totalPrice = basePrice + classSurcharge;
-
-                    flightHtml.append("<p style='margin-top: 15px; line-height: 24px;'>\u2708\ufe0f Flight #").append(flightNum)
-                        .append(" | From ").append(rs.getString("dep_portID"))
-                        .append(" > To ").append(rs.getString("arr_portID"))
-                        .append(" | Class: ").append(boardingClass != null ? boardingClass : "economy")
-                        .append(" | Total Price: $").append(String.format("%.2f", totalPrice))
-                        .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
-                        .append("<input type='hidden' name='flightNum' value='").append(flightNum).append("'/>")
-                        .append("<input type='hidden' name='airID' value='").append(rs.getString("airID")).append("'/>")
-                        .append("<input type='hidden' name='depPortID' value='").append(rs.getString("dep_portID")).append("'/>")
-                        .append("<input type='hidden' name='arrPortID' value='").append(rs.getString("arr_portID")).append("'/>")
-                        .append("<input type='hidden' name='price' value='").append(totalPrice).append("'/>")
-                        .append("<input type='submit' value='Reserve Flight Ticket'/>")
-                        .append("</form></p>");
-                }
+                outputHtml.append("<div style='margin-bottom: 20px;'>")
+                    .append("<p>Flight #").append(flightNum)
+                    .append(" | ").append(depPort).append(" > ").append(arrPort)
+                    .append(" | Class: ").append(boardingClass)
+                    .append(" | Departs: ").append(depDate).append(" ").append(depTime)
+                    .append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+                    .append("</p>")
+                    .append("<p><strong>Total Price: $").append(String.format("%.2f", totalPrice)).append("</strong></p>")
+                    .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
+                    .append("<input type='hidden' name='flightNum' value='").append(flightNum).append("'/>")
+                    .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", totalPrice)).append("'/>")
+                    .append("<input type='submit' value='Book Flight'/>")
+                    .append("</form></div>")
+                    .append("<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
             }
             rs.close();
         }
@@ -106,80 +101,110 @@ try {
     }
 
     if ("roundtrip".equalsIgnoreCase(tripType)) {
+        List<Map<String, String>> departures = new ArrayList<>();
+        List<Map<String, String>> returns = new ArrayList<>();
+
+        PreparedStatement stmt = con.prepareStatement(sql);
+        for (int bit : dayBits) {
+            stmt.setInt(1, bit);
+            stmt.setString(2, depPortID);
+            stmt.setString(3, arrPortID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Map<String, String> data = new HashMap<>();
+                data.put("flightNum", rs.getString("flightNum"));
+                data.put("airID", rs.getString("airID"));
+                data.put("depPortID", rs.getString("dep_portID"));
+                data.put("arrPortID", rs.getString("arr_portID"));
+                data.put("price", rs.getString("price"));
+                data.put("depDate", rs.getString("departure_date"));
+                data.put("arrDate", rs.getString("arrival_date"));
+                data.put("depTime", new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("departure_time")));
+                data.put("arrTime", new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("arrival_time")));
+                departures.add(data);
+            }
+            rs.close();
+        }
+        stmt.close();
+
         PreparedStatement returnStmt = con.prepareStatement(sql);
         for (int bit : dayBits) {
             returnStmt.setInt(1, bit);
             returnStmt.setString(2, arrPortID);
             returnStmt.setString(3, depPortID);
             ResultSet rs = returnStmt.executeQuery();
-
             while (rs.next()) {
-                int flightNum = rs.getInt("flightNum");
-                if (!printedFlights.contains(flightNum)) {
-                    printedFlights.add(flightNum);
-                    anyResults = true;
-
-                    java.sql.Time depTime = rs.getTime("departure_time");
-                    java.sql.Time arrTime = rs.getTime("arrival_time");
-                    java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("hh:mm a");
-                    String formattedDepTime = timeFormat.format(depTime);
-                    String formattedArrTime = timeFormat.format(arrTime);
-
-                    double basePrice = rs.getDouble("price");
-                    double totalPrice = basePrice + classSurcharge;
-
-                    returnHtml.append("<p style='margin-top: 15px; line-height: 24px;'>Return Flight #").append(flightNum)
-    .append(" | From ").append(rs.getString("dep_portID"))
-    .append(" > To ").append(rs.getString("arr_portID"))
-    .append(" | Class: ").append(boardingClass != null ? boardingClass : "economy")
-    .append(" | Total Price: $").append(String.format("%.2f", totalPrice))
-    .append(" | Departure Date: ").append(rs.getString("departure_date"))
-    .append(" | Departure Time: ").append(formattedDepTime)
-    .append(" | Arrival Date: ").append(rs.getString("arrival_date"))
-    .append(" | Arrival Time: ").append(formattedArrTime)
-    .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
-    .append("<input type='hidden' name='flightNum' value='").append(flightNum).append("'/>")
-    .append("<input type='hidden' name='airID' value='").append(rs.getString("airID")).append("'/>")
-    .append("<input type='hidden' name='depPortID' value='").append(rs.getString("dep_portID")).append("'/>")
-    .append("<input type='hidden' name='arrPortID' value='").append(rs.getString("arr_portID")).append("'/>")
-    .append("<input type='hidden' name='price' value='").append(totalPrice).append("'/>")
-    .append("<input type='hidden' name='departureDate' value='").append(rs.getString("departure_date")).append("'/>")
-    .append("<input type='hidden' name='departureTime' value='").append(formattedDepTime).append("'/>")
-    .append("<input type='hidden' name='arrivalDate' value='").append(rs.getString("arrival_date")).append("'/>")
-    .append("<input type='hidden' name='arrivalTime' value='").append(formattedArrTime).append("'/>")
-    .append("<input type='submit' value='Reserve Return Ticket'/>")
-    .append("</form></p>");
-                }
+                Map<String, String> data = new HashMap<>();
+                data.put("flightNum", rs.getString("flightNum"));
+                data.put("airID", rs.getString("airID"));
+                data.put("class", boardingClass);
+                data.put("depPortID", rs.getString("dep_portID"));
+                data.put("arrPortID", rs.getString("arr_portID"));
+                data.put("price", rs.getString("price"));
+                data.put("depDate", rs.getString("departure_date"));
+                data.put("arrDate", rs.getString("arrival_date"));
+                data.put("depTime", new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("departure_time")));
+                data.put("arrTime", new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("arrival_time")));
+                returns.add(data);
             }
             rs.close();
         }
         returnStmt.close();
+
+        Set<String> shownRoundTripCombos = new HashSet<>();
+        for (Map<String, String> outbound : departures) {
+            for (Map<String, String> ret : returns) {
+                LocalDate outboundDate = LocalDate.parse(outbound.get("depDate"));
+                LocalDate returnDate = LocalDate.parse(ret.get("depDate"));
+                if (!returnDate.isAfter(outboundDate)) continue;
+
+                String comboKey = outbound.get("flightNum") + "-" + ret.get("flightNum");
+                if (shownRoundTripCombos.contains(comboKey)) continue;
+                shownRoundTripCombos.add(comboKey);
+
+                double total = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price")) + (2 * classSurcharge);
+
+                outputHtml.append("<div style='margin-bottom: 20px;'>")
+                    .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
+                    .append(" | ").append(outbound.get("depPortID")).append(" > ").append(outbound.get("arrPortID"))
+                    .append(" | Class: ").append(boardingClass)
+                    .append(" | Departs: ").append(outbound.get("depDate")).append(" ").append(outbound.get("depTime"))
+                    .append(" | Arrives: ").append(outbound.get("arrDate")).append(" ").append(outbound.get("arrTime"))
+                    .append("</p>")
+                    .append("<p>Return Flight #").append(ret.get("flightNum"))
+                    .append(" | ").append(ret.get("depPortID")).append(" > ").append(ret.get("arrPortID"))
+                    .append(" | Class: ").append(boardingClass)
+                    .append(" | Departs: ").append(ret.get("depDate")).append(" ").append(ret.get("depTime"))
+                    .append(" | Arrives: ").append(ret.get("arrDate")).append(" ").append(ret.get("arrTime"))
+                    .append("</p>")
+                    .append("<p><strong>Total Price: $").append(String.format("%.2f", total)).append("</strong></p>")
+                    .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
+                    .append("<input type='hidden' name='outboundFlight' value='").append(outbound.get("flightNum")).append("'/>")
+                    .append("<input type='hidden' name='returnFlight' value='").append(ret.get("flightNum")).append("'/>")
+                    .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", total)).append("'/>")
+                    .append("<input type='submit' value='Book Round Trip'/>")
+                    .append("</form></div>")
+                    .append("<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+            }
+        }
     }
 
     db.closeConnection(con);
     request.setAttribute("airlineList", airlineList);
     out.println("<h3>Flights found:</h3>");
-    String printedFlightNums = printedFlights.toString().replaceAll("[\\[\\] ]", "");
-    request.setAttribute("printedFlightNums", printedFlightNums);
+    
 %>
-
 <jsp:include page="flightPageComponents/modifyFlights.jsp" />
 <div id="line" style="width: 100%; height: 2px; background-color:black; margin: 10px 0px;"></div>
-
-<%
-    if (anyResults) {
-        out.println(flightHtml.toString());
-        if ("roundtrip".equalsIgnoreCase(tripType)) {
-            out.println(returnHtml.toString());
-        }
-    } else {
-        out.println("<p>No flights found for this route and selected date(s).</p>");
-    }
+    
+<% 
+    out.println(outputHtml.toString());
 } catch (Exception e) {
     out.println("<p>Error: " + e.getMessage() + "</p>");
     e.printStackTrace();
 }
 %>
+
 
 </body>
 </html>

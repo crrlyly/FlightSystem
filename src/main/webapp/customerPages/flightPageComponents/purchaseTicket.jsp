@@ -19,23 +19,42 @@
 	    String depTime = request.getParameter("departureTime");
 	    String arrDate = request.getParameter("arrivalDate");
 	    String arrTime = request.getParameter("arrivalTime");
+
+        String outboundFlight = request.getParameter("outboundFlight");
+        String returnFlight = request.getParameter("returnFlight");
+        String totalPrice = request.getParameter("totalPrice");
 	%>
-	
-	<h2>Confirm Your Flight</h2>
-	<p>
-	    Flight #: <%= flightNum %><br>
-	    Airline: <%= airID %><br>
-	    From: <%= depPortID %> → <%= arrPortID %><br>
-	    Departure: <%= depDate %> at <%= depTime %><br>
-	    Arrival: <%= arrDate %> at <%= arrTime %><br>
-	    Price: $<%= price %>
-	</p>
-	
-	<form method="post" action="finalizeTicket.jsp">
-	    <!-- Add fields like passenger name, seat class, etc. -->
-	    <input type="hidden" name="flightNum" value="<%= flightNum %>"/>
-	    <input type="submit" value="Confirm and Purchase"/>
-	</form>
+
+	<% if (outboundFlight != null && returnFlight != null) { %>
+	    <h2>Confirm Your Round Trip</h2>
+	    <p>
+	        Out-bound Flight #: <%= outboundFlight %><br>
+	        Return Flight #: <%= returnFlight %><br>
+	        
+	        
+	        Total Price: $<%= totalPrice %>
+	    </p>
+	    <form method="post" action="finalizeTicket.jsp">
+	        <input type="hidden" name="outboundFlight" value="<%= outboundFlight %>"/>
+	        <input type="hidden" name="returnFlight" value="<%= returnFlight %>"/>
+	        <input type="hidden" name="totalPrice" value="<%= totalPrice %>"/>
+	        <input type="submit" value="Confirm and Purchase Round Trip"/>
+	    </form>
+	<% } else { %>
+	    <h2>Confirm Your Flight</h2>
+	    <p>
+	        Flight #: <%= flightNum %><br>
+	        Airline: <%= airID %><br>
+	        From: <%= depPortID %> → <%= arrPortID %><br>
+	        Departure: <%= depDate %> at <%= depTime %><br>
+	        Arrival: <%= arrDate %> at <%= arrTime %><br>
+	        Price: $<%= price %>
+	    </p>
+	    <form method="post" action="finalizeTicket.jsp">
+	        <input type="hidden" name="flightNum" value="<%= flightNum %>"/>
+	        <input type="submit" value="Confirm and Purchase"/>
+	    </form>
+	<% } %>
 
 </body>
 </html>
