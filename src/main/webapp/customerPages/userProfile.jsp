@@ -49,6 +49,7 @@
 %>
 
 <h1>Profile</h1>
+<a href="customerHome.jsp">Go Back to Home Page</a>
 <div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>
 <h2>User Info</h2>
 <h3>Username: <%=username%></h3>
@@ -66,19 +67,41 @@
 	PreparedStatement check2 = con.prepareStatement(getQuestion);
 	check2.setInt(1, userID);
 	ResultSet rs2 = check2.executeQuery();
+	
 	StringBuilder outputHtml = new StringBuilder();
+	StringBuilder outputHtml2 = new StringBuilder();
+	List<String> answered = new ArrayList<>();
+	List<String> unanswered = new ArrayList<>();
+	
 	while (rs2.next()) {
-	    outputHtml.append("<div style='margin-bottom: 70px;'>")
-	        .append("<h2>Question: </h2>")
-	        .append("<p>").append(rs2.getString("question")).append("</p>")
-	        .append("<h4>Posted On: ").append(rs2.getString("postedDate")).append("</h4>")
-	        .append("<h2>Answer: </h2>")
-	        .append("<p>").append(rs2.getString("response") != null ? rs2.getString("response") : "Not yet answered.").append("</p>")
-	        .append("<h4>Answered On: ").append(rs2.getString("answerDate") != null ? rs2.getString("answerDate") : "Not yet answered.").append("</p>")
-	        .append("</h4></div>");
+	    String question = rs2.getString("question");
+	    String postedDate = rs2.getString("postedDate");
+	    String respond = rs2.getString("response");
+	    String answerDate = rs2.getString("answerDate");
+	
+	    StringBuilder block = new StringBuilder();
+	    block.append("<div style='margin-bottom: 70px;'>")
+	        .append("<h2>Question: </h2><p>").append(question).append("</p>")
+	        .append("<h4>Posted On: ").append(postedDate).append("</h4>")
+	        .append("<h2>Answer: </h2><p>").append(respond != null ? response : "Not yet answered.").append("</p>")
+	        .append("<h4>Answered On: ").append(answerDate != null ? answerDate : "Not yet answered.").append("</h4></div>");
+	
+	    if (respond == null) {
+	        unanswered.add(block.toString());
+	    } else {
+	        answered.add(block.toString());
+	    }
 	}
 	
-	out.println(outputHtml.toString());
+	out.println("<h2>Unanswered Questions</h2>");
+	for (String html : unanswered) {
+	    out.println(html);
+	}
+	
+	out.println("<h2>Answered Questions</h2>");
+	for (String html : answered) {
+	    out.println(html);
+	}
 
 	
 
@@ -86,10 +109,12 @@
 	check2.close();
 	db.closeConnection(con);
 %>
-
 </div>
 
 <div id='line' style='width: 100%; height: 2px; background-color:black; margin: 5px 0px;'></div>
+
+<h2 style='margin-bottom: 10px;'>Your Tickets</h2>
+
 
 <script>
 
@@ -100,12 +125,12 @@
 		if(state == 0){
 			qctn.style.display = 'block';
 			state = 1;
-			qbtn.textContent = 'Close Button List';
+			qbtn.textContent = 'Close Question List';
 			return;
 		}
 		qctn.style.display = 'none';
 		state = 0;
-		qbtn.textContent = 'Open Button List';
+		qbtn.textContent = 'Open Question List';
 	})
 
 </script>

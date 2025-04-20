@@ -18,7 +18,9 @@
 		
 		<h1>Welcome to the customer home-page!</h1>
 		<a href="userProfile.jsp">View User Profile</a> 
+		<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 20px 0px;'></div>
 		
+		<h2>Search For Flights:</h2>
 		<form method="get" action="searchFlight.jsp">
 			<h3>Search Departing Location</h3>
 			<jsp:include page="homePageComponents/searchComponent.jsp">
@@ -64,6 +66,9 @@
 		
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
+		
+		<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 20px 0px;'></div>
+		
 		
 		<a href="qaSearchPage.jsp">Need help?</a>
 
