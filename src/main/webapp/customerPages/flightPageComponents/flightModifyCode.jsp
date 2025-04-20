@@ -11,26 +11,6 @@
 
 <%
 try {
-    String outboundFlight = request.getParameter("outboundFlight");
-    String returnFlight = request.getParameter("returnFlight");
-
-    if (outboundFlight != null && returnFlight != null) {
-        // Round trip booking
-        String totalPrice = request.getParameter("totalPrice");
-    } else {
-        String flightNumsParam = request.getParameter("flightNums");
-        Set<Integer> flightNumsSet = new HashSet<>();
-
-        if (flightNumsParam != null && !flightNumsParam.trim().isEmpty()) {
-            String[] split = flightNumsParam.split(",");
-            for (String f : split) {
-                try {
-                    flightNumsSet.add(Integer.parseInt(f.trim()));
-                } catch (NumberFormatException ex) {
-                    // ignore invalid entry
-                }
-            }
-        }
 
         String sortBy = request.getParameter("sortBy");
         String sortOrder = request.getParameter("sortOrder");
@@ -41,21 +21,18 @@ try {
         String takeOffEnd = request.getParameter("takeOffEnd");
         String landingStart = request.getParameter("landingStart");
         String landingEnd = request.getParameter("landingEnd");
+        
+       
+        String depID = (String) session.getAttribute("depID");
+        String arrID = (String) session.getAttribute("arrID");
+        String boardClass = (String) session.getAttribute("class");
+       	double classCharge = (double) session.getAttribute("classSurcharge");
+       	        
 
-        StringBuilder query = new StringBuilder("SELECT * FROM flight WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT * FROM flight WHERE dep_portID=" + "'" + depID + "'" + " AND arr_portID=" + "'" + arrID + "'");
         List<Object> params = new ArrayList<>();
 
-        if (!flightNumsSet.isEmpty()) {
-            query.append(" AND flightNum IN (");
-            int i = 0;
-            for (Integer f : flightNumsSet) {
-                if (i++ > 0) query.append(",");
-                query.append("?");
-                params.add(f);
-            }
-            query.append(")");
-        }
-
+        
         if (minPriceStr != null && !minPriceStr.isEmpty()) {
             query.append(" AND price >= ?");
             params.add(Double.parseDouble(minPriceStr));
@@ -146,7 +123,7 @@ try {
         rs.close();
         stmt.close();
         db.closeConnection(con);
-    }
+    
 } catch (Exception e) {
     out.println("<p>Error: " + e.getMessage() + "</p>");
     e.printStackTrace();

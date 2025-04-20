@@ -164,7 +164,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A',NULL,1,14,30,120),('AA',1001,'International',1108.7,17,'2025-04-17','18:54:00','2025-04-17','14:55:00','ORD','LHR',NULL,'INT-4717',7,12,39,163),('AA',1004,'Domestic',862.48,25,'2025-05-17','13:51:00','2025-05-17','03:57:00','LHR','JFK','US-1213',NULL,6,17,24,145),('AA',1008,'Domestic',1168.17,70,'2025-04-21','10:28:00','2025-04-21','05:20:00','LAX','JFK','US-2305',NULL,9,16,29,147),('AA',1015,'Domestic',1126.13,120,'2025-04-18','18:48:00','2025-04-18','09:05:00','LAX','ATL','US-2406',NULL,8,13,25,188),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,13,42,83),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,1,15,39,170),('DL',1003,'Domestic',474.79,57,'2025-04-19','03:27:00','2025-04-19','01:30:00','ORD','LHR','US-4625',NULL,1,15,39,170),('DL',1006,'International',563.52,78,'2025-05-09','13:20:00','2025-05-09','01:08:00','JFK','LHR',NULL,'INT-4916',2,20,35,186),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',4,14,38,154),('DL',1009,'International',1340.5,51,'2025-04-25','14:19:00','2025-04-25','13:27:00','JFK','LHR',NULL,'INT-2837',1,15,39,170),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,20,35,186),('DL',1012,'Domestic',1304.12,3,'2025-04-27','18:21:00','2025-04-27','09:11:00','ATL','JFK','US-7313',NULL,1,15,39,170),('DL',1014,'International',146.7,70,'2025-05-10','16:58:00','2025-05-10','15:49:00','JFK','ATL',NULL,'INT-5839',3,11,26,102),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',3,11,26,102),('DL',1017,'Domestic',407.75,41,'2025-04-17','17:27:00','2025-04-17','05:51:00','ORD','JFK','US-7351',NULL,6,17,24,145),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,5,31,267),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,5,11,29,174),('UA',1005,'Domestic',391.73,32,'2025-05-17','16:18:00','2025-05-17','13:30:00','LHR','JFK','US-6760',NULL,9,16,29,147),('UA',1011,'International',1470.41,96,'2025-04-21','09:35:00','2025-04-21','06:27:00','JFK','LAX',NULL,'INT-2825',6,17,24,145),('UA',1013,'Domestic',772.14,123,'2025-05-10','10:37:00','2025-05-10','01:52:00','JFK','LAX','US-2611',NULL,9,16,29,147),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',2,20,35,186),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,13,25,188),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,16,30,190);
+INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A',NULL,1,14,30,120),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,13,42,83),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,1,15,39,170),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',4,14,38,154),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,20,35,186),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',3,11,26,102),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,5,31,267),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,5,11,29,174),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',2,20,35,186),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,13,25,188),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,16,30,190);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,6 +192,7 @@ CREATE TABLE `postquestions` (
 
 LOCK TABLES `postquestions` WRITE;
 /*!40000 ALTER TABLE `postquestions` DISABLE KEYS */;
+INSERT INTO `postquestions` VALUES (2,1,'2025-04-01 09:30:00'),(2,5,'2025-04-01 11:00:00'),(2,9,'2025-04-01 12:15:00'),(3,2,'2025-04-01 10:00:00'),(3,6,'2025-04-01 11:10:00'),(3,10,'2025-04-01 12:30:00'),(4,3,'2025-04-01 10:15:00'),(4,7,'2025-04-01 11:30:00'),(6,4,'2025-04-01 10:30:00'),(6,8,'2025-04-01 12:00:00');
 /*!40000 ALTER TABLE `postquestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,6 +220,7 @@ CREATE TABLE `provideanswer` (
 
 LOCK TABLES `provideanswer` WRITE;
 /*!40000 ALTER TABLE `provideanswer` DISABLE KEYS */;
+INSERT INTO `provideanswer` VALUES (1,1,'2025-04-01 13:00:00'),(2,7,'2025-04-01 13:05:00'),(3,1,'2025-04-01 13:10:00'),(4,7,'2025-04-01 13:15:00'),(5,1,'2025-04-01 13:20:00'),(6,7,'2025-04-01 13:25:00'),(7,1,'2025-04-01 13:30:00'),(8,7,'2025-04-01 13:35:00'),(9,1,'2025-04-01 13:40:00'),(10,7,'2025-04-01 13:45:00');
 /*!40000 ALTER TABLE `provideanswer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +236,7 @@ CREATE TABLE `qatable` (
   `question` varchar(150) DEFAULT NULL,
   `response` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`questionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,6 +245,7 @@ CREATE TABLE `qatable` (
 
 LOCK TABLES `qatable` WRITE;
 /*!40000 ALTER TABLE `qatable` DISABLE KEYS */;
+INSERT INTO `qatable` VALUES (1,'How early should I arrive at the airport?','We recommend arriving at least 2 hours before your flight.'),(2,'Can I bring a carry-on bag?','Yes, one carry-on and one personal item are allowed.'),(3,'How can I change my flight?','Log into your account and click \"Manage Booking\" to change your flight.'),(4,'Are meals provided on the flight?','Meals are provided on flights over 3 hours.'),(5,'Can I cancel my flight?','Yes, cancellations are allowed up to 24 hours before departure.'),(6,'What if my flight is delayed?','We will notify you by email and SMS with any updates.'),(7,'Do I need a printed ticket?','No, a digital boarding pass is sufficient.'),(8,'Can I book a round-trip ticket?','Absolutely! Just select \"Round Trip\" during your search.'),(9,'What payment methods do you accept?','We accept all major credit cards and PayPal.'),(10,'Can I choose my seat?','Yes, seat selection is available during checkout.');
 /*!40000 ALTER TABLE `qatable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,4 +380,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-16 18:29:09
+-- Dump completed on 2025-04-19 21:27:22

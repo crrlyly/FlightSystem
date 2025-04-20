@@ -9,7 +9,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title></title>
 	</head>
-	<body>
+	<body style="padding-bottom: 10px;">
 		
 		<button id='modify'>Modify Flights</button>
 		<form id="form" method="get" action="flightPageComponents/flightModifyCode.jsp" style="padding-bottom: 10px; display:none;" >
@@ -38,15 +38,7 @@
 		
 		    <label for="maxPrice" style="display: block;">Max Price:</label>
 		    <input type="number" name="maxPrice" step="0.01" min="0" />
-		
-		    <!--  <label for="numStops" style="display: block;">Number of Stops:</label>
-		    <select name="numStops">
-		        <option value="">Any</option>
-		        <option value="0">Non-stop</option>
-		        <option value="1">1 stop</option>
-		        <option value="2">2+ stops</option>
-		    </select> -->
-		
+	
 			
 			<%
 			    Object obj = request.getAttribute("airlineList");
@@ -81,7 +73,7 @@
 		    
 		
 		    
-		    <input type="submit" style="display: block;" value="Apply Filters & Sort" />
+		    <input type="submit" style="display: block; margin-top: 10px;" value="Apply Filters & Sort" />
 		</form>
 		
 		

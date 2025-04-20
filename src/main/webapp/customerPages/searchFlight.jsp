@@ -77,20 +77,29 @@ try {
                 String arrDate = rs.getString("arrival_date");
                 String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("departure_time"));
                 String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("arrival_time"));
+                
 
                 double totalPrice = Double.parseDouble(priceStr) + classSurcharge;
+                double basePrice = Double.parseDouble(priceStr);
+                
+                session.setAttribute("depID", depPort);
+                session.setAttribute("arrID", arrPort);
+                session.setAttribute("class", boardingClass);
+                session.setAttribute("classSurcharge", classSurcharge);
+                
 
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
                     .append("<p>Flight #").append(flightNum)
                     .append(" | ").append(depPort).append(" > ").append(arrPort)
-                    .append(" | Class: ").append(boardingClass)
                     .append(" | Departs: ").append(depDate).append(" ").append(depTime)
                     .append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
                     .append("</p>")
-                    .append("<p><strong>Total Price: $").append(String.format("%.2f", totalPrice)).append("</strong></p>")
+                    .append("<p><strong>Flight Booking Price:: $").append(String.format("%.2f", basePrice)).append("</strong></p>")
                     .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
+                    .append("<input type='hidden' name='airID' value='").append(airID).append("'/>")
                     .append("<input type='hidden' name='flightNum' value='").append(flightNum).append("'/>")
                     .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", totalPrice)).append("'/>")
+                    .append("<input type='hidden' name='flightType' value='").append(tripType).append("'/>")
                     .append("<input type='submit' value='Book Flight'/>")
                     .append("</form></div>")
                     .append("<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
@@ -162,7 +171,7 @@ try {
                 if (shownRoundTripCombos.contains(comboKey)) continue;
                 shownRoundTripCombos.add(comboKey);
 
-                double total = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price")) + (2 * classSurcharge);
+                double total = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price"));
 
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
                     .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
@@ -177,7 +186,7 @@ try {
                     .append(" | Departs: ").append(ret.get("depDate")).append(" ").append(ret.get("depTime"))
                     .append(" | Arrives: ").append(ret.get("arrDate")).append(" ").append(ret.get("arrTime"))
                     .append("</p>")
-                    .append("<p><strong>Total Price: $").append(String.format("%.2f", total)).append("</strong></p>")
+                    .append("<p><strong>Flight Booking Price: $").append(String.format("%.2f", total)).append("</strong></p>")
                     .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
                     .append("<input type='hidden' name='outboundFlight' value='").append(outbound.get("flightNum")).append("'/>")
                     .append("<input type='hidden' name='returnFlight' value='").append(ret.get("flightNum")).append("'/>")
@@ -191,19 +200,24 @@ try {
 
     db.closeConnection(con);
     request.setAttribute("airlineList", airlineList);
-    out.println("<h3>Flights found:</h3>");
+  
+    out.println("<h3 style='font-size: 30px'>Flights found:</h3>");
     
 %>
+<p>Boarding class charge will be added to ticket confirmation.</p>
 <jsp:include page="flightPageComponents/modifyFlights.jsp" />
 <div id="line" style="width: 100%; height: 2px; background-color:black; margin: 10px 0px;"></div>
-    
-<% 
-    out.println(outputHtml.toString());
-} catch (Exception e) {
-    out.println("<p>Error: " + e.getMessage() + "</p>");
-    e.printStackTrace();
-}
+
+<%
+        out.println(outputHtml.toString());
+    } catch (Exception e) {
+        out.println("<p>Error: " + e.getMessage() + "</p>");
+        e.printStackTrace();
+    }
 %>
+
+
+
 
 
 </body>
