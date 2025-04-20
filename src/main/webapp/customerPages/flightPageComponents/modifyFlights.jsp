@@ -12,7 +12,12 @@
 	<body style="padding-bottom: 10px;">
 		
 		<button id='modify'>Modify Flights</button>
-		<form id="form" method="get" action="flightPageComponents/flightModifyCode.jsp" style="padding-bottom: 10px; display:none;" >
+		<form id="form" method="get"
+      action="<%= session.getAttribute("tripType").equals("oneway") 
+                ? "flightPageComponents/flightModifyOneWay.jsp" 
+                : "flightPageComponents/flightModifyRoundTrip.jsp" %>"
+      style="padding-bottom: 10px; display:none;">
+      
 		    <h3>Sort Options:</h3>
 		    
 		    <label for="sortBy">Sort by:</label>

@@ -65,7 +65,7 @@
 			<input style="display:block;margin-top:20px;" type="submit" value="Search Flights">
 		</form>
 		
-		<a href="">Need help?</a>
+		<a href="qaSearchPage.jsp">Need help?</a>
 
 		
 		<form action="../logout.jsp" method="post" style="margin-top: 30px;">

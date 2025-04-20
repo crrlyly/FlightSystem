@@ -21,6 +21,8 @@ try {
     String departureDateStr = request.getParameter("departure-date");
     String flexible = request.getParameter("flexible");
     String boardingClass = request.getParameter("class");
+    
+    session.setAttribute("tripType", tripType);
 
     String depPortID = request.getParameter("code_departing");
     String arrPortID = request.getParameter("code_arriving");
@@ -172,6 +174,8 @@ try {
                 shownRoundTripCombos.add(comboKey);
 
                 double total = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price"));
+                
+                
 
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
                     .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
