@@ -29,7 +29,6 @@ try {
     ApplicationDB db = new ApplicationDB();    
     Connection con = db.getConnection();    
 
-    // Insert the question
     String insertQuestionSql = "INSERT INTO qatable (question) VALUES (?)";
     PreparedStatement insertQuestionStmt = con.prepareStatement(insertQuestionSql);
     insertQuestionStmt.setString(1, question);
@@ -58,7 +57,6 @@ try {
     rs2.close();
     getQidStmt.close();
 
-    // Insert into postquestions if qid was found
     if (qid != -1) {
         String insertPostSql = "INSERT INTO postquestions (userID, questionID, postedDate) VALUES (?, ?, ?)";
         PreparedStatement insertPostStmt = con.prepareStatement(insertPostSql);
