@@ -17,7 +17,7 @@
 	<body>
 		
 		<h1>Welcome to the customer home-page!</h1>
-		<button>View User Profile</button> <!-- to be implemented -->
+		<a href="userProfile.jsp">View User Profile</a> 
 		
 		<form method="get" action="searchFlight.jsp">
 			<h3>Search Departing Location</h3>
