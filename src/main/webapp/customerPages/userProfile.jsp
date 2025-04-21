@@ -109,13 +109,306 @@
 
 	rs2.close();
 	check2.close();
-	db.closeConnection(con);
 %>
 </div>
 
 <div id='line' style='width: 100%; height: 2px; background-color:black; margin: 5px 0px;'></div>
 
-<h2 style='margin-bottom: 10px;'>Your Tickets</h2>
+<h2>Your Tickets</h2>
+
+<button  id="wait-btn" style="margin: 20px 0px;">Open Waiting-List Tickets</button>
+<div id="wait-container" style="display:none;">
+<%
+//display tickets that are in waitinglist
+	String getWaiting = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Oneway' order by ticketnum asc";
+	PreparedStatement check3 = con.prepareStatement(getWaiting);
+	check3.setInt(1, userID);
+	ResultSet rs3 = check3.executeQuery();
+    StringBuilder oneway = new StringBuilder();
+    StringBuilder roundtrip = new StringBuilder();
+
+	while (rs3.next()) {
+		String flightTrip = rs3.getString("flight_trip");
+		String ticketStat = rs3.getString("ticket_status");
+		
+		if(ticketStat.equals("waitlist")){
+			
+			String depDate = rs3.getString("departure_date");
+            String arrDate = rs3.getString("arrival_date");
+            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rs3.getTime("departure_time"));
+            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rs3.getTime("arrival_time"));
+            
+            Double bookingPrice = rs3.getDouble("booking_price");
+			
+			oneway.append("<div style='margin-bottom: 20px;'>")
+			.append("<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>")
+			.append("<p>Flight #").append(rs3.getString("flightNum"))
+			.append(" | ").append(rs3.getString("dep_portID")).append(" > ").append(rs3.getString("arr_portID"))
+			.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+			.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+			.append("</p>")
+			.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+			.append("</div>")
+		    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+		}
+		
+		
+    }
+	
+	String getWaiting2 = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Roundtrip' order by ticketnum asc";
+	PreparedStatement checking = con.prepareStatement(getWaiting2);
+	checking.setInt(1, userID);
+	ResultSet rs4 = checking.executeQuery();    
+	int counter = 0;
+	
+	while (rs4.next()) {
+		String flightTrip = rs4.getString("flight_trip");
+		String ticketStat = rs4.getString("ticket_status");
+		
+		if(ticketStat.equals("waitlist")){
+			
+			String depDate = rs4.getString("departure_date");
+            String arrDate = rs4.getString("arrival_date");
+            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rs4.getTime("departure_time"));
+            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rs4.getTime("arrival_time"));
+            
+            Double bookingPrice = rs4.getDouble("booking_price");
+			
+            if(counter == 0){
+				roundtrip.append("<div style='margin-bottom: 20px;'>")
+				.append("<p>Outbound Flight #").append(rs4.getString("flightNum"))
+				.append(" | ").append(rs4.getString("dep_portID")).append(" > ").append(rs4.getString("arr_portID"))
+				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+				.append("</p>");
+            	counter = 1;
+            }
+            else{
+            	counter = 0;
+            	roundtrip.append("<p>Return Flight #").append(rs4.getInt("flightNum"))
+				.append(" | ").append(rs4.getString("dep_portID")).append(" > ").append(rs4.getString("arr_portID"))
+				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+				.append("</p>")
+				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+				.append("</div>")
+			    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+            	counter = 1;
+            }
+		}
+		
+    }
+	
+	out.println(oneway.toString());
+	out.println(roundtrip.toString());
+	
+	rs4.close();
+	checking.close();
+	
+	rs3.close();
+	check3.close();
+    
+%>
+</div>
+
+
+
+<button id="on-btn" style="margin: 20px 0px; display: block;">Open Ongoing Tickets</button>
+
+<div id="on-container" style="display:none;">
+	<%
+	//display tickets that are in waitinglist
+		String getOngoing = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Oneway' order by ticketnum asc";
+		PreparedStatement checkO = con.prepareStatement(getOngoing);
+		checkO.setInt(1, userID);
+		ResultSet rsO = checkO.executeQuery();
+	    StringBuilder onewayO = new StringBuilder();
+	    StringBuilder roundtripO = new StringBuilder();
+	
+		while (rsO.next()) {
+			String flightTrip = rsO.getString("flight_trip");
+			String ticketStat = rsO.getString("ticket_status");
+			
+			if(ticketStat.equals("ongoing")){
+				
+				String depDate = rsO.getString("departure_date");
+	            String arrDate = rsO.getString("arrival_date");
+	            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rsO.getTime("departure_time"));
+	            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rsO.getTime("arrival_time"));
+	            
+	            Double bookingPrice = rsO.getDouble("booking_price");
+				
+	            onewayO.append("<div style='margin-bottom: 20px;'>")
+				.append("<p>Flight #").append(rsO.getString("flightNum"))
+				.append(" | ").append(rsO.getString("dep_portID")).append(" > ").append(rsO.getString("arr_portID"))
+				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+				.append("</p>")
+				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+				.append("</div>")
+			    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+			}
+			
+			
+	    }
+		
+		String getOngoing2 = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Roundtrip' order by ticketnum asc";
+		PreparedStatement checkO2 = con.prepareStatement(getOngoing2);
+		checkO2.setInt(1, userID);
+		ResultSet rsO2 = checkO2.executeQuery();    
+		int counter2 = 0;
+		
+		while (rsO2.next()) {
+			String flightTrip = rsO2.getString("flight_trip");
+			String ticketStat = rsO2.getString("ticket_status");
+			
+			if(ticketStat.equals("ongoing")){
+				
+				String depDate = rsO2.getString("departure_date");
+	            String arrDate = rsO2.getString("arrival_date");
+	            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rsO2.getTime("departure_time"));
+	            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rsO2.getTime("arrival_time"));
+	            
+	            Double bookingPrice = rsO2.getDouble("booking_price");
+				
+	            if(counter2 == 0){
+	            	roundtripO.append("<div style='margin-bottom: 20px;'>")
+					.append("<p>Outbound Flight #").append(rsO2.getString("flightNum"))
+					.append(" | ").append(rsO2.getString("dep_portID")).append(" > ").append(rsO2.getString("arr_portID"))
+					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+					.append("</p>");
+	            	counter2 = 1;
+	            }
+	            else{
+	            	counter2 = 0;
+	            	roundtripO.append("<p>Return Flight #").append(rsO2.getInt("flightNum"))
+					.append(" | ").append(rsO2.getString("dep_portID")).append(" > ").append(rsO2.getString("arr_portID"))
+					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+					.append("</p>")
+					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+					.append("</div>")
+				    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+	            
+	            }
+			}
+			
+	    }
+		
+		out.println(onewayO.toString());
+		out.println(roundtripO.toString());
+		
+		rsO.close();
+		checkO.close();
+		
+		rsO2.close();
+		checkO2.close();
+	    	
+	%>
+
+</div>
+
+
+<button id="past-btn" style="margin: 40px 0px; display: block;">Open Past Tickets</button>
+
+<div id="past-container" style="display:none;">
+
+<%
+		String getPast = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Oneway' order by ticketnum asc";
+		PreparedStatement checkP = con.prepareStatement(getPast);
+		checkP.setInt(1, userID);
+		ResultSet rsP = checkP.executeQuery();
+	    StringBuilder onewayP = new StringBuilder();
+	    StringBuilder roundtripP = new StringBuilder();
+	
+		while (rsP.next()) {
+			String flightTrip = rsP.getString("flight_trip");
+			String ticketStat = rsP.getString("ticket_status");
+			
+			if(ticketStat.equals("past")){
+				
+				String depDate = rsP.getString("departure_date");
+	            String arrDate = rsP.getString("arrival_date");
+	            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rsP.getTime("departure_time"));
+	            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rsP.getTime("arrival_time"));
+	            
+	            Double bookingPrice = rsP.getDouble("booking_price");
+				
+	            onewayP.append("<div style='margin-bottom: 20px;'>")
+				.append("<p>Flight #").append(rsP.getString("flightNum"))
+				.append(" | ").append(rsP.getString("dep_portID")).append(" > ").append(rsP.getString("arr_portID"))
+				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+				.append("</p>")
+				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+				.append("</div>")
+			    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+			}
+			
+			
+	    }
+		
+		String getPast2 = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Roundtrip' order by ticketnum asc";
+		PreparedStatement checkP2 = con.prepareStatement(getPast2);
+		checkP2.setInt(1, userID);
+		ResultSet rsP2 = checkP2.executeQuery();    
+		int counter3 = 0;
+		
+		while (rsP2.next()) {
+			String flightTrip = rsP2.getString("flight_trip");
+			String ticketStat = rsP2.getString("ticket_status");
+			
+			if(ticketStat.equals("past")){
+				
+				String depDate = rsP2.getString("departure_date");
+	            String arrDate = rsP2.getString("arrival_date");
+	            String depTime = new java.text.SimpleDateFormat("hh:mm a").format(rsP2.getTime("departure_time"));
+	            String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rsP2.getTime("arrival_time"));
+	            
+	            Double bookingPrice = rsP2.getDouble("booking_price");
+				
+	            if(counter3 == 0){
+	            	roundtripP.append("<div style='margin-bottom: 20px;'>")
+					.append("<p>Outbound Flight #").append(rsP2.getString("flightNum"))
+					.append(" | ").append(rsO2.getString("dep_portID")).append(" > ").append(rsP2.getString("arr_portID"))
+					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+					.append("</p>");
+	            	counter3 = 1;
+	            }
+	            else{
+	            	counter3 = 0;
+	            	roundtripP.append("<p>Return Flight #").append(rsP2.getInt("flightNum"))
+					.append(" | ").append(rsP2.getString("dep_portID")).append(" > ").append(rsP2.getString("arr_portID"))
+					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
+					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
+					.append("</p>")
+					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
+					.append("</div>")
+				    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+	            
+	            }
+			}
+			
+	    }
+		
+		out.println(onewayP.toString());
+		out.println(roundtripP.toString());
+		
+		rsP.close();
+		checkP.close();
+		
+		rsP2.close();
+		checkP2.close();
+	    
+		db.closeConnection(con);
+	
+	%>
+
+
+
+</div>
 
 
 <script>
@@ -133,6 +426,51 @@
 		qctn.style.display = 'none';
 		state = 0;
 		qbtn.textContent = 'Open Question List';
+	})
+	
+	const wbtn = document.getElementById("wait-btn")
+	const wctn = document.getElementById("wait-container")
+	let state2 = 0;
+	wbtn.addEventListener("click", function (){
+		if(state2 == 0){
+			wctn.style.display = 'block';
+			state2 = 1;
+			wbtn.textContent = 'Close Waiting List';
+			return;
+		}
+		wctn.style.display = 'none';
+		state2 = 0;
+		wbtn.textContent = 'Open Waiting List';
+	})
+	
+	const obtn = document.getElementById("on-btn")
+	const octn = document.getElementById("on-container")
+	let state3 = 0;
+	obtn.addEventListener("click", function (){
+		if(state3 == 0){
+			octn.style.display = 'block';
+			state3 = 1;
+			obtn.textContent = 'Close Ongoing List';
+			return;
+		}
+		octn.style.display = 'none';
+		state3 = 0;
+		obtn.textContent = 'Open Ongoing List';
+	})
+	
+	const pbtn = document.getElementById("past-btn")
+	const pctn = document.getElementById("past-container")
+	let state4 = 0;
+	pbtn.addEventListener("click", function (){
+		if(state4 == 0){
+			pctn.style.display = 'block';
+			state4 = 1;
+			pbtn.textContent = 'Close Ongoing List';
+			return;
+		}
+		pctn.style.display = 'none';
+		state4 = 0;
+		pbtn.textContent = 'Open Ongoing List';
 	})
 
 </script>

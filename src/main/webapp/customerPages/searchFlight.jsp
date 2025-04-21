@@ -23,6 +23,8 @@ try {
     String boardingClass = request.getParameter("class");
     
     session.setAttribute("tripType", tripType);
+    session.setAttribute("class", boardingClass);
+
 
     String depPortID = request.getParameter("code_departing");
     String arrPortID = request.getParameter("code_arriving");
@@ -86,7 +88,6 @@ try {
                 
                 session.setAttribute("depID", depPort);
                 session.setAttribute("arrID", arrPort);
-                session.setAttribute("class", boardingClass);
                 session.setAttribute("totalPrice", totalPrice);
                 
 
