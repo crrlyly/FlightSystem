@@ -1,24 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
-<%@ page import="java.io.*,java.util.*,java.sql.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
-
-<%
-    // Get today’s date in yyyy-MM-dd format
-    java.time.LocalDate today = java.time.LocalDate.now();
-%>
-
-<!DOCTYPE>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Customer Login Form</title>
-	</head>
-	<body>
-		
-		<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
-<%@ page import="java.io.*,java.util.*,java.sql.*,java.time.*, java.text.*" %>
-<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+    pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*,java.time.*,java.text.*" %>
 
 <%
 try {
@@ -26,170 +8,180 @@ try {
     String sortOrder = request.getParameter("sortOrder");
     String minPriceStr = request.getParameter("minPrice");
     String maxPriceStr = request.getParameter("maxPrice");
-    String airlineFilter = request.getParameter("airline");
-    String takeOffStartStr = request.getParameter("takeOffStart");
-    String takeOffEndStr = request.getParameter("takeOffEnd");
-    String landingStartStr = request.getParameter("landingStart");
-    String landingEndStr = request.getParameter("landingEnd");
+    String airline = request.getParameter("airline");
+    String takeOffStart = request.getParameter("takeOffStart");
+    String takeOffEnd = request.getParameter("takeOffEnd");
+    String landingStart = request.getParameter("landingStart");
+    String landingEnd = request.getParameter("landingEnd");
 
-    String depPortID = (String) session.getAttribute("depID");
-    String arrPortID = (String) session.getAttribute("arrID");
-    String boardingClass = (String) session.getAttribute("class");
-
-    String departureDateStr = request.getParameter("departure-date");
-    LocalDate selectedDate = LocalDate.parse(departureDateStr);
-    Set<Integer> dayBits = new HashSet<>();
-    for (int i = -3; i <= 3; i++) {
-        LocalDate date = selectedDate.plusDays(i);
-        int bit = 1 << (date.getDayOfWeek().getValue() - 1);
-        dayBits.add(bit);
+    Set<String> comboSet = (Set<String>) session.getAttribute("roundTripCombos");
+    if (comboSet == null || comboSet.isEmpty()) {
+        out.println("<p>No roundtrip results saved in session.</p>");
+        return;
+    }
+    List<String[]> savedCombos = new ArrayList<>();
+    for (String combo : comboSet) {
+        savedCombos.add(combo.split("-"));
     }
 
     ApplicationDB db = new ApplicationDB();
     Connection con = db.getConnection();
-    String sql = "SELECT * FROM flight WHERE (operating_days & ?) > 0 AND dep_portID = ? AND arr_portID = ?";
-    
-    List<Map<String, String>> departures = new ArrayList<>();
-    List<Map<String, String>> returns = new ArrayList<>();
 
-    PreparedStatement stmt = con.prepareStatement(sql);
-    for (int bit : dayBits) {
-        stmt.setInt(1, bit);
-        stmt.setString(2, depPortID);
-        stmt.setString(3, arrPortID);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            Map<String, String> data = new HashMap<>();
-            data.put("flightNum", rs.getString("flightNum"));
-            data.put("airID", rs.getString("airID"));
-            data.put("price", rs.getString("price"));
-            data.put("depDate", rs.getString("departure_date"));
-            data.put("arrDate", rs.getString("arrival_date"));
-            data.put("depTime", new SimpleDateFormat("HH:mm").format(rs.getTime("departure_time")));
-            data.put("arrTime", new SimpleDateFormat("HH:mm").format(rs.getTime("arrival_time")));
-            data.put("depPortID", rs.getString("dep_portID"));
-            data.put("arrPortID", rs.getString("arr_portID"));
-            departures.add(data);
+    List<Map<String, Object>> fullCombos = new ArrayList<>();
+
+    for (String[] combo : savedCombos) {
+        String outAirID = combo[0];
+        String outFlightNum = combo[1];
+        String retAirID = combo[2];
+        String retFlightNum = combo[3];
+
+        Map<String, Object> pair = new HashMap<>();
+
+        PreparedStatement stmt = con.prepareStatement("SELECT * FROM flight WHERE airID = ? AND flightNum = ?");
+        stmt.setString(1, outAirID);
+        stmt.setString(2, outFlightNum);
+        ResultSet rsOut = stmt.executeQuery();
+
+        if (rsOut.next()) {
+            Map<String, Object> outData = new HashMap<>();
+            outData.put("airID", rsOut.getString("airID"));
+            outData.put("flightNum", rsOut.getString("flightNum"));
+            outData.put("depPortID", rsOut.getString("dep_portID"));
+            outData.put("arrPortID", rsOut.getString("arr_portID"));
+            outData.put("departure_date", rsOut.getString("departure_date"));
+            outData.put("arrival_date", rsOut.getString("arrival_date"));
+            outData.put("departure_time", rsOut.getTime("departure_time"));
+            outData.put("arrival_time", rsOut.getTime("arrival_time"));
+            outData.put("price", rsOut.getDouble("price"));
+            pair.put("outbound", outData);
         }
-        rs.close();
-    }
-    stmt.close();
+        rsOut.close();
 
-    PreparedStatement returnStmt = con.prepareStatement(sql);
-    for (int bit : dayBits) {
-        returnStmt.setInt(1, bit);
-        returnStmt.setString(2, arrPortID);
-        returnStmt.setString(3, depPortID);
-        ResultSet rs = returnStmt.executeQuery();
-        while (rs.next()) {
-            Map<String, String> data = new HashMap<>();
-            data.put("flightNum", rs.getString("flightNum"));
-            data.put("airID", rs.getString("airID"));
-            data.put("price", rs.getString("price"));
-            data.put("depDate", rs.getString("departure_date"));
-            data.put("arrDate", rs.getString("arrival_date"));
-            data.put("depTime", new SimpleDateFormat("HH:mm").format(rs.getTime("departure_time")));
-            data.put("arrTime", new SimpleDateFormat("HH:mm").format(rs.getTime("arrival_time")));
-            data.put("depPortID", rs.getString("dep_portID"));
-            data.put("arrPortID", rs.getString("arr_portID"));
-            returns.add(data);
+        stmt.setString(1, retAirID);
+        stmt.setString(2, retFlightNum);
+        ResultSet rsRet = stmt.executeQuery();
+
+        if (rsRet.next()) {
+            Map<String, Object> retData = new HashMap<>();
+            retData.put("airID", rsRet.getString("airID"));
+            retData.put("flightNum", rsRet.getString("flightNum"));
+            retData.put("depPortID", rsRet.getString("dep_portID"));
+            retData.put("arrPortID", rsRet.getString("arr_portID"));
+            retData.put("departure_date", rsRet.getString("departure_date"));
+            retData.put("arrival_date", rsRet.getString("arrival_date"));
+            retData.put("departure_time", rsRet.getTime("departure_time"));
+            retData.put("arrival_time", rsRet.getTime("arrival_time"));
+            retData.put("price", rsRet.getDouble("price"));
+            pair.put("return", retData);
         }
-        rs.close();
+        rsRet.close();
+        stmt.close();
+
+        if (pair.containsKey("outbound") && pair.containsKey("return")) {
+            fullCombos.add(pair);
+        }
     }
-    returnStmt.close();
 
-    List<String> output = new ArrayList<>();
-    Set<String> combos = new HashSet<>();
+    // Filter
+    List<Map<String, Object>> filtered = new ArrayList<>();
+    for (Map<String, Object> pair : fullCombos) {
+        Map<String, Object> outb = (Map<String, Object>) pair.get("outbound");
+        Map<String, Object> ret = (Map<String, Object>) pair.get("return");
 
-    for (Map<String, String> outbound : departures) {
-        for (Map<String, String> ret : returns) {
-            LocalDate outDate = LocalDate.parse(outbound.get("depDate"));
-            LocalDate retDate = LocalDate.parse(ret.get("depDate"));
-            if (!retDate.isAfter(outDate)) continue;
+        double totalPrice = (Double) outb.get("price") + (Double) ret.get("price");
+        String outAirline = (String) outb.get("airID");
+        Time outDepTime = (Time) outb.get("departure_time");
+        Time retArrTime = (Time) ret.get("arrival_time");
 
-            double outPrice = Double.parseDouble(outbound.get("price"));
-            double retPrice = Double.parseDouble(ret.get("price"));
-            double total = outPrice + retPrice;
+        boolean match = true;
+        if (minPriceStr != null && !minPriceStr.isEmpty() && totalPrice < Double.parseDouble(minPriceStr)) match = false;
+        if (maxPriceStr != null && !maxPriceStr.isEmpty() && totalPrice > Double.parseDouble(maxPriceStr)) match = false;
+        if (airline != null && !airline.isEmpty() && !"none".equals(airline) && !outAirline.equals(airline)) match = false;
+        if (takeOffStart != null && !takeOffStart.isEmpty() && outDepTime.before(Time.valueOf(takeOffStart + ":00"))) match = false;
+        if (takeOffEnd != null && !takeOffEnd.isEmpty() && outDepTime.after(Time.valueOf(takeOffEnd + ":00"))) match = false;
+        if (landingStart != null && !landingStart.isEmpty() && retArrTime.before(Time.valueOf(landingStart + ":00"))) match = false;
+        if (landingEnd != null && !landingEnd.isEmpty() && retArrTime.after(Time.valueOf(landingEnd + ":00"))) match = false;
 
-            if (minPriceStr != null && !minPriceStr.isEmpty() && total < Double.parseDouble(minPriceStr)) continue;
-            if (maxPriceStr != null && !maxPriceStr.isEmpty() && total > Double.parseDouble(maxPriceStr)) continue;
+        if (match) filtered.add(pair);
+    }
 
-            if (airlineFilter != null && !"none".equalsIgnoreCase(airlineFilter)) {
-                if (!outbound.get("airID").equalsIgnoreCase(airlineFilter) &&
-                    !ret.get("airID").equalsIgnoreCase(airlineFilter)) continue;
+    // Sort
+    if (sortBy != null && sortOrder != null && !"none".equals(sortBy) && !"none".equals(sortOrder)) {
+        Comparator<Map<String, Object>> comparator = null;
+
+        if ("price".equalsIgnoreCase(sortBy)) {
+            comparator = new Comparator<Map<String, Object>>() {
+                public int compare(Map<String, Object> a, Map<String, Object> b) {
+                    try {
+                        Map<String, Object> aOut = (Map<String, Object>) a.get("outbound");
+                        Map<String, Object> aRet = (Map<String, Object>) a.get("return");
+                        Map<String, Object> bOut = (Map<String, Object>) b.get("outbound");
+                        Map<String, Object> bRet = (Map<String, Object>) b.get("return");
+                        double priceA = (Double) aOut.get("price") + (Double) aRet.get("price");
+                        double priceB = (Double) bOut.get("price") + (Double) bRet.get("price");
+                        return Double.compare(priceA, priceB);
+                    } catch (Exception e) { return 0; }
+                }
+            };
+        } else if ("duration".equalsIgnoreCase(sortBy)) {
+            comparator = new Comparator<Map<String, Object>>() {
+                public int compare(Map<String, Object> a, Map<String, Object> b) {
+                    try {
+                        Map<String, Object> aOut = (Map<String, Object>) a.get("outbound");
+                        Map<String, Object> aRet = (Map<String, Object>) a.get("return");
+                        Map<String, Object> bOut = (Map<String, Object>) b.get("outbound");
+                        Map<String, Object> bRet = (Map<String, Object>) b.get("return");
+
+                        long durA = ((Time) aOut.get("arrival_time")).getTime() - ((Time) aOut.get("departure_time")).getTime();
+                        durA += ((Time) aRet.get("arrival_time")).getTime() - ((Time) aRet.get("departure_time")).getTime();
+
+                        long durB = ((Time) bOut.get("arrival_time")).getTime() - ((Time) bOut.get("departure_time")).getTime();
+                        durB += ((Time) bRet.get("arrival_time")).getTime() - ((Time) bRet.get("departure_time")).getTime();
+
+                        return Long.compare(durA, durB);
+                    } catch (Exception e) { return 0; }
+                }
+            };
+        }
+
+        if (comparator != null) {
+            if ("desc".equalsIgnoreCase(sortOrder)) {
+                Collections.sort(filtered, Collections.reverseOrder(comparator));
+            } else {
+                Collections.sort(filtered, comparator);
             }
-
-            if (takeOffStartStr != null && !takeOffStartStr.isEmpty() &&
-                outbound.get("depTime").compareTo(takeOffStartStr) < 0) continue;
-            if (takeOffEndStr != null && !takeOffEndStr.isEmpty() &&
-                outbound.get("depTime").compareTo(takeOffEndStr) > 0) continue;
-
-            if (landingStartStr != null && !landingStartStr.isEmpty() &&
-                ret.get("arrTime").compareTo(landingStartStr) < 0) continue;
-            if (landingEndStr != null && !landingEndStr.isEmpty() &&
-                ret.get("arrTime").compareTo(landingEndStr) > 0) continue;
-
-            String key = outbound.get("flightNum") + "-" + ret.get("flightNum");
-            if (combos.contains(key)) continue;
-            combos.add(key);
-
-            String sortValue = "";
-            if ("price".equals(sortBy)) {
-                sortValue = String.format("%.2f", total);
-            } else if ("departure_time".equals(sortBy)) {
-                sortValue = outbound.get("depTime");
-            } else if ("arrival_time".equals(sortBy)) {
-                sortValue = ret.get("arrTime");
-            } else if ("duration".equals(sortBy)) {
-                LocalTime dep = LocalTime.parse(outbound.get("depTime"));
-                LocalTime arr = LocalTime.parse(ret.get("arrTime"));
-                long minutes = Duration.between(dep, arr).toMinutes();
-                sortValue = String.valueOf(minutes);
-            }
-
-            StringBuilder html = new StringBuilder();
-            html.append("<div style='margin-bottom: 20px;'>")
-                .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
-                .append(" | ").append(outbound.get("depPortID")).append(" > ").append(outbound.get("arrPortID"))
-                .append(" | Departs: ").append(outbound.get("depDate")).append(" ").append(outbound.get("depTime"))
-                .append(" | Arrives: ").append(outbound.get("arrDate")).append(" ").append(outbound.get("arrTime")).append("</p>")
-                .append("<p>Return Flight #").append(ret.get("flightNum"))
-                .append(" | ").append(ret.get("depPortID")).append(" > ").append(ret.get("arrPortID"))
-                .append(" | Departs: ").append(ret.get("depDate")).append(" ").append(ret.get("depTime"))
-                .append(" | Arrives: ").append(ret.get("arrDate")).append(" ").append(ret.get("arrTime")).append("</p>")
-                .append("<p><strong>Total Price: $").append(String.format("%.2f", total)).append("</strong></p>")
-                .append("<form method='post' action='purchaseTicket.jsp'>")
-                .append("<input type='hidden' name='outboundFlight' value='").append(outbound.get("flightNum")).append("'/>")
-                .append("<input type='hidden' name='returnFlight' value='").append(ret.get("flightNum")).append("'/>")
-                .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", total)).append("'/>")
-                .append("<input type='submit' value='Book Round Trip'/>")
-                .append("</form></div>")
-                .append("<div style='height:2px;background:black;margin:10px 0'></div>");
-
-            output.add(sortValue + "___SPLIT___" + html.toString());
         }
     }
 
-    if (!"none".equals(sortBy) && !"none".equals(sortOrder)) {
-        output.sort((a, b) -> {
-            String valA = a.split("___SPLIT___")[0];
-            String valB = b.split("___SPLIT___")[0];
-            return "asc".equalsIgnoreCase(sortOrder) ? valA.compareTo(valB) : valB.compareTo(valA);
-        });
-    }
+    // Output results
+    if (filtered.isEmpty()) {
+        out.println("<p>No roundtrip flights match the selected filters.</p>");
+    } else {
+    	for (Map<String, Object> pair : filtered) {
+    	    Map<String, Object> outbound = (Map<String, Object>) pair.get("outbound");
+    	    Map<String, Object> returnFlight = (Map<String, Object>) pair.get("return");
 
-    for (String block : output) {
-        out.println(block.split("___SPLIT___")[1]);
+    	    double total = (Double) outbound.get("price") + (Double) returnFlight.get("price");
+
+    	    out.println("<div style='margin-bottom: 20px;'>");
+    	    out.println("<p><strong>Outbound:</strong> " + outbound.get("airID") + " #" + outbound.get("flightNum"));
+    	    out.println(" | " + outbound.get("depPortID") + " > " + outbound.get("arrPortID"));
+    	    out.println(" | Departs: " + outbound.get("departure_date") + " " + outbound.get("departure_time"));
+    	    out.println(" | Arrives: " + outbound.get("arrival_date") + " " + outbound.get("arrival_time") + "</p>");
+
+    	    out.println("<p><strong>Return:</strong> " + returnFlight.get("airID") + " #" + returnFlight.get("flightNum"));
+    	    out.println(" | " + returnFlight.get("depPortID") + " > " + returnFlight.get("arrPortID"));
+    	    out.println(" | Departs: " + returnFlight.get("departure_date") + " " + returnFlight.get("departure_time"));
+    	    out.println(" | Arrives: " + returnFlight.get("arrival_date") + " " + returnFlight.get("arrival_time") + "</p>");
+
+    	    out.println("<p><strong>Total Price: $" + String.format("%.2f", total) + "</strong></p>");
+    	    out.println("<hr></div>");
+    	}
     }
 
     db.closeConnection(con);
-
 } catch (Exception e) {
     out.println("<p>Error: " + e.getMessage() + "</p>");
     e.printStackTrace();
 }
 %>
-		
-	
-	</body>
-</html>

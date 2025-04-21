@@ -98,6 +98,8 @@
 	    out.println(html);
 	}
 	
+	out.println("<div id='line' style='width: 30%; height: 2px; background-color:black; margin: 5px 0px;'></div>");
+	
 	out.println("<h2>Answered Questions</h2>");
 	for (String html : answered) {
 	    out.println(html);

@@ -87,7 +87,7 @@ try {
                 session.setAttribute("depID", depPort);
                 session.setAttribute("arrID", arrPort);
                 session.setAttribute("class", boardingClass);
-                session.setAttribute("classSurcharge", classSurcharge);
+                session.setAttribute("totalPrice", totalPrice);
                 
 
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
@@ -163,20 +163,31 @@ try {
         returnStmt.close();
 
         Set<String> shownRoundTripCombos = new HashSet<>();
+        Set<String> roundTripCombos = new HashSet<>();  // Declare once, before the loops
+
         for (Map<String, String> outbound : departures) {
             for (Map<String, String> ret : returns) {
                 LocalDate outboundDate = LocalDate.parse(outbound.get("depDate"));
                 LocalDate returnDate = LocalDate.parse(ret.get("depDate"));
                 if (!returnDate.isAfter(outboundDate)) continue;
 
-                String comboKey = outbound.get("flightNum") + "-" + ret.get("flightNum");
-                if (shownRoundTripCombos.contains(comboKey)) continue;
-                shownRoundTripCombos.add(comboKey);
+                String comboKey = String.join("-",
+                    outbound.get("airID"),
+                    outbound.get("flightNum"),
+                    ret.get("airID"),
+                    ret.get("flightNum")
+                );
 
-                double total = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price"));
+                // ✅ Only add if it's new
+                if (roundTripCombos.contains(comboKey)) continue;
+                roundTripCombos.add(comboKey);
+
+                double totalPrice = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price")) + classSurcharge;
+                session.setAttribute("totalPrice", totalPrice);
                 
                 
 
+                // Output HTML (unchanged from your version)
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
                     .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
                     .append(" | ").append(outbound.get("depPortID")).append(" > ").append(outbound.get("arrPortID"))
@@ -190,16 +201,19 @@ try {
                     .append(" | Departs: ").append(ret.get("depDate")).append(" ").append(ret.get("depTime"))
                     .append(" | Arrives: ").append(ret.get("arrDate")).append(" ").append(ret.get("arrTime"))
                     .append("</p>")
-                    .append("<p><strong>Flight Booking Price: $").append(String.format("%.2f", total)).append("</strong></p>")
+                    .append("<p><strong>Flight Booking Price: $").append(String.format("%.2f", totalPrice)).append("</strong></p>")
                     .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
+                    .append("<input type='hidden' name='outboundlineID' value='").append(outbound.get("airID")).append("'/>")
                     .append("<input type='hidden' name='outboundFlight' value='").append(outbound.get("flightNum")).append("'/>")
+                    .append("<input type='hidden' name='retlineID' value='").append(ret.get("airID")).append("'/>")
                     .append("<input type='hidden' name='returnFlight' value='").append(ret.get("flightNum")).append("'/>")
-                    .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", total)).append("'/>")
+                    .append("<input type='hidden' name='totalPrice' value='").append(String.format("%.2f", totalPrice)).append("'/>")
                     .append("<input type='submit' value='Book Round Trip'/>")
                     .append("</form></div>")
                     .append("<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
             }
         }
+        session.setAttribute("roundTripCombos", roundTripCombos);
     }
 
     db.closeConnection(con);

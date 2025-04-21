@@ -164,7 +164,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A',NULL,1,14,30,120),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,13,42,83),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,1,15,39,170),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',4,14,38,154),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,20,35,186),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',3,11,26,102),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,5,31,267),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,5,11,29,174),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',2,20,35,186),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,13,25,188),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,16,30,190);
+INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A',NULL,1,15,30,120),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,13,42,83),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,1,15,39,170),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',4,14,38,154),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,20,35,186),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',3,11,26,102),('DL',3562,'Domestic',1849.34,22,'2025-06-22','04:34:00','2025-06-22','08:30:00','LHR','ATL','US-6155',NULL,3,35,22,100),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,5,31,267),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,5,11,29,174),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',2,20,35,186),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,13,25,188),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,16,30,190);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,6 +273,7 @@ CREATE TABLE `ticketlistsflights` (
 
 LOCK TABLES `ticketlistsflights` WRITE;
 /*!40000 ALTER TABLE `ticketlistsflights` DISABLE KEYS */;
+INSERT INTO `ticketlistsflights` VALUES (4,'AA',101),(5,'AA',101),(6,'AA',101),(7,'AA',101),(3,'DL',1016);
 /*!40000 ALTER TABLE `ticketlistsflights` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,19 +289,14 @@ CREATE TABLE `tickets` (
   `ticket_status` enum('waitlist','ongoing','past') DEFAULT NULL,
   `repName` varchar(30) DEFAULT NULL,
   `class` enum('Economy','Business','First') DEFAULT NULL,
-  `flight_trip` enum('One-way','Round-trip','Flexible') DEFAULT NULL,
+  `flight_trip` enum('Oneway','Roundtrip') DEFAULT NULL,
   `booking_price` double DEFAULT NULL,
   `purchase_date` datetime DEFAULT NULL,
   `userID` int DEFAULT NULL,
-  `airID` char(2) DEFAULT NULL,
-  `flightNum` int DEFAULT NULL,
-  `flightListNum` int DEFAULT NULL,
   PRIMARY KEY (`ticketNum`),
   KEY `userID` (`userID`),
-  KEY `airID` (`airID`,`flightNum`),
-  CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`airID`, `flightNum`) REFERENCES `flight` (`airID`, `flightNum`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,6 +305,7 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
+INSERT INTO `tickets` VALUES (3,'ongoing',NULL,'First','Oneway',2382.96,'2025-04-21 03:10:00',3),(4,'ongoing',NULL,'First','Oneway',1299.99,'2025-04-21 03:13:00',3),(5,'ongoing',NULL,'First','Oneway',1299.99,'2025-04-21 03:21:00',3),(6,'ongoing',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(7,'ongoing',NULL,'First','Oneway',1299.99,'2025-04-21 03:24:00',3);
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,9 +350,8 @@ DROP TABLE IF EXISTS `waitinglist`;
 CREATE TABLE `waitinglist` (
   `airID` char(2) NOT NULL,
   `flightNum` int NOT NULL,
-  `waitID` int NOT NULL,
   `userID` int NOT NULL,
-  PRIMARY KEY (`airID`,`flightNum`,`waitID`,`userID`),
+  PRIMARY KEY (`airID`,`flightNum`,`userID`),
   KEY `userID` (`userID`),
   CONSTRAINT `waitinglist_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `waitinglist_ibfk_2` FOREIGN KEY (`airID`, `flightNum`) REFERENCES `flight` (`airID`, `flightNum`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -380,4 +376,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-20  1:07:04
+-- Dump completed on 2025-04-21  3:27:18
