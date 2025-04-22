@@ -32,13 +32,13 @@
 		<div style="margin-top: 10px;">
 			<h3>Flight Management</h3>
 			<div style="margin-top: 10px; display: flex; align-items: center;">
-				<form method="get" action="customerRepPages/manageAircrafts.jsp">
+				<form method="get" action="customerRepPages/manageAircrafts.jsp" style="margin-right: 10px;">
 					<input type="submit" value="Manage Aircrafts">
 				</form>
-				<form method="get" action="customerRepPages/manageAirports.jsp">
+				<form method="get" action="customerRepPages/manageAirports.jsp" style="margin-right: 10px;">
 					<input type="submit" value="Manage Airports">
 				</form>
-				<form method="get" action="customerRepPages/manageFlights.jsp" style="margin-right: 10px;">
+				<form method="get" action="customerRepPages/manageFlights.jsp">
 					<input type="submit" value="Manage Flights">
 				</form>
 			</div>
@@ -46,7 +46,7 @@
 		<div style="margin-top: 10px;">
 			<h3>Reports & Lookups</h3>
 			<div style="margin-top: 10px; display: flex; align-items: center;">
-				<form method="get" action="customerRepPages/searchWaitingList.jsp">
+				<form method="get" action="customerRepPages/searchWaitingList.jsp" style="margin-right: 10px;">
 					<input type="submit" value="Waiting List Lookup">
 				</form>
 				<form method="get" action="customerRepPages/searchFlights.jsp">
