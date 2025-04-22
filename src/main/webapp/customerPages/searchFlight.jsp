@@ -44,6 +44,8 @@ try {
     } else if ("economy".equalsIgnoreCase(boardingClass)) {
         classSurcharge = 100.0;
     }
+    
+    double bookingPrice = 20;
 
     Set<Integer> dayBits = new HashSet<>();
     if (departureDateStr != null && !departureDateStr.isEmpty()) {
@@ -83,8 +85,7 @@ try {
                 String arrTime = new java.text.SimpleDateFormat("hh:mm a").format(rs.getTime("arrival_time"));
                 
 
-                double totalPrice = Double.parseDouble(priceStr) + classSurcharge;
-                double basePrice = Double.parseDouble(priceStr);
+                double totalPrice = Double.parseDouble(priceStr) + classSurcharge + bookingPrice;
                 
                 session.setAttribute("depID", depPort);
                 session.setAttribute("arrID", arrPort);
@@ -97,7 +98,7 @@ try {
                     .append(" | Departs: ").append(depDate).append(" ").append(depTime)
                     .append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
                     .append("</p>")
-                    .append("<p><strong>Flight Booking Price:: $").append(String.format("%.2f", basePrice)).append("</strong></p>")
+                    .append("<p><strong>Flight Price:: $").append(String.format("%.2f", totalPrice)).append("</strong></p>")
                     .append("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>")
                     .append("<input type='hidden' name='airID' value='").append(airID).append("'/>")
                     .append("<input type='hidden' name='flightNum' value='").append(flightNum).append("'/>")
@@ -183,7 +184,7 @@ try {
                 if (roundTripCombos.contains(comboKey)) continue;
                 roundTripCombos.add(comboKey);
 
-                double totalPrice = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price")) + classSurcharge;
+                double totalPrice = Double.parseDouble(outbound.get("price")) + Double.parseDouble(ret.get("price")) + classSurcharge + bookingPrice;
                 session.setAttribute("totalPrice", totalPrice);
                 
                 
@@ -223,7 +224,7 @@ try {
     out.println("<h3 style='font-size: 30px'>Flights found:</h3>");
     
 %>
-<p>Boarding class charge will be added to ticket confirmation.</p>
+<p>Price includes boarding-class charge and booking fee.</p>
 <jsp:include page="flightPageComponents/modifyFlights.jsp" />
 <div id="line" style="width: 100%; height: 2px; background-color:black; margin: 10px 0px;"></div>
 

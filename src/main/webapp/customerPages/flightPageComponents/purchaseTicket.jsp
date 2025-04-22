@@ -86,22 +86,29 @@
 
 	        rs2.close();
 	        stmt2.close();
+	      
+	        int needWait1 = 0;
+	        int needWait2 = 0;
 	        
-	      /* 	if(totalSeat < seatOpen + 1){
-	      		//add to waitlist
+	        if(totalSeat < seatOpen + 1){
+	      		needWait1 += 1;
 	      	}
 	      	
 	      	if(totalSeat2 < seatOpen2 + 1){
-	      		//add to waitlist
+	      		needWait2 += 1;
 	      	}
-	      	
-	      	//waitlist fails so put in tickets and ticketLists Flights
-	      
-	         */
 	         
 	         
 	      //adds to ticket
-	        String sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+	      	String sql2;
+	     	if(needWait1 == 1 || needWait2 == 1){
+		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+
+	     	}
+	     	else{
+		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+
+	     	}
 	        PreparedStatement stmt3 = con.prepareStatement(sql2);
 	        stmt3.setString(1, classType);
 	        stmt3.setString(2, (String) session.getAttribute("tripType"));
@@ -146,35 +153,78 @@
 	        stmt6.executeUpdate();
 	        stmt6.close();
 	        
+	        
 	        //add 1 to flight seat number
-	        seatOpen += 1;
-	        String sql6 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
-	        PreparedStatement stmt7 = con.prepareStatement(sql6);
-	        stmt7.setInt(1, seatOpen);
-	        stmt7.setString(2, outboundID);
-	        stmt7.setInt(3, outboundNum);
-
-	        stmt7.executeUpdate();
-	        stmt7.close();
 	        
-	        seatOpen2 += 1;
-	        String sql7 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
-	        PreparedStatement stmt8 = con.prepareStatement(sql7);
-	        stmt8.setInt(1, seatOpen2);
-	        stmt8.setString(2, returnID);
-	        stmt8.setInt(3, returnNum);
-
-	        stmt8.executeUpdate();
-	        stmt8.close();
+	        if(needWait1 != 1 && needWait2 != 1){
+		        seatOpen += 1;
+		        String sql6 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
+		        PreparedStatement stmt7 = con.prepareStatement(sql6);
+		        stmt7.setInt(1, seatOpen);
+		        stmt7.setString(2, outboundID);
+		        stmt7.setInt(3, outboundNum);
+	
+		        stmt7.executeUpdate();
+		        stmt7.close();
+		        
+		        seatOpen2 += 1;
+		        String sql7 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
+		        PreparedStatement stmt8 = con.prepareStatement(sql7);
+		        stmt8.setInt(1, seatOpen2);
+		        stmt8.setString(2, returnID);
+		        stmt8.setInt(3, returnNum);
+	
+		        stmt8.executeUpdate();
+		        stmt8.close();
+	        }
 	        
 	        
+	      	
+	      	if(needWait1 == 1 || needWait2 == 1){
+	      		%>
+	        		<h2>Sorry, flight seats are full. Would you like to be added to the waitlist?</h2>
+	        		<form id="form" method="post" action="../waitListComponents/waitListRoundtrip.jsp" style="padding-bottom: 10px;">
+	        			<%
+	        				if ((needWait1 == 1 && needWait2 == 0)){
+		        				%>
+		        					<input type="hidden" name="outbound-airID" value = "<%= outboundID%>"/>
+	  								<input type="hidden" name="outbound-flightNum" value = "<%= outboundNum%>"/>	
+	  								<input type="hidden" name="type" value="outbound"/>
+		        				<% 
+		        			}
+	        				if((needWait1 == 0 && needWait2 == 1)){
+	        					%>
+		        					<input type="hidden" name="return-airID" value = "<%= returnID%>"/>
+	  								<input type="hidden" name="return-flightNum" value = "<%= returnNum%>"/>	
+	  								<input type="hidden" name="type" value="return"/>
+	        					<% 
+	        				}
+	        				
+	        				if((needWait1 == 1 && needWait2 == 1)){
+	        					%>
+	        					<input type="hidden" name="outbound-airID" value = "<%= returnID%>"/>
+  								<input type="hidden" name="outbound-flightNum" value = "<%= returnNum%>"/>	
+  								<input type="hidden" name="return-airID" value = "<%= outboundID%>"/>
+	  							<input type="hidden" name="return-flightNum" value = "<%= outboundNum%>"/>	
+	  							<input type="hidden" name="type" value="both"/>
+        					<% 
+	        				}
+						%>
+	  					<input type="hidden" name="ticketNum" value = "<%=ticketNum%>"/>
+		    			<input type="submit" style="display: block; margin-top: 10px;" value="Add to Waiting List" />
+					</form>
+					<a href="../waitListComponents/deleteTicket.jsp?ticketNum=<%= ticketNum %>%>">If not, click here to go back to the homepage</a>
+        		<% 
+	        }else {
 	       
-	        %>
-	        	<h2>Ticket Purchase Complete! Please view your ongoing ticket on your profile.</h2>
-	        	<a href="../userProfile.jsp">Go To Profile</a>
-	        	
-	        <% 
-	         
+		        %>
+		  	
+		        	<h2>Ticket Purchase Complete! Please view your ongoing ticket on your profile.</h2>
+		        	<a href="../userProfile.jsp">Go To Profile</a>
+		        	
+		        <% 	
+        	}	
+	
 	        
 	    }
 	    //for one way
@@ -201,12 +251,23 @@
                 totalSeat = rs.getInt(seat);
             }
 	        
+	        int wait = 0;
+	        
 	        if(totalSeat < seatOpen + 1){
 	      		//add to waitlist
+	      		wait= 1;
 	      	}
 	        
 	     	//adds to ticket
-	        String sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+	     	String sql2;
+	     	if(wait == 1){
+		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+
+	     	}
+	     	else{
+		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+
+	     	}
 	        PreparedStatement stmt2 = con.prepareStatement(sql2);
 	        stmt2.setString(1, classType);
 	        stmt2.setString(2, (String) session.getAttribute("tripType"));
@@ -240,24 +301,38 @@
 	        stmt4.close();
 	        
 	        //add 1 to flight seat number
-	        seatOpen += 1;
-	        String sql5 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
-	        PreparedStatement stmt5 = con.prepareStatement(sql5);
-	        stmt5.setInt(1, seatOpen);
-	        stmt5.setString(2, airID);
-	        stmt5.setInt(3, flightNum);
-
-	        stmt5.executeUpdate();
-	        stmt5.close();
+	        if(wait != 1){
+		        seatOpen += 1;
+		        String sql5 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";
+		        PreparedStatement stmt5 = con.prepareStatement(sql5);
+		        stmt5.setInt(1, seatOpen);
+		        stmt5.setString(2, airID);
+		        stmt5.setInt(3, flightNum);
+	
+		        stmt5.executeUpdate();
+		        stmt5.close();
+	        }
 	        
-	        
+	        if (wait == 1){
+	        	%>
+	        		<h2>Sorry, flight seats are full. Would you like to be added to the waitlist?</h2>
+	        		<form id="form" method="post" action="../waitListComponents/waitListOneway.jsp" style="padding-bottom: 10px;">
+      					<input type="hidden" name="airID" value = "<%= airID%>"/>
+      					<input type="hidden" name="flightNum" value = "<%= flightNum%>"/>
+      					<input type="hidden" name="ticketNum" value = "<%= ticketNum%>"/>
+		    			<input type="submit" style="display: block; margin-top: 10px;" value="Add to Waiting List" />
+					</form>
+					<a href="../waitListComponents/deleteTicket.jsp?ticketNum=<%= ticketNum %>&airID=<%= airID %>&flightNum=<%= flightNum %>">If not, click here to go back to the homepage</a>
+	        	<% 
+	        }else {
 	       
 	        %>
+      	
 	        	<h2>Ticket Purchase Complete! Please view your ongoing ticket on your profile.</h2>
 	        	<a href="../userProfile.jsp">Go To Profile</a>
 	        	
 	        <% 
-
+	        }
     	
 	    }
 		
