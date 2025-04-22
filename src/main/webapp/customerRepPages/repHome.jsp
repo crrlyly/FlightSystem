@@ -38,7 +38,7 @@
 				<form method="get" action="customerRepPages/manageAirports.jsp">
 					<input type="submit" value="Manage Airports">
 				</form>
-				<form method="get" action="customerRepPages/manageFlight.jsp" style="margin-right: 10px;">
+				<form method="get" action="customerRepPages/manageFlights.jsp" style="margin-right: 10px;">
 					<input type="submit" value="Manage Flights">
 				</form>
 			</div>
