@@ -81,7 +81,6 @@
         	   int businessSeats = Integer.parseInt(request.getParameter("businessSeatNum"));
         	   int economySeats = Integer.parseInt(request.getParameter("economySeatNum"));
                
-               // Check if username exists and belongs to a different user
                PreparedStatement updateA = con.prepareStatement(
             		   "UPDATE aircraft SET airID=?, firstSeatNum=?, businessSeatNum=?, economySeatNum=? WHERE craftNum=?");
                updateA.setString(1, airId);
