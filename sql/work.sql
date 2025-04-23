@@ -273,7 +273,7 @@ CREATE TABLE `ticketlistsflights` (
 
 LOCK TABLES `ticketlistsflights` WRITE;
 /*!40000 ALTER TABLE `ticketlistsflights` DISABLE KEYS */;
-INSERT INTO `ticketlistsflights` VALUES (6,'AA',101),(21,'AA',101),(27,'AA',101),(9,'DL',1016),(25,'DL',1016),(26,'DL',1016),(9,'UA',1000),(25,'UA',1000),(26,'UA',1000);
+INSERT INTO `ticketlistsflights` VALUES (6,'AA',101),(27,'AA',101),(9,'DL',1016),(25,'DL',1016),(9,'UA',1000),(25,'UA',1000);
 /*!40000 ALTER TABLE `ticketlistsflights` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +305,7 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
-INSERT INTO `tickets` VALUES (6,'past',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(21,'waitlist',NULL,'First','Oneway',1299.99,'2025-04-21 23:07:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(26,'waitlist',NULL,'First','Roundtrip',4232.3,'2025-04-22 03:34:00',3),(27,'waitlist',NULL,'First','Oneway',1319.99,'2025-04-23 11:18:00',3);
+INSERT INTO `tickets` VALUES (6,'past',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(27,'waitlist',NULL,'First','Oneway',1319.99,'2025-04-23 11:18:00',3);
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-23 11:35:42
+-- Dump completed on 2025-04-23 11:38:29
