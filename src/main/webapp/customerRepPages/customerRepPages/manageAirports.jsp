@@ -18,7 +18,7 @@
 	  <h2>Manage Airports</h2>
 	  <div style="margin-left: 20px;">
 	  	<form action="../repHome.jsp" method="get">
-	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	      <input type="submit" value="Customer Representative Home Page" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
 	    </form>
 	  </div>
 	</div>
