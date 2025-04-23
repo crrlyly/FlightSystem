@@ -9,8 +9,6 @@
        th { background-color: #f2f2f2; }
        .action-btn { margin-right: 10px; }
        .message { padding: 10px; margin-bottom: 15px; border-radius: 4px; }
-       .success { background-color: #d4edda; color: #155724; }
-       .error { background-color: #f8d7da; color: #721c24; }
    </style>
 </head>
 <body>
@@ -20,7 +18,7 @@
 	  	<form action="../adminHome.jsp" method="get">
 	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
 	    </form>
-	  </div>
+	   </div>
 	</div>
    
 <%
@@ -114,7 +112,7 @@
                    
                    int paramIndex = 6;
                    if (password != null && !password.trim().isEmpty()) {
-                       updatePs.setString(paramIndex++, password); // Note: In production, you should hash passwords
+                       updatePs.setString(paramIndex++, password);// hash passwords if time
                    }
                    
                    updatePs.setString(paramIndex++, dob);
@@ -196,7 +194,7 @@
            <td><%= rs.getDate("dob") != null ? rs.getDate("dob") : "" %></td>
            <td>
                <!-- Edit Button -->
-               <form method="post" action="manageCustomerRep.jsp" style="display:inline;">
+               <form method="post" action="manageCustomerRep.jsp#" style="display:inline;">
                    <input type="hidden" name="actionType" value="editForm"/>
                    <input type="hidden" name="userID" value="<%= rs.getInt("userID") %>"/>
                    <input type="submit" value="Edit" class="action-btn"/>
@@ -245,8 +243,8 @@
            }
        }
 %>
-   <h3><%= "editForm".equals(action) ? "Edit User" : "Add New User" %></h3>
-   <form method="post" action="manageCustomerRep.jsp">
+   <h3 id="editSection"><%= "editForm".equals(action) ? "Edit User" : "Add New User" %></h3>
+   <form method="post" action="manageCustomerRep.jsp#editSection">
        <input type="hidden" name="actionType" value="<%= "editForm".equals(action) ? "edit" : "add" %>"/>
        <% if ("editForm".equals(action)) { %>
            <input type="hidden" name="userID" value="<%= userID %>"/>

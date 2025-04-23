@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
 table {
 	border-collapse: collapse;
@@ -18,7 +19,14 @@ th, td{
 </head>
 
 <body>
-    <h2>Flight Reservations</h2>
+	<div style="display: flex; align-items: center;">
+	  <h2>Flight Reservations</h2>
+	  <div style="margin-left: 20px;">
+	  	<form action="../adminHome.jsp" method="get">
+	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	    </form>
+	  </div>
+	</div>
     <!-- by flight number -->
     <h3>Check reservations under a certain flight number:</h3>
     <form method="post" action="reservations.jsp">
@@ -31,20 +39,17 @@ th, td{
                 ApplicationDB db = new ApplicationDB();
                 Connection con = db.getConnection();
                 
-                // Query to get distinct flight numbers
                 String sql = "SELECT DISTINCT flightNum FROM flight ORDER BY flightNum";
                 PreparedStatement ps = con.prepareStatement(sql);
                 ResultSet flightNums = ps.executeQuery();
                 
-                // Get currently selected flight (if any)
-                String selectedFlight = request.getParameter("flightNum");
-                
-                // Populate dropdown with flight numbers
-                while (flightNums.next()) {
+                String selectedFlight = request.getParameter("flightNum");  // Get currently selected flight (if any)
+
+                while (flightNums.next()) { // Populate dropdown with flight numbers
                     String flightNum = flightNums.getString("flightNum");
                     boolean isSelected = flightNum.equals(selectedFlight);
             %>
-                <option value="<%= flightNum %>" <%= isSelected ? "selected" : "" %>><%= flightNum %></option>
+                <option value="<%= flightNum %>" <%= isSelected ? "selected" : "" %>><%= flightNum %></option> <!--using SSR  -->
             <%
                 }
                 flightNums.close();
@@ -66,7 +71,7 @@ th, td{
             Connection con = db.getConnection();
             
             // Query to get tickets for selected flight
-            String ticketQuery = "SELECT * FROM tickets WHERE flightNum = ? ORDER BY purchase_date_time";
+            String ticketQuery = "SELECT t.* FROM tickets t JOIN ticketlistsflights tf ON t.ticketNum = tf.ticketNum WHERE tf.flightNum = ? ORDER BY t.purchase_date";
             PreparedStatement ticketPs = con.prepareStatement(ticketQuery);
             ticketPs.setString(1, selectedFlightNum);
             ResultSet ticketRs = ticketPs.executeQuery();
@@ -75,7 +80,7 @@ th, td{
             boolean hasTickets = ticketRs.isBeforeFirst();
             
             if (hasTickets) {
-                // Get metadata to dynamically create table columns
+                // Get metadata to create table columns
                 ResultSetMetaData metaData = ticketRs.getMetaData();
                 int columnCount = metaData.getColumnCount();
     %>
@@ -162,7 +167,7 @@ th, td{
             Connection con = db.getConnection();
             
             // Query to get tickets for selected flight
-            String ticketQuery = "SELECT t.* FROM tickets t WHERE t.userID IN (SELECT userID FROM user WHERE TRIM(CONCAT(fname, ' ', lname)) = ?) ORDER BY purchase_date_time";
+            String ticketQuery = "SELECT t.* FROM tickets t WHERE t.userID IN (SELECT userID FROM user WHERE TRIM(CONCAT(fname, ' ', lname)) = ?) ORDER BY purchase_date";
             PreparedStatement ticketPs = con.prepareStatement(ticketQuery);
             ticketPs.setString(1, selectedCustomer);
             ResultSet ticketRs = ticketPs.executeQuery();
@@ -212,11 +217,5 @@ th, td{
     }
     %>
 </body>
-
-	<div style="margin-top: 30px;">
-    <form action="../adminHome.jsp" method="get">
-        <input type="submit" value="Return to Admin Home">
-    </form>
-	</div>
 	
 </html>

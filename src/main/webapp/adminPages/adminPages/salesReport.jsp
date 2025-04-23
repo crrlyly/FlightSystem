@@ -21,7 +21,7 @@
 
             String sql = "SELECT class, COUNT(*) AS ticketCount, SUM(booking_price) AS totalSales " +
                          "FROM Tickets " +
-                         "WHERE purchase_date_time >= ? AND purchase_date_time <= ? " +
+                         "WHERE purchase_date >= ? AND purchase_date <= ? " +
                          "GROUP BY class";
 
             PreparedStatement ps = con.prepareStatement(sql);

@@ -54,7 +54,7 @@
                         ApplicationDB db = new ApplicationDB();
                         Connection con = db.getConnection();
                         
-                        String sql = "SELECT DISTINCT flightNum FROM tickets ORDER BY flightNum";
+                        String sql = "SELECT DISTINCT flightNum FROM ticketlistsflights ORDER BY flightNum";
                         PreparedStatement ps = con.prepareStatement(sql);
                         ResultSet rs = ps.executeQuery();
                         
@@ -196,13 +196,14 @@
                     
                     if ("flight".equals(filterType)) {
                         queryBuilder.append("SELECT ");
-                        queryBuilder.append("COALESCE(COUNT(t.ticketNum), 0) AS ticket_count, ");
-                        queryBuilder.append("COALESCE(SUM(t.booking_price), 0) AS total_revenue, ");
-                        queryBuilder.append("COALESCE(AVG(t.booking_price), 0) AS avg_ticket_price ");
-                        queryBuilder.append("FROM flight f ");
-                        queryBuilder.append("LEFT JOIN tickets t ON f.flightNum = t.flightNum AND f.airID = t.airID ");
-                        queryBuilder.append("WHERE f.flightNum = ? ");
-                        queryBuilder.append("GROUP BY f.flightNum, f.airID");
+                        queryBuilder.append("tf.flightNum, ");
+                        queryBuilder.append("COUNT(t.ticketNum) AS ticket_count, ");
+                        queryBuilder.append("SUM(t.booking_price) AS total_revenue, ");
+                        queryBuilder.append("AVG(t.booking_price) AS avg_ticket_price ");
+                        queryBuilder.append("FROM ticketlistsflights tf ");
+                        queryBuilder.append("JOIN tickets t ON tf.ticketNum = t.ticketNum ");
+                        queryBuilder.append("WHERE tf.flightNum = ? ");
+                        queryBuilder.append("GROUP BY tf.flightNum");
 
                     } else if ("airline".equals(filterType)) {
                         queryBuilder.append("SELECT ");
@@ -222,6 +223,7 @@
                         queryBuilder.append("LEFT JOIN tickets t ON t.userID = u.userID ");
                         queryBuilder.append("WHERE u.userID = ?");
                     }
+
                     
                     PreparedStatement ps = con.prepareStatement(queryBuilder.toString());
                     ps.setString(1, filterValue);
@@ -235,12 +237,20 @@
                         // Get detailed ticket information
                         String detailQuery = "";
                         if ("flight".equals(filterType)) {
-                            detailQuery = "SELECT t.*, f.airID FROM tickets t JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID WHERE t.flightNum = ? ORDER BY t.purchase_date_time DESC";
+                            detailQuery = "SELECT t.*, f.airID FROM tickets t " +
+                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
+                                          "WHERE t.flightNum = ? ORDER BY t.purchase_date_time DESC";
                         } else if ("airline".equals(filterType)) {
-                            detailQuery = "SELECT t.*, f.airID FROM tickets t JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID WHERE t.airID = ? ORDER BY t.purchase_date_time DESC";  
+                            detailQuery = "SELECT t.*, f.airID FROM tickets t " +
+                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
+                                          "WHERE t.airID = ? ORDER BY t.purchase_date_time DESC";
                         } else if ("customer".equals(filterType)) {
-                        	detailQuery = "SELECT t.*, f.airID, u.userID FROM tickets t JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID JOIN user u ON t.userID = u.userID WHERE u.userID = ? ORDER BY t.purchase_date_time DESC";
+                            detailQuery = "SELECT t.*, f.airID, u.userID FROM tickets t " +
+                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
+                                          "JOIN user u ON t.userID = u.userID " +
+                                          "WHERE u.userID = ? ORDER BY t.purchase_date_time DESC";
                         }
+
 
                         PreparedStatement detailPs = con.prepareStatement(detailQuery);
                         detailPs.setString(1, filterValue);

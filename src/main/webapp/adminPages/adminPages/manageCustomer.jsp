@@ -195,7 +195,7 @@
            <td><%= rs.getDate("dob") != null ? rs.getDate("dob") : "" %></td>
            <td>
                <!-- Edit Button -->
-               <form method="post" action="manageCustomer.jsp" style="display:inline;">
+               <form method="post" action="manageCustomer.jsp#editSection" style="display:inline;">
                    <input type="hidden" name="actionType" value="editForm"/>
                    <input type="hidden" name="userID" value="<%= rs.getInt("userID") %>"/>
                    <input type="submit" value="Edit" class="action-btn"/>
@@ -244,8 +244,8 @@
            }
        }
 %>
-   <h3><%= "editForm".equals(action) ? "Edit User" : "Add New User" %></h3>
-   <form method="post" action="manageCustomer.jsp">
+   <h3 id="formSection"><%= "editForm".equals(action) ? "Edit User" : "Add New User" %></h3>
+   <form method="post" action="manageCustomer.jsp#formSection">
        <input type="hidden" name="actionType" value="<%= "editForm".equals(action) ? "edit" : "add" %>"/>
        <% if ("editForm".equals(action)) { %>
            <input type="hidden" name="userID" value="<%= userID %>"/>
