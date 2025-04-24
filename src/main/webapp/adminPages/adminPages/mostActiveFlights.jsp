@@ -36,18 +36,18 @@
         Connection con = db.getConnection();
         
         // Query to get the top 5 most active flights (flights with most tickets sold)
-        // Using the new table structure
-        String query = "SELECT f.airID, f.flightNum, f.flightType, f.firstOpenSeats, f.businessOpenSeats, " +
-                       "f.economoyOpenSeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
-                       "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum, " +
-                       "COUNT(t.ticketNum) as ticket_count " +
-                       "FROM flight f " +
-                       "JOIN tickets t ON f.flightNum = t.flightNum AND f.airID = t.airID " +
-                       "GROUP BY f.airID, f.flightNum, f.flightType, f.firstOpenSeats, f.businessOpenSeats, " +
-                       "f.economoyOpenSeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
-                       "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum " +
-                       "ORDER BY ticket_count DESC " +
-                       "LIMIT 5";
+        String query = "SELECT f.airID, f.flightNum, f.flightType, f.openFirstSeats, f.openBusinessSeats, " +
+               "f.openEconomySeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
+               "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum, " +
+               "COUNT(tf.ticketNum) as ticket_count " +
+               "FROM flight f " +
+               "JOIN ticketlistsflights tf ON f.flightNum = tf.flightNum AND f.airID = tf.airID " +
+               "JOIN tickets t ON tf.ticketNum = t.ticketNum " +
+               "GROUP BY f.airID, f.flightNum, f.flightType, f.openFirstSeats, f.openBusinessSeats, " +
+               "f.openEconomySeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
+               "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum " +
+               "ORDER BY ticket_count DESC " +
+               "LIMIT 5";
         
         PreparedStatement ps = con.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
@@ -81,8 +81,7 @@
                 while (rs.next()) {
                     String departDateTime = rs.getDate("departure_date") + " " + rs.getTime("departure_time");
                     String arriveDateTime = rs.getDate("arrival_date") + " " + rs.getTime("arrival_time");
-                    int totalAvailableSeats = rs.getInt("firstOpenSeats") + rs.getInt("businessOpenSeats") + rs.getInt("economoyOpenSeats");
-                    %>
+                    int totalAvailableSeats = rs.getInt("openFirstSeats") + rs.getInt("openBusinessSeats") + rs.getInt("openEconomySeats");                    %>
                     <tr>
                         <td><%= rank++ %></td>
                         <td><%= rs.getString("airID") %></td>
@@ -92,10 +91,10 @@
                         <td><%= departDateTime %></td>
                         <td><%= arriveDateTime %></td>
                         <td>
-                            F: <%= rs.getInt("firstOpenSeats") %>, 
-                            B: <%= rs.getInt("businessOpenSeats") %>, 
-                            E: <%= rs.getInt("economoyOpenSeats") %>
-                        </td>
+						    F: <%= rs.getInt("openFirstSeats") %>, 
+						    B: <%= rs.getInt("openBusinessSeats") %>, 
+						    E: <%= rs.getInt("openEconomySeats") %>
+						</td>
                         <td class="price">$<%= String.format("%.2f", rs.getDouble("price")) %></td>
                         <td><%= rs.getInt("craftNum") %></td>
                         <td><%= rs.getInt("ticket_count") %></td>
@@ -116,11 +115,12 @@
         
         // Additional query to show all flights ordered by activity
         String allFlightsQuery = "SELECT f.airID, f.flightNum, f.dep_portID, f.arr_portID, f.flightType, f.price, " +
-                                "COUNT(t.ticketNum) as ticket_count " +
-                                "FROM flight f " +
-                                "LEFT JOIN tickets t ON f.flightNum = t.flightNum AND f.airID = t.airID " +
-                                "GROUP BY f.airID, f.flightNum, f.dep_portID, f.arr_portID, f.flightType, f.price " +
-                                "ORDER BY ticket_count DESC";
+                          "COUNT(tf.ticketNum) as ticket_count " +
+                          "FROM flight f " +
+                          "LEFT JOIN ticketlistsflights tf ON f.flightNum = tf.flightNum AND f.airID = tf.airID " +
+                          "LEFT JOIN tickets t ON tf.ticketNum = t.ticketNum " +
+                          "GROUP BY f.airID, f.flightNum, f.dep_portID, f.arr_portID, f.flightType, f.price " +
+                          "ORDER BY ticket_count DESC";
         
         PreparedStatement allPs = con.prepareStatement(allFlightsQuery);
         ResultSet allRs = allPs.executeQuery();

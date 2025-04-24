@@ -147,16 +147,16 @@
         </form>
     </div>
     
-    <script>
+    <script> // another way to insert java code < can add async tag for unordered script downloading and defer tag for ordered script downloading
         // Show/hide filter options based on selection
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() { //make sure elements are loaded before using them
             const flightFilter = document.getElementById('flightFilter');
             const airlineFilter = document.getElementById('airlineFilter');
             const customerFilter = document.getElementById('customerFilter');
-            
+            //event listener to check if user clicks a diff radio button
             document.querySelectorAll('input[name="filterType"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    flightFilter.style.display = (this.value === 'flight') ? 'block' : 'none';
+                    flightFilter.style.display = (this.value === 'flight') ? 'block' : 'none'; // function as if else statements (if flight selected, display'block', else display nothing)
                     airlineFilter.style.display = (this.value === 'airline') ? 'block' : 'none';
                     customerFilter.style.display = (this.value === 'customer') ? 'block' : 'none';
                 });
@@ -211,9 +211,10 @@
                         queryBuilder.append("COALESCE(SUM(t.booking_price), 0) AS total_revenue, ");
                         queryBuilder.append("COALESCE(AVG(t.booking_price), 0) AS avg_ticket_price ");
                         queryBuilder.append("FROM airline a ");
-                        queryBuilder.append("LEFT JOIN tickets t ON t.airID = a.airID ");
+                        queryBuilder.append("LEFT JOIN ticketlistsflights tf ON tf.airID = a.airID ");
+                        queryBuilder.append("LEFT JOIN tickets t ON tf.ticketNum = t.ticketNum ");
                         queryBuilder.append("WHERE a.airID = ?");
-
+                        
                     } else if ("customer".equals(filterType)) {
                         queryBuilder.append("SELECT ");
                         queryBuilder.append("COALESCE(COUNT(t.ticketNum), 0) AS ticket_count, ");
@@ -237,18 +238,18 @@
                         // Get detailed ticket information
                         String detailQuery = "";
                         if ("flight".equals(filterType)) {
-                            detailQuery = "SELECT t.*, f.airID FROM tickets t " +
-                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
-                                          "WHERE t.flightNum = ? ORDER BY t.purchase_date_time DESC";
+                            detailQuery = "SELECT t.*, tf.flightNum, tf.airID FROM tickets t " +
+                                          "JOIN ticketlistsflights tf ON t.ticketNum = tf.ticketNum " +
+                                          "WHERE tf.flightNum = ? ORDER BY t.purchase_date DESC";
                         } else if ("airline".equals(filterType)) {
-                            detailQuery = "SELECT t.*, f.airID FROM tickets t " +
-                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
-                                          "WHERE t.airID = ? ORDER BY t.purchase_date_time DESC";
+                            detailQuery = "SELECT t.*, tf.flightNum, tf.airID FROM tickets t " +
+                                          "JOIN ticketlistsflights tf ON t.ticketNum = tf.ticketNum " +
+                                          "WHERE tf.airID = ? ORDER BY t.purchase_date DESC";
                         } else if ("customer".equals(filterType)) {
-                            detailQuery = "SELECT t.*, f.airID, u.userID FROM tickets t " +
-                                          "JOIN flight f ON t.flightNum = f.flightNum AND t.airID = f.airID " +
+                            detailQuery = "SELECT t.*, tf.flightNum, tf.airID, u.userID FROM tickets t " +
+                                          "JOIN ticketlistsflights tf ON t.ticketNum = tf.ticketNum " +
                                           "JOIN user u ON t.userID = u.userID " +
-                                          "WHERE u.userID = ? ORDER BY t.purchase_date_time DESC";
+                                          "WHERE u.userID = ? ORDER BY t.purchase_date DESC";
                         }
 
 
@@ -261,7 +262,7 @@
                         <div class="summary-card">
                             <p>Total Revenue: <%= totalRevenue %></p>
                             <p>Total Tickets: <%= ticketCount %></p>
-                            <p>Average Ticket Price: <%= avgTicketPrice %></p>
+                            <p>Average Ticket Price: <%= String.format("%.2f", avgTicketPrice) %></p>
                         </div>
 
                         <h4>Detailed Ticket Information</h4>
@@ -277,19 +278,19 @@
                             <% 
                             while (detailRs.next()) { 
                                 String purchaseDateTime = "";
-                                java.sql.Timestamp timestamp = detailRs.getTimestamp("purchase_date_time");
+                                java.sql.Timestamp timestamp = detailRs.getTimestamp("purchase_date");
                                 if (timestamp != null) {
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     purchaseDateTime = dateFormat.format(timestamp);
                                 }
-                            %>
+                             %>
                                 <tr>
                                     <td><%= detailRs.getInt("ticketNum") %></td>
                                     <td><%= detailRs.getString("flightNum") %></td>
                                     <td><%= detailRs.getString("airID") %></td>
                                     <td><%= detailRs.getString("userID") != null ? detailRs.getString("userID") : "N/A" %></td>
                                     <td><%= purchaseDateTime %></td>
-                                    <td><%= detailRs.getDouble("booking_price") %></td>
+                                    <td><%= String.format("%.2f", detailRs.getDouble("booking_price")) %></td>
                                 </tr>
                             <% } 
                             detailRs.close();
