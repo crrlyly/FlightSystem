@@ -38,13 +38,11 @@
 		
 		
 		
-		//for round trip
 	    if(((String) session.getAttribute("tripType")).equals("roundtrip")){
 	        String outboundID = request.getParameter("outboundlineID");
 	        int outboundNum = Integer.parseInt(request.getParameter("outboundFlight"));
 	        String returnID = request.getParameter("retlineID");
 	        int returnNum = Integer.parseInt(request.getParameter("returnFlight"));
-	        //String totalPrice = request.getParameter("totalPrice"); 
 	        
 	    
 	        String sql = "SELECT * FROM flight f JOIN aircraft a USING (craftNum) WHERE f.airID = ? and f.flightnum = ?";
@@ -70,7 +68,7 @@
 	        PreparedStatement stmt2 = con.prepareStatement(sql);
 	        stmt2.setString(1, returnID);
 	        stmt2.setInt(2, returnNum);
-	        ResultSet rs2 = stmt2.executeQuery();  // ✅ Correct one
+	        ResultSet rs2 = stmt2.executeQuery(); 
 	        
 	        int totalSeat2 = 0;
 	        int seatOpen2 = 0;
@@ -99,7 +97,7 @@
 	      	}
 	         
 	         
-	      //adds to ticket
+	      
 	      	String sql2;
 	     	if(needWait1 == 1 || needWait2 == 1){
 		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
@@ -118,7 +116,7 @@
 	        stmt3.executeUpdate();
 	        stmt3.close();
 	        
-	        //get ticket num
+	       
 	        String sql3 = "SELECT ticketNum from tickets where purchase_date = ? and userID = ? and class = ? and booking_price = ?";
 	        PreparedStatement stmt4 = con.prepareStatement(sql3);
 	        stmt4.setString(1, formattedDateTime);
@@ -135,7 +133,6 @@
 	        rs3.close();
 	        stmt4.close();
 	        
-	        //insert flight 1 into ticketListFlight using ticket num
 	        String sql4 = "INSERT INTO ticketListsFlights values (?, ?, ?)";
 	        PreparedStatement stmt5 = con.prepareStatement(sql4);
 	        stmt5.setInt(1, ticketNum);
@@ -144,7 +141,6 @@
 	        stmt5.executeUpdate();
 	        stmt5.close();
 	        
-	        //insert flight 2 into ticketListFlight using ticket num
 	        String sql5 = "INSERT INTO ticketListsFlights values (?, ?, ?)";
 	        PreparedStatement stmt6 = con.prepareStatement(sql5);
 	        stmt6.setInt(1, ticketNum);
@@ -154,7 +150,7 @@
 	        stmt6.close();
 	        
 	        
-	        //add 1 to flight seat number
+	        
 	        
 	        if(needWait1 != 1 && needWait2 != 1){
 		        seatOpen += 1;
@@ -227,7 +223,7 @@
 	
 	        
 	    }
-	    //for one way
+	
 	    else{
 		    int flightNum = Integer.parseInt(request.getParameter("flightNum"));
 		    String airID = request.getParameter("airID");
@@ -254,11 +250,9 @@
 	        int wait = 0;
 	        
 	        if(totalSeat < seatOpen + 1){
-	      		//add to waitlist
 	      		wait= 1;
 	      	}
 	        
-	     	//adds to ticket
 	     	String sql2;
 	     	if(wait == 1){
 		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
@@ -277,7 +271,6 @@
 	        stmt2.executeUpdate();
 	        stmt2.close();
 	        
-	        //get ticket num
 	        String sql3 = "SELECT ticketNum from tickets where purchase_date = ? and userID = ? and class = ? and booking_price = ?";
 	        PreparedStatement stmt3 = con.prepareStatement(sql3);
 	        stmt3.setString(1, formattedDateTime);
@@ -291,7 +284,6 @@
 	        	ticketNum = rs3.getInt("ticketNum");
 	        }
 	        
-	        //insert into ticketListFlight using ticket num
 	        String sql4 = "INSERT INTO ticketListsFlights values (?, ?, ?)";
 	        PreparedStatement stmt4 = con.prepareStatement(sql4);
 	        stmt4.setInt(1, ticketNum);
@@ -300,7 +292,6 @@
 	        stmt4.executeUpdate();
 	        stmt4.close();
 	        
-	        //add 1 to flight seat number
 	        if(wait != 1){
 		        seatOpen += 1;
 		        String sql5 = "UPDATE flight SET " + openSeats + " = ? WHERE airID = ? and flightNum = ?";

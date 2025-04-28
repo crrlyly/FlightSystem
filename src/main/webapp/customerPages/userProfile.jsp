@@ -11,13 +11,7 @@
 <body>
 
 <% 
-	/*Display Pending Tickets (meaning on waitlist) (waitlisted)
 	
-	Display Currently Active Tickets (Flight didnt happen yet but have ticket) (ongoing)
-	
-	Display Past Tickets (past)
-	
-	Display questions they asked (even the unanswered ones)*/
 	
 	Object userIDObj = session.getAttribute("userID");
     if (userIDObj == null) {

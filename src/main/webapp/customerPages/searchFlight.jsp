@@ -166,7 +166,7 @@ try {
         returnStmt.close();
 
         Set<String> shownRoundTripCombos = new HashSet<>();
-        Set<String> roundTripCombos = new HashSet<>();  // Declare once, before the loops
+        Set<String> roundTripCombos = new HashSet<>();  
 
         for (Map<String, String> outbound : departures) {
             for (Map<String, String> ret : returns) {
@@ -181,7 +181,6 @@ try {
                     ret.get("flightNum")
                 );
 
-                // ✅ Only add if it's new
                 if (roundTripCombos.contains(comboKey)) continue;
                 roundTripCombos.add(comboKey);
 
@@ -190,7 +189,6 @@ try {
                 
                 
 
-                // Output HTML (unchanged from your version)
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
                 	.append("<p>AirID ").append(outbound.get("airID")).append(" | ")
                     .append("Outbound Flight #").append(outbound.get("flightNum"))

@@ -74,7 +74,7 @@
 		    db.closeConnection(con);
 		}
 		catch (Exception e) {
-	        e.printStackTrace(); // ✅ Print the error to help with debugging
+	        e.printStackTrace();
 	    }
 	}
 

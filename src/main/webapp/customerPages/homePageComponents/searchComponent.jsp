@@ -4,9 +4,9 @@
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 
 <%
-	String searchType = request.getParameter("searchType"); // "airport"
-	String searchId = request.getParameter("searchId");     // "departing" or "arriving"
-	String placeholder = request.getParameter("input");     // "Where from..."
+	String searchType = request.getParameter("searchType"); 
+	String searchId = request.getParameter("searchId");    
+	String placeholder = request.getParameter("input");   
 	String idKey = request.getParameter("primaryID");
 	String inputId = "search_" + searchId;
 	String suggestionsId = "suggestions_" + searchId; 

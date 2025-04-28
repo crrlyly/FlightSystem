@@ -30,7 +30,6 @@ if (question != null && !question.trim().isEmpty()) {
             String questionText = rs.getString("question");
             String answerText = rs.getString("response");
 
-            // Run second query to get postedDate and answerDate
             String query2 = "SELECT postedDate, answerDate FROM provideAnswer JOIN postQuestions USING (questionID) WHERE questionID = ?";
             PreparedStatement stmt2 = con.prepareStatement(query2);
             stmt2.setString(1, qid);

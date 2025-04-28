@@ -117,7 +117,6 @@ try {
         }
     }
 
-    // Filter
     List<Map<String, Object>> filtered = new ArrayList<>();
     for (Map<String, Object> pair : fullCombos) {
     	Map<String, Object> outb = (Map<String, Object>) pair.get("outbound");
@@ -135,29 +134,24 @@ try {
 
     	boolean match = true;
 
-    	// Price check
     	if (minPriceStr != null && !minPriceStr.isEmpty() && totalPrice < Double.parseDouble(minPriceStr)) match = false;
     	if (maxPriceStr != null && !maxPriceStr.isEmpty() && totalPrice > Double.parseDouble(maxPriceStr)) match = false;
 
-    	// Outbound airline filter
     	if (outAirline != null && !"none".equalsIgnoreCase(outAirline) && !outboundAirID.equalsIgnoreCase(outAirline)) {
 		    match = false;
 		}
 
 
-    	// Return airline filter
     	if (retAirline != null && !"none".equalsIgnoreCase(retAirline) && !returnAirID.equalsIgnoreCase(retAirline)) {
 		    match = false;
 		}
 
-    	// Outbound time filters
     	if (outTakeOffStart != null && !outTakeOffStart.isEmpty() && outDepTime.before(Time.valueOf(outTakeOffStart + ":00"))) match = false;
     	if (outTakeOffEnd != null && !outTakeOffEnd.isEmpty() && outDepTime.after(Time.valueOf(outTakeOffEnd + ":00"))) match = false;
 
     	if (outLandingStart != null && !outLandingStart.isEmpty() && outArrTime.before(Time.valueOf(outLandingStart + ":00"))) match = false;
     	if (outLandingEnd != null && !outLandingEnd.isEmpty() && outArrTime.after(Time.valueOf(outLandingEnd + ":00"))) match = false;
 
-    	// Return time filters
     	if (retTakeOffStart != null && !retTakeOffStart.isEmpty() && retDepTime.before(Time.valueOf(retTakeOffStart + ":00"))) match = false;
     	if (retTakeOffEnd != null && !retTakeOffEnd.isEmpty() && retDepTime.after(Time.valueOf(retTakeOffEnd + ":00"))) match = false;
 
@@ -167,7 +161,7 @@ try {
     	if (match) filtered.add(pair);
     }
 
-    // Sort
+    
     if (sortBy != null && sortOrder != null && !"none".equals(sortBy) && !"none".equals(sortOrder)) {
     Comparator<Map<String, Object>> comparator = null;
 
@@ -252,7 +246,6 @@ try {
     }
 }
 
-    // Output results
     if (filtered.isEmpty()) {
         out.println("<p>No roundtrip flights match the selected filters.</p>");
     } else {

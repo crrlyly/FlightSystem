@@ -41,7 +41,6 @@ try {
     }
     insertQuestionStmt.close();
 
-    // Retrieve the question ID
     String getQuestionID = "SELECT questionID FROM qatable WHERE question = ?";
     PreparedStatement getQidStmt = con.prepareStatement(getQuestionID);
     getQidStmt.setString(1, question);
