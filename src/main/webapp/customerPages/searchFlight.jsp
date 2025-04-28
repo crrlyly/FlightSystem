@@ -228,7 +228,13 @@ try {
     
 %>
 <p>Price includes boarding-class charge and booking fee.</p>
-<jsp:include page="flightPageComponents/modifyFlights.jsp" />
+
+<% if(tripType.equals("roundtrip")){
+	%>
+		<jsp:include page="flightPageComponents/modifyFlightsRound.jsp" />
+	<% 
+	} else {%><jsp:include page="flightPageComponents/modifyFlights.jsp" />
+	 <%}%>
 <div id="line" style="width: 100%; height: 2px; background-color:black; margin: 10px 0px;"></div>
 
 <%

@@ -13,7 +13,7 @@
 		
 		<button id='modify'>Modify Flights</button>
 		<form id="form" method="get"
-      action="flightPageComponents/flightModifyOneWay.jsp" 
+      action="flightPageComponents/flightModifyRoundTrip.jsp"
       style="padding-bottom: 10px; display:none;">
       
 		    <h3>Sort Options:</h3>
@@ -22,9 +22,14 @@
 		    <select name="sortBy" id="sortBy" required>
 		    	<option value="none">None</option>
 		        <option value="price">Price</option>
-		        <option value="departure_time">Take-off Time</option>
-		        <option value="arrival_time">Landing Time</option>
-		        <option value="duration">Flight Duration</option>
+		        <option value="out_departure_time">Out-bound Take-off Time</option>
+		        <option value="ret_departure_time">Returning Take-off Time</option>
+		        <option value="out_arrival_time">Out-bound Landing Time</option>
+		       	<option value="ret_arrival_time">Returning Landing Time</option>
+		        
+		        <option value="out_duration">Out-bound Flight Duration</option>
+		        <option value="ret_duration">Returning Flight Duration</option>
+		        
 		    </select>
 		
 		    <label for="sortOrder">Order:</label>
@@ -44,8 +49,8 @@
 	
 			
 			
-			<label for="airline" style="display: block;">Select an outbound airline:</label>
-			<select name="airline" >
+			<label for="outAirline" style="display: block;">Select an Out-bound airline:</label>
+			<select name="outAirline" >
 			    <option value="none">None</option>
 			    <%
 			    	StringBuilder outputHtml = new StringBuilder();
@@ -70,16 +75,53 @@
 			    <%= outputHtml.toString() %>
 			</select>
 			
+			<label for="retAirline" style="display: block;">Select a Returning airline:</label>
+			<select name="retAirline" >
+			    <option value="none">None</option>
+			    <%
+			    	StringBuilder outputHtml2 = new StringBuilder();
+				    ApplicationDB db2 = new ApplicationDB();
+			        Connection con2 = db2.getConnection();
+			        String query2 = "select distinct airid from flight where dep_portid = ? and arr_portid = ?";
+			        PreparedStatement stmt2 = con2.prepareStatement(query2.toString());
+			        stmt2.setString(1, (String) session.getAttribute("arrID"));
+			        stmt2.setString(2, (String) session.getAttribute("depID"));
+			        ResultSet rs2 = stmt2.executeQuery();
+			        
+			        while(rs2.next()){
+			        	String airID = rs2.getString("airID");
+			        	outputHtml2.append("<option value='" + airID + "'>" + airID + "</option>");
+			        }
+			        
 					
-		    <label for="takeOffStart" style="display: block;">Take-off between:</label>
-		    <input type="time" name="takeOffStart" />
+			        rs2.close();
+			        stmt2.close();
+			        db2.closeConnection(con);
+			    %>
+			    <%= outputHtml2.toString() %>
+			</select>
+			
+					
+		    <label for="outTakeOffStart" style="display: block;">Out-bound Take-off between:</label>
+		    <input type="time" name="outTakeOffStart" />
 		    and
-		    <input type="time" name="takeOffEnd" />
+		    <input type="time" name="outTakeOffEnd" />
+		    
+		    <label for="retTakeOffStart" style="display: block;">Returning Take-off between:</label>
+		    <input type="time" name="retTakeOffStart" />
+		    and
+		    <input type="time" name="retTakeOffEnd" />
 		
-		    <label for="landingStart" style="display: block;">Landing between:</label>
-		    <input type="time" name="landingStart" />
+		    <label for="outLandingStart" style="display: block;">Out-bound Landing between:</label>
+		    <input type="time" name="outLandingStart" />
 		    and
-		    <input type="time" name="landingEnd" />
+		    <input type="time" name="outLandingEnd" />
+		    
+		    <label for="retLandingStart" style="display: block;">Returning  Landing between:</label>
+		    <input type="time" name="retLandingStart" />
+		    and
+		    <input type="time" name="retLandingEnd" />
+		    
 		    <input type="hidden" name="flightNums" value="<%= request.getAttribute("printedFlightNums") %>">
 		    
 		

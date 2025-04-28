@@ -4,15 +4,26 @@
 
 <%
 try {
-    String sortBy = request.getParameter("sortBy");
-    String sortOrder = request.getParameter("sortOrder");
-    String minPriceStr = request.getParameter("minPrice");
-    String maxPriceStr = request.getParameter("maxPrice");
-    String airline = request.getParameter("airline");
-    String takeOffStart = request.getParameter("takeOffStart");
-    String takeOffEnd = request.getParameter("takeOffEnd");
-    String landingStart = request.getParameter("landingStart");
-    String landingEnd = request.getParameter("landingEnd");
+	String sortBy = request.getParameter("sortBy");
+	String sortOrder = request.getParameter("sortOrder");
+
+	String minPriceStr = request.getParameter("minPrice");
+	String maxPriceStr = request.getParameter("maxPrice");
+
+	String outAirline = request.getParameter("outAirline");
+	String retAirline = request.getParameter("retAirline");
+
+	String outTakeOffStart = request.getParameter("outTakeOffStart");
+	String outTakeOffEnd = request.getParameter("outTakeOffEnd");
+
+	String retTakeOffStart = request.getParameter("retTakeOffStart");
+	String retTakeOffEnd = request.getParameter("retTakeOffEnd");
+
+	String outLandingStart = request.getParameter("outLandingStart");
+	String outLandingEnd = request.getParameter("outLandingEnd");
+
+	String retLandingStart = request.getParameter("retLandingStart");
+	String retLandingEnd = request.getParameter("retLandingEnd");
 
     Set<String> comboSet = (Set<String>) session.getAttribute("roundTripCombos");
     if (comboSet == null || comboSet.isEmpty()) {
@@ -109,74 +120,137 @@ try {
     // Filter
     List<Map<String, Object>> filtered = new ArrayList<>();
     for (Map<String, Object> pair : fullCombos) {
-        Map<String, Object> outb = (Map<String, Object>) pair.get("outbound");
-        Map<String, Object> ret = (Map<String, Object>) pair.get("return");
+    	Map<String, Object> outb = (Map<String, Object>) pair.get("outbound");
+    	Map<String, Object> ret = (Map<String, Object>) pair.get("return");
 
-        double totalPrice =(Double) outb.get("price") + (Double) ret.get("price") + classSurcharge + bookingFee;
+    	double totalPrice = (Double) outb.get("price") + (Double) ret.get("price") + classSurcharge + bookingFee;
 
-        String outAirline = (String) outb.get("airID");
-        Time outDepTime = (Time) outb.get("departure_time");
-        Time retArrTime = (Time) ret.get("arrival_time");
+    	String outboundAirID = (String) outb.get("airID");
+    	String returnAirID = (String) ret.get("airID");
 
-        boolean match = true;
-        if (minPriceStr != null && !minPriceStr.isEmpty() && totalPrice < Double.parseDouble(minPriceStr)) match = false;
-        if (maxPriceStr != null && !maxPriceStr.isEmpty() && totalPrice > Double.parseDouble(maxPriceStr)) match = false;
-        if (airline != null && !airline.isEmpty() && !"none".equals(airline) && !outAirline.equals(airline)) match = false;
-        if (takeOffStart != null && !takeOffStart.isEmpty() && outDepTime.before(Time.valueOf(takeOffStart + ":00"))) match = false;
-        if (takeOffEnd != null && !takeOffEnd.isEmpty() && outDepTime.after(Time.valueOf(takeOffEnd + ":00"))) match = false;
-        if (landingStart != null && !landingStart.isEmpty() && retArrTime.before(Time.valueOf(landingStart + ":00"))) match = false;
-        if (landingEnd != null && !landingEnd.isEmpty() && retArrTime.after(Time.valueOf(landingEnd + ":00"))) match = false;
+    	Time outDepTime = (Time) outb.get("departure_time");
+    	Time outArrTime = (Time) outb.get("arrival_time");
+    	Time retDepTime = (Time) ret.get("departure_time");
+    	Time retArrTime = (Time) ret.get("arrival_time");
 
-        if (match) filtered.add(pair);
+    	boolean match = true;
+
+    	// Price check
+    	if (minPriceStr != null && !minPriceStr.isEmpty() && totalPrice < Double.parseDouble(minPriceStr)) match = false;
+    	if (maxPriceStr != null && !maxPriceStr.isEmpty() && totalPrice > Double.parseDouble(maxPriceStr)) match = false;
+
+    	// Outbound airline filter
+    	if (outAirline != null && !"none".equalsIgnoreCase(outAirline) && !outboundAirID.equalsIgnoreCase(outAirline)) {
+		    match = false;
+		}
+
+
+    	// Return airline filter
+    	if (retAirline != null && !"none".equalsIgnoreCase(retAirline) && !returnAirID.equalsIgnoreCase(retAirline)) {
+		    match = false;
+		}
+
+    	// Outbound time filters
+    	if (outTakeOffStart != null && !outTakeOffStart.isEmpty() && outDepTime.before(Time.valueOf(outTakeOffStart + ":00"))) match = false;
+    	if (outTakeOffEnd != null && !outTakeOffEnd.isEmpty() && outDepTime.after(Time.valueOf(outTakeOffEnd + ":00"))) match = false;
+
+    	if (outLandingStart != null && !outLandingStart.isEmpty() && outArrTime.before(Time.valueOf(outLandingStart + ":00"))) match = false;
+    	if (outLandingEnd != null && !outLandingEnd.isEmpty() && outArrTime.after(Time.valueOf(outLandingEnd + ":00"))) match = false;
+
+    	// Return time filters
+    	if (retTakeOffStart != null && !retTakeOffStart.isEmpty() && retDepTime.before(Time.valueOf(retTakeOffStart + ":00"))) match = false;
+    	if (retTakeOffEnd != null && !retTakeOffEnd.isEmpty() && retDepTime.after(Time.valueOf(retTakeOffEnd + ":00"))) match = false;
+
+    	if (retLandingStart != null && !retLandingStart.isEmpty() && retArrTime.before(Time.valueOf(retLandingStart + ":00"))) match = false;
+    	if (retLandingEnd != null && !retLandingEnd.isEmpty() && retArrTime.after(Time.valueOf(retLandingEnd + ":00"))) match = false;
+
+    	if (match) filtered.add(pair);
     }
 
     // Sort
     if (sortBy != null && sortOrder != null && !"none".equals(sortBy) && !"none".equals(sortOrder)) {
-        Comparator<Map<String, Object>> comparator = null;
+    Comparator<Map<String, Object>> comparator = null;
 
-        if ("price".equalsIgnoreCase(sortBy)) {
-            comparator = new Comparator<Map<String, Object>>() {
-                public int compare(Map<String, Object> a, Map<String, Object> b) {
-                    try {
-                        Map<String, Object> aOut = (Map<String, Object>) a.get("outbound");
-                        Map<String, Object> aRet = (Map<String, Object>) a.get("return");
-                        Map<String, Object> bOut = (Map<String, Object>) b.get("outbound");
-                        Map<String, Object> bRet = (Map<String, Object>) b.get("return");
-                        double priceA = (Double) aOut.get("price") + (Double) aRet.get("price");
-                        double priceB = (Double) bOut.get("price") + (Double) bRet.get("price");
-                        return Double.compare(priceA, priceB);
-                    } catch (Exception e) { return 0; }
-                }
-            };
-        } else if ("duration".equalsIgnoreCase(sortBy)) {
-            comparator = new Comparator<Map<String, Object>>() {
-                public int compare(Map<String, Object> a, Map<String, Object> b) {
-                    try {
-                        Map<String, Object> aOut = (Map<String, Object>) a.get("outbound");
-                        Map<String, Object> aRet = (Map<String, Object>) a.get("return");
-                        Map<String, Object> bOut = (Map<String, Object>) b.get("outbound");
-                        Map<String, Object> bRet = (Map<String, Object>) b.get("return");
-
-                        long durA = ((Time) aOut.get("arrival_time")).getTime() - ((Time) aOut.get("departure_time")).getTime();
-                        durA += ((Time) aRet.get("arrival_time")).getTime() - ((Time) aRet.get("departure_time")).getTime();
-
-                        long durB = ((Time) bOut.get("arrival_time")).getTime() - ((Time) bOut.get("departure_time")).getTime();
-                        durB += ((Time) bRet.get("arrival_time")).getTime() - ((Time) bRet.get("departure_time")).getTime();
-
-                        return Long.compare(durA, durB);
-                    } catch (Exception e) { return 0; }
-                }
-            };
-        }
-
-        if (comparator != null) {
-            if ("desc".equalsIgnoreCase(sortOrder)) {
-                Collections.sort(filtered, Collections.reverseOrder(comparator));
-            } else {
-                Collections.sort(filtered, comparator);
+    if ("price".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    double priceA = (Double) ((Map) a.get("outbound")).get("price") + (Double) ((Map) a.get("return")).get("price");
+                    double priceB = (Double) ((Map) b.get("outbound")).get("price") + (Double) ((Map) b.get("return")).get("price");
+                    return Double.compare(priceA, priceB);
+                } catch (Exception e) { return 0; }
             }
+        };
+    } else if ("out_departure_time".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    Time timeA = (Time) ((Map) a.get("outbound")).get("departure_time");
+                    Time timeB = (Time) ((Map) b.get("outbound")).get("departure_time");
+                    return timeA.compareTo(timeB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    } else if ("ret_departure_time".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    Time timeA = (Time) ((Map) a.get("return")).get("departure_time");
+                    Time timeB = (Time) ((Map) b.get("return")).get("departure_time");
+                    return timeA.compareTo(timeB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    } else if ("out_arrival_time".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    Time timeA = (Time) ((Map) a.get("outbound")).get("arrival_time");
+                    Time timeB = (Time) ((Map) b.get("outbound")).get("arrival_time");
+                    return timeA.compareTo(timeB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    } else if ("ret_arrival_time".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    Time timeA = (Time) ((Map) a.get("return")).get("arrival_time");
+                    Time timeB = (Time) ((Map) b.get("return")).get("arrival_time");
+                    return timeA.compareTo(timeB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    } else if ("out_duration".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    long durA = ((Time) ((Map) a.get("outbound")).get("arrival_time")).getTime() - ((Time) ((Map) a.get("outbound")).get("departure_time")).getTime();
+                    long durB = ((Time) ((Map) b.get("outbound")).get("arrival_time")).getTime() - ((Time) ((Map) b.get("outbound")).get("departure_time")).getTime();
+                    return Long.compare(durA, durB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    } else if ("ret_duration".equalsIgnoreCase(sortBy)) {
+        comparator = new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> a, Map<String, Object> b) {
+                try {
+                    long durA = ((Time) ((Map) a.get("return")).get("arrival_time")).getTime() - ((Time) ((Map) a.get("return")).get("departure_time")).getTime();
+                    long durB = ((Time) ((Map) b.get("return")).get("arrival_time")).getTime() - ((Time) ((Map) b.get("return")).get("departure_time")).getTime();
+                    return Long.compare(durA, durB);
+                } catch (Exception e) { return 0; }
+            }
+        };
+    }
+
+    if (comparator != null) {
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            Collections.sort(filtered, Collections.reverseOrder(comparator));
+        } else {
+            Collections.sort(filtered, comparator);
         }
     }
+}
 
     // Output results
     if (filtered.isEmpty()) {
@@ -187,7 +261,7 @@ try {
     	    Map<String, Object> returnFlight = (Map<String, Object>) pair.get("return");
 
     	    double total = (Double) outbound.get("price") + (Double) returnFlight.get("price")+ classSurcharge + bookingFee;
-    	 
+
 
     	    out.println("<div style='margin-bottom: 20px;'>");
     	    out.println("<p><strong>Outbound:</strong> " + outbound.get("airID") + " #" + outbound.get("flightNum"));
@@ -201,7 +275,20 @@ try {
     	    out.println(" | Arrives: " + returnFlight.get("arrival_date") + " " + returnFlight.get("arrival_time") + "</p>");
 
     	    out.println("<p><strong>Total Price: $" + String.format("%.2f", total) + "</strong></p>");
+    	    out.println("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>");
+    	    out.println("<input type='hidden' name='outboundlineID' value='" + outbound.get("airID") + "'/>");
+    	    out.println("<input type='hidden' name='outboundFlight' value='" + outbound.get("flightNum") + "'/>");
+    	    
+    	    out.println("<input type='hidden' name='retlineID' value='" + returnFlight.get("airID") + "'/>");
+    	    out.println("<input type='hidden' name='returnFlight' value='" + returnFlight.get("flightNum") + "'/>");
+    	    out.println("<input type='hidden' name='totalPrice' value='" + outbound.get("flightNum") + "'/>");
+    	    out.println("<input type='submit' value='Book Round Trip'/>");
+    	    out.println("</form>");
     	    out.println("<hr></div>");
+    	    
+    	    
+    	    
+    	    
     	}
     }
 
