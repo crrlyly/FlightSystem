@@ -26,8 +26,27 @@ try {
         String depID = (String) session.getAttribute("depID");
         String arrID = (String) session.getAttribute("arrID");
         String boardClass = (String) session.getAttribute("class");
-       	double classCharge = (double) session.getAttribute("classSurcharge");
-       	        
+        
+        double bookingFee = 20.0;
+
+
+        double classSurcharge = 0.0;
+        if ("first".equalsIgnoreCase(boardClass)) {
+            classSurcharge = 1000.0;
+        } else if ("business".equalsIgnoreCase(boardClass)) {
+            classSurcharge = 300.0;
+        } else if ("economy".equalsIgnoreCase(boardClass)) {
+            classSurcharge = 100.0;
+        }
+        
+        double adjustedMinPrice = minPriceStr != null && !minPriceStr.isEmpty() 
+        	    ? Double.parseDouble(minPriceStr) - classSurcharge - bookingFee 
+        	    : Double.MIN_VALUE;
+
+       	double adjustedMaxPrice = maxPriceStr != null && !maxPriceStr.isEmpty() 
+       	    ? Double.parseDouble(maxPriceStr) - classSurcharge - bookingFee 
+       	    : Double.MAX_VALUE;
+
 
         StringBuilder query = new StringBuilder("SELECT * FROM flight WHERE dep_portID=" + "'" + depID + "'" + " AND arr_portID=" + "'" + arrID + "'");
         List<Object> params = new ArrayList<>();
@@ -35,11 +54,11 @@ try {
         
         if (minPriceStr != null && !minPriceStr.isEmpty()) {
             query.append(" AND price >= ?");
-            params.add(Double.parseDouble(minPriceStr));
+            params.add(adjustedMinPrice);
         }
         if (maxPriceStr != null && !maxPriceStr.isEmpty()) {
             query.append(" AND price <= ?");
-            params.add(Double.parseDouble(maxPriceStr));
+            params.add(adjustedMaxPrice);
         }
         if (airline != null && !airline.isEmpty() && !airline.equals("none")) {
             query.append(" AND airID = ?");
@@ -91,12 +110,14 @@ try {
             java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("hh:mm a");
             String formattedDepTime = timeFormat.format(depTime);
             String formattedArrTime = timeFormat.format(arrTime);
+            
+            Double price = rs.getDouble("price") + classSurcharge + 20;
 
             out.println("<p style='margin-top: 15px; line-height: 24px;'>Flight #" + rs.getInt("flightNum") +
                 " | From: " + rs.getString("dep_portID") +
                 " > To: " + rs.getString("arr_portID") +
                 " | Airline: " + rs.getString("airID") +
-                " | Price: $" + rs.getDouble("price") +
+                " | Price: $" + String.format("%.2f", price) +
                 " | Departure Date: " + rs.getString("departure_date") +
                 " | Departure Time: " + formattedDepTime +
                 " | Arrival Date: " + rs.getString("arrival_date") +
@@ -107,7 +128,7 @@ try {
                 "<input type='hidden' name='airID' value='" + rs.getString("airID") + "'/>" +
                 "<input type='hidden' name='depPortID' value='" + rs.getString("dep_portID") + "'/>" +
                 "<input type='hidden' name='arrPortID' value='" + rs.getString("arr_portID") + "'/>" +
-                "<input type='hidden' name='price' value='" + rs.getDouble("price") + "'/>" +
+                "<input type='hidden' name='price' value='" + price + "'/>" +
                 "<input type='hidden' name='departureDate' value='" + rs.getString("departure_date") + "'/>" +
                 "<input type='hidden' name='departureTime' value='" + formattedDepTime + "'/>" +
                 "<input type='hidden' name='arrivalDate' value='" + rs.getString("arrival_date") + "'/>" +

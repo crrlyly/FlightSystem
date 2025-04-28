@@ -45,23 +45,31 @@
 		    <input type="number" name="maxPrice" step="0.01" min="0" />
 	
 			
-			<%
-			    Object obj = request.getAttribute("airlineList");
-			%>
 			
 			<label for="airline" style="display: block;">Select an airline:</label>
 			<select name="airline" >
-			    <option value="none"></option>
+			    <option value="none">None</option>
 			    <%
-			        if (obj instanceof Set<?>) {
-			            for (Object item : (Set<?>) obj) {
-			                String name = String.valueOf(item); // safe conversion
-			    %>
-			                <option value="<%= name %>"><%= name %></option>
-			    <%
-			            }
+			    	StringBuilder outputHtml = new StringBuilder();
+				    ApplicationDB db = new ApplicationDB();
+			        Connection con = db.getConnection();
+			        String query = "select distinct airid from flight where dep_portid = ? and arr_portid = ?";
+			        PreparedStatement stmt = con.prepareStatement(query.toString());
+			        stmt.setString(1, (String) session.getAttribute("depID"));
+			        stmt.setString(2, (String) session.getAttribute("arrID"));
+			        ResultSet rs = stmt.executeQuery();
+			        
+			        while(rs.next()){
+			        	String airID = rs.getString("airID");
+			        	outputHtml.append("<option value='" + airID + "'>" + airID + "</option>");
 			        }
+			        
+					
+			        rs.close();
+			        stmt.close();
+			        db.closeConnection(con);
 			    %>
+			    <%= outputHtml.toString() %>
 			</select>
 			
 					

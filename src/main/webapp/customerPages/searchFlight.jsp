@@ -93,7 +93,8 @@ try {
                 
 
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
-                    .append("<p>Flight #").append(flightNum)
+                	.append("<p>AirID ").append(airID).append(" | ")
+                    .append("Flight #").append(flightNum)
                     .append(" | ").append(depPort).append(" > ").append(arrPort)
                     .append(" | Departs: ").append(depDate).append(" ").append(depTime)
                     .append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
@@ -191,13 +192,15 @@ try {
 
                 // Output HTML (unchanged from your version)
                 outputHtml.append("<div style='margin-bottom: 20px;'>")
-                    .append("<p>Outbound Flight #").append(outbound.get("flightNum"))
+                	.append("<p>AirID ").append(outbound.get("airID")).append(" | ")
+                    .append("Outbound Flight #").append(outbound.get("flightNum"))
                     .append(" | ").append(outbound.get("depPortID")).append(" > ").append(outbound.get("arrPortID"))
                     .append(" | Class: ").append(boardingClass)
                     .append(" | Departs: ").append(outbound.get("depDate")).append(" ").append(outbound.get("depTime"))
                     .append(" | Arrives: ").append(outbound.get("arrDate")).append(" ").append(outbound.get("arrTime"))
                     .append("</p>")
-                    .append("<p>Return Flight #").append(ret.get("flightNum"))
+                    .append("<p>AirID ").append(ret.get("airID")).append(" | ")
+                    .append("Return Flight #").append(ret.get("flightNum"))
                     .append(" | ").append(ret.get("depPortID")).append(" > ").append(ret.get("arrPortID"))
                     .append(" | Class: ").append(boardingClass)
                     .append(" | Departs: ").append(ret.get("depDate")).append(" ").append(ret.get("depTime"))

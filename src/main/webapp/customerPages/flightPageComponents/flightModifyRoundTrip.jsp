@@ -23,6 +23,30 @@ try {
     for (String combo : comboSet) {
         savedCombos.add(combo.split("-"));
     }
+    
+    String boardClass = (String) session.getAttribute("class");
+
+    
+    double bookingFee = 20.0;
+
+
+    double classSurcharge = 0.0;
+    if ("first".equalsIgnoreCase(boardClass)) {
+        classSurcharge = 1000.0;
+    } else if ("business".equalsIgnoreCase(boardClass)) {
+        classSurcharge = 300.0;
+    } else if ("economy".equalsIgnoreCase(boardClass)) {
+        classSurcharge = 100.0;
+    }
+    
+    double adjustedMinPrice = minPriceStr != null && !minPriceStr.isEmpty() 
+    	    ? Double.parseDouble(minPriceStr) - classSurcharge - bookingFee 
+    	    : Double.MIN_VALUE;
+
+   	double adjustedMaxPrice = maxPriceStr != null && !maxPriceStr.isEmpty() 
+   	    ? Double.parseDouble(maxPriceStr) - classSurcharge - bookingFee 
+   	    : Double.MAX_VALUE;
+
 
     ApplicationDB db = new ApplicationDB();
     Connection con = db.getConnection();
@@ -88,7 +112,8 @@ try {
         Map<String, Object> outb = (Map<String, Object>) pair.get("outbound");
         Map<String, Object> ret = (Map<String, Object>) pair.get("return");
 
-        double totalPrice = (Double) outb.get("price") + (Double) ret.get("price");
+        double totalPrice =(Double) outb.get("price") + (Double) ret.get("price") + classSurcharge + bookingFee;
+
         String outAirline = (String) outb.get("airID");
         Time outDepTime = (Time) outb.get("departure_time");
         Time retArrTime = (Time) ret.get("arrival_time");
@@ -161,7 +186,8 @@ try {
     	    Map<String, Object> outbound = (Map<String, Object>) pair.get("outbound");
     	    Map<String, Object> returnFlight = (Map<String, Object>) pair.get("return");
 
-    	    double total = (Double) outbound.get("price") + (Double) returnFlight.get("price");
+    	    double total = (Double) outbound.get("price") + (Double) returnFlight.get("price")+ classSurcharge + bookingFee;
+    	 
 
     	    out.println("<div style='margin-bottom: 20px;'>");
     	    out.println("<p><strong>Outbound:</strong> " + outbound.get("airID") + " #" + outbound.get("flightNum"));
