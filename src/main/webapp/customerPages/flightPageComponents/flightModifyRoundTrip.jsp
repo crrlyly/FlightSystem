@@ -275,7 +275,7 @@ try {
     	    out.println(" | Arrives: " + returnFlight.get("arrival_date") + " " + returnFlight.get("arrival_time") + "</p>");
 
     	    out.println("<p><strong>Total Price: $" + String.format("%.2f", total) + "</strong></p>");
-    	    out.println("<form method='post' action='flightPageComponents/purchaseTicket.jsp'>");
+    	    out.println("<form method='post' action='purchaseTicket.jsp'>");
     	    out.println("<input type='hidden' name='outboundlineID' value='" + outbound.get("airID") + "'/>");
     	    out.println("<input type='hidden' name='outboundFlight' value='" + outbound.get("flightNum") + "'/>");
     	    
