@@ -164,7 +164,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A','null',1,14,20,150),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,10,20,150),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,1,13,20,150),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',4,10,20,150),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,10,20,150),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',3,15,20,150),('DL',3562,'Domestic',1849.34,22,'2025-06-22','04:34:00','2025-06-22','08:30:00','LHR','ATL','US-6155',NULL,3,13,20,150),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,13,20,150),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,5,12,20,150),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',2,10,20,150),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,10,20,150),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,10,20,150);
+INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A','null',1,14,20,150),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,10,20,150),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,9,13,20,150),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',5,10,20,150),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,10,20,150),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',5,12,20,150),('DL',3562,'Domestic',1849.34,22,'2025-06-22','04:34:00','2025-06-22','08:30:00','LHR','ATL','US-6155',NULL,5,12,20,150),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,14,20,150),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,6,12,20,150),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',6,10,20,150),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,10,20,150),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,10,20,150);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +192,7 @@ CREATE TABLE `postquestions` (
 
 LOCK TABLES `postquestions` WRITE;
 /*!40000 ALTER TABLE `postquestions` DISABLE KEYS */;
-INSERT INTO `postquestions` VALUES (2,1,'2025-04-01 09:30:00'),(2,5,'2025-04-01 11:00:00'),(2,9,'2025-04-01 12:15:00'),(3,2,'2025-04-01 10:00:00'),(3,6,'2025-04-01 11:10:00'),(3,10,'2025-04-01 12:30:00'),(3,11,'2025-04-20 00:52:00'),(3,12,'2025-04-21 16:25:00'),(3,13,'2025-04-23 11:06:00'),(4,3,'2025-04-01 10:15:00'),(4,7,'2025-04-01 11:30:00'),(6,4,'2025-04-01 10:30:00'),(6,8,'2025-04-01 12:00:00');
+INSERT INTO `postquestions` VALUES (2,1,'2025-04-01 09:30:00'),(2,5,'2025-04-01 11:00:00'),(2,9,'2025-04-01 12:15:00'),(3,2,'2025-04-01 10:00:00'),(3,6,'2025-04-01 11:10:00'),(3,10,'2025-04-01 12:30:00'),(3,11,'2025-04-20 00:52:00'),(3,12,'2025-04-21 16:25:00'),(3,13,'2025-04-23 11:06:00'),(3,14,'2025-04-23 11:55:00'),(4,3,'2025-04-01 10:15:00'),(4,7,'2025-04-01 11:30:00'),(6,4,'2025-04-01 10:30:00'),(6,8,'2025-04-01 12:00:00');
 /*!40000 ALTER TABLE `postquestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +236,7 @@ CREATE TABLE `qatable` (
   `question` varchar(150) DEFAULT NULL,
   `response` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`questionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `qatable` (
 
 LOCK TABLES `qatable` WRITE;
 /*!40000 ALTER TABLE `qatable` DISABLE KEYS */;
-INSERT INTO `qatable` VALUES (1,'How early should I arrive at the airport?','We recommend arriving at least 2 hours before your flight.'),(2,'Can I bring a carry-on bag?','Yes, one carry-on and one personal item are allowed.'),(3,'How can I change my flight?','Log into your account and click \"Manage Booking\" to change your flight.'),(4,'Are meals provided on the flight?','Meals are provided on flights over 3 hours.'),(5,'Can I cancel my flight?','Yes, cancellations are allowed up to 24 hours before departure.'),(6,'What if my flight is delayed?','We will notify you by email and SMS with any updates.'),(7,'Do I need a printed ticket?','No, a digital boarding pass is sufficient.'),(8,'Can I book a round-trip ticket?','Absolutely! Just select \"Round Trip\" during your search.'),(9,'What payment methods do you accept?','We accept all major credit cards and PayPal.'),(10,'Can I choose my seat?','Yes, seat selection is available during checkout.'),(11,'Where is the soda machine?',NULL),(12,'Testing',NULL),(13,'random',NULL);
+INSERT INTO `qatable` VALUES (1,'How early should I arrive at the airport?','We recommend arriving at least 2 hours before your flight.'),(2,'Can I bring a carry-on bag?','Yes, one carry-on and one personal item are allowed.'),(3,'How can I change my flight?','Log into your account and click \"Manage Booking\" to change your flight.'),(4,'Are meals provided on the flight?','Meals are provided on flights over 3 hours.'),(5,'Can I cancel my flight?','Yes, cancellations are allowed up to 24 hours before departure.'),(6,'What if my flight is delayed?','We will notify you by email and SMS with any updates.'),(7,'Do I need a printed ticket?','No, a digital boarding pass is sufficient.'),(8,'Can I book a round-trip ticket?','Absolutely! Just select \"Round Trip\" during your search.'),(9,'What payment methods do you accept?','We accept all major credit cards and PayPal.'),(10,'Can I choose my seat?','Yes, seat selection is available during checkout.'),(11,'Where is the soda machine?',NULL),(12,'Testing',NULL),(13,'random',NULL),(14,'jaskjfskgbj',NULL);
 /*!40000 ALTER TABLE `qatable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +273,7 @@ CREATE TABLE `ticketlistsflights` (
 
 LOCK TABLES `ticketlistsflights` WRITE;
 /*!40000 ALTER TABLE `ticketlistsflights` DISABLE KEYS */;
-INSERT INTO `ticketlistsflights` VALUES (6,'AA',101),(27,'AA',101),(9,'DL',1016),(25,'DL',1016),(9,'UA',1000),(25,'UA',1000);
+INSERT INTO `ticketlistsflights` VALUES (6,'AA',101),(27,'AA',101),(9,'DL',1016),(25,'DL',1016),(28,'DL',1016),(29,'DL',1016),(29,'DL',3562),(9,'UA',1000),(25,'UA',1000);
 /*!40000 ALTER TABLE `ticketlistsflights` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ CREATE TABLE `tickets` (
   PRIMARY KEY (`ticketNum`),
   KEY `userID` (`userID`),
   CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,7 +305,7 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
-INSERT INTO `tickets` VALUES (6,'past',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(27,'waitlist',NULL,'First','Oneway',1319.99,'2025-04-23 11:18:00',3);
+INSERT INTO `tickets` VALUES (6,'past',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(27,'waitlist',NULL,'First','Oneway',1319.99,'2025-04-23 11:18:00',3),(28,'ongoing',NULL,'First','Oneway',2402.96,'2025-04-27 23:34:00',3),(29,'waitlist',NULL,'First','Roundtrip',4252.3,'2025-04-27 23:38:00',3);
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +364,7 @@ CREATE TABLE `waitinglist` (
 
 LOCK TABLES `waitinglist` WRITE;
 /*!40000 ALTER TABLE `waitinglist` DISABLE KEYS */;
-INSERT INTO `waitinglist` VALUES ('AA',101,27);
+INSERT INTO `waitinglist` VALUES ('AA',101,27),('DL',1016,29),('DL',3562,29);
 /*!40000 ALTER TABLE `waitinglist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -377,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-23 11:38:29
+-- Dump completed on 2025-05-03 23:48:03
