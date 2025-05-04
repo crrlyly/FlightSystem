@@ -19,7 +19,7 @@
 <body>
 
 <div style="display: flex; align-items: center;">
-    <h2>Search Waiting List for a Flight</h2>
+    <h2>Flight Waiting List - Passenger Details</h2>
     <div style="margin-left: 20px;">
         <form action="../repHome.jsp" method="get">
             <input type="submit" value="Customer Representative Home Page" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
@@ -47,11 +47,12 @@ if (airID != null && flightNumStr != null && !airID.trim().isEmpty() && !flightN
         Connection con = db.getConnection();
 
         String query = 
-            "SELECT u.userID, u.fname, u.lname, u.email " +
-            "FROM waitinglist w " +
-            "JOIN tickets t ON w.ticketNum = t.ticketNum " +
-            "JOIN user u ON t.userID = u.userID " +
-            "WHERE w.airID = ? AND w.flightNum = ?";
+        		"SELECT u.userID, u.fname, u.lname, u.email " +
+	             "FROM waitinglist w " +
+	              "JOIN tickets t ON w.ticketNum = t.ticketNum " +
+                  "JOIN user u ON t.userID = u.userID " +
+                  "WHERE w.airID = ? AND w.flightNum = ? " +  
+                  "ORDER BY w.ticketNum";
 
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, airID.toUpperCase().trim());

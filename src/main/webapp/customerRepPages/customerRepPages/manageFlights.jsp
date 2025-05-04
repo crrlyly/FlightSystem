@@ -44,22 +44,41 @@
            
            if ("add".equals(actionType) && request.getParameter("airID") != null) {
         	   String airId = request.getParameter("airID");
-               int flightNum = Integer.parseInt(request.getParameter("flightNum"));
-               String flightType = request.getParameter("flightType");
-               double price = Double.parseDouble(request.getParameter("price"));
-               int operatingDays = Integer.parseInt(request.getParameter("operating_days"));
-               Date depDate = Date.valueOf(request.getParameter("departure_date"));
-               Time depTime = Time.valueOf(request.getParameter("departure_time"));
-               Date arrDate = Date.valueOf(request.getParameter("arrival_date"));
-               Time arrTime = Time.valueOf(request.getParameter("arrival_time"));
-               String depPortId = request.getParameter("dep_portID");
-               String arrPortId = request.getParameter("arr_portID");
-               String domesticReg = request.getParameter("domestic_reg");
-               String internationalReg = request.getParameter("international_reg");
-               int craftNum = Integer.parseInt(request.getParameter("craftNum"));
-               int openFirstSeats = Integer.parseInt(request.getParameter("openFirstSeats"));
-               int openBusinessSeats = Integer.parseInt(request.getParameter("openBusinessSeats"));
-               int openEconomySeats = Integer.parseInt(request.getParameter("openEconomySeats"));
+        	    int flightNum = Integer.parseInt(request.getParameter("flightNum"));
+        	    String flightType = request.getParameter("flightType");
+        	    double price = Double.parseDouble(request.getParameter("price"));
+        	    int operatingDays = Integer.parseInt(request.getParameter("operating_days"));
+
+        	    String depDateStr = request.getParameter("departure_date");
+        	    String arrDateStr = request.getParameter("arrival_date");
+        	    String depTimeStr = request.getParameter("departure_time");
+        	    String arrTimeStr = request.getParameter("arrival_time");
+        	    Date depDate = (depDateStr != null && !depDateStr.isEmpty()) ? Date.valueOf(depDateStr) : null;
+        	    Date arrDate = (arrDateStr != null && !arrDateStr.isEmpty()) ? Date.valueOf(arrDateStr) : null;
+        	    Time depTime = null;
+        	    Time arrTime = null;
+        	    if (depTimeStr != null && !depTimeStr.isEmpty()) {
+        	        if (depTimeStr.length() == 5) { 
+        	            depTimeStr += ":00";
+        	        }
+        	        depTime = Time.valueOf(depTimeStr);
+        	    }
+
+        	    if (arrTimeStr != null && !arrTimeStr.isEmpty()) {
+        	        if (arrTimeStr.length() == 5) { 
+        	            arrTimeStr += ":00";
+        	        }
+        	        arrTime = Time.valueOf(arrTimeStr);
+        	    }
+
+        	    String depPortId = request.getParameter("dep_portID");
+        	    String arrPortId = request.getParameter("arr_portID");
+        	    String domesticReg = request.getParameter("domestic_reg");
+        	    String internationalReg = request.getParameter("international_reg");
+        	    int craftNum = Integer.parseInt(request.getParameter("craftNum"));
+        	    int openFirstSeats = Integer.parseInt(request.getParameter("openFirstSeats"));
+        	    int openBusinessSeats = Integer.parseInt(request.getParameter("openBusinessSeats"));
+        	    int openEconomySeats = Integer.parseInt(request.getParameter("openEconomySeats"));
                
                // Check airId exists in flight
                PreparedStatement checkFlight = con.prepareStatement("SELECT airID FROM airline WHERE airID = ?");
@@ -103,22 +122,39 @@
            // Handle EDIT operation
            else if ("edit".equals(actionType) && request.getParameter("airID") != null) {
         	   String airId = request.getParameter("airID");
-               int flightNum = Integer.parseInt(request.getParameter("flightNum"));
-               String flightType = request.getParameter("flightType");
-               double price = Double.parseDouble(request.getParameter("price"));
-               int operatingDays = Integer.parseInt(request.getParameter("operating_days"));
-               Date depDate = Date.valueOf(request.getParameter("departure_date"));
-               Time depTime = Time.valueOf(request.getParameter("departure_time"));
-               Date arrDate = Date.valueOf(request.getParameter("arrival_date"));
-               Time arrTime = Time.valueOf(request.getParameter("arrival_time"));
-               String depPortId = request.getParameter("dep_portID");
-               String arrPortId = request.getParameter("arr_portID");
-               String domesticReg = request.getParameter("domestic_reg");
-               String internationalReg = request.getParameter("international_reg");
-               int craftNum = Integer.parseInt(request.getParameter("craftNum"));
-               int openFirstSeats = Integer.parseInt(request.getParameter("openFirstSeats"));
-               int openBusinessSeats = Integer.parseInt(request.getParameter("openBusinessSeats"));
-               int openEconomySeats = Integer.parseInt(request.getParameter("openEconomySeats"));
+        	    int flightNum = Integer.parseInt(request.getParameter("flightNum"));
+        	    String flightType = request.getParameter("flightType");
+        	    double price = Double.parseDouble(request.getParameter("price"));
+        	    int operatingDays = Integer.parseInt(request.getParameter("operating_days"));
+        	    String depDateStr = request.getParameter("departure_date");
+        	    String arrDateStr = request.getParameter("arrival_date");
+        	    String depTimeStr = request.getParameter("departure_time");
+        	    String arrTimeStr = request.getParameter("arrival_time");
+        	    Date depDate = (depDateStr != null && !depDateStr.isEmpty()) ? Date.valueOf(depDateStr) : null;
+        	    Date arrDate = (arrDateStr != null && !arrDateStr.isEmpty()) ? Date.valueOf(arrDateStr) : null;
+        	    Time depTime = null;
+        	    Time arrTime = null;
+        	    if (depTimeStr != null && !depTimeStr.isEmpty()) {
+        	        if (depTimeStr.length() == 5) { 
+        	            depTimeStr += ":00";
+        	        }
+        	        depTime = Time.valueOf(depTimeStr);
+        	    }
+
+        	    if (arrTimeStr != null && !arrTimeStr.isEmpty()) {
+        	        if (arrTimeStr.length() == 5) { 
+        	            arrTimeStr += ":00";
+        	        }
+        	        arrTime = Time.valueOf(arrTimeStr);
+        	    }
+        	    String depPortId = request.getParameter("dep_portID");
+        	    String arrPortId = request.getParameter("arr_portID");
+        	    String domesticReg = request.getParameter("domestic_reg");
+        	    String internationalReg = request.getParameter("international_reg");
+        	    int craftNum = Integer.parseInt(request.getParameter("craftNum"));
+        	    int openFirstSeats = Integer.parseInt(request.getParameter("openFirstSeats"));
+        	    int openBusinessSeats = Integer.parseInt(request.getParameter("openBusinessSeats"));
+        	    int openEconomySeats = Integer.parseInt(request.getParameter("openEconomySeats"));
                
                
                PreparedStatement updateA = con.prepareStatement(
@@ -189,7 +225,7 @@
    }
 %>
 
-   <form action="manageFlights.jsp" method="post" style="margin-bottom: 20px;">
+   <form action="manageFlights.jsp#flightForm" method="post" style="margin-bottom: 20px;">
        <input type="hidden" name="actionType" value="add"/>
        <input type="submit" value="Add New Flight"/>
    </form>
@@ -200,18 +236,18 @@
         <th>Type</th>
         <th>Price</th>
         <th>Days</th>
-        <th>Dep Date</th>
-        <th>Dep Time</th>
-        <th>Arr Date</th>
-        <th>Arr Time</th>
-        <th>Dep Port</th>
-        <th>Arr Port</th>
-        <th>Domestic Reg</th>
-        <th>Intl Reg</th>
+        <th>Departure Date</th>
+        <th>Departure Time</th>
+        <th>Arrival Date</th>
+        <th>Arrival Time</th>
+        <th>Departure Port</th>
+        <th>Arrival Port</th>
+        <th>Domestic Registration</th>
+        <th>International Registration</th>
         <th>Craft #</th>
-        <th>1st Seats</th>
-        <th>Biz Seats</th>
-        <th>Eco Seats</th>
+        <th>First Class Seats</th>
+        <th>Business Seats</th>
+        <th>Economy Seats</th>
         <th>Actions</th>
     </tr>
 <%
@@ -245,7 +281,7 @@
 	        <td><%= rs.getInt("openEconomySeats") %></td>
            <td>
                <!-- Edit Button -->
-               <form method="post" action="manageFlights.jsp" style="display:inline;">
+               <form method="post" action="manageFlights.jsp#flightForm" style="display:inline;">
                    <input type="hidden" name="actionType" value="editForm"/>
                    <input type="hidden" name="airID" value="<%= rs.getString("airID") %>"/>
                 	<input type="hidden" name="flightNum" value="<%= rs.getInt("flightNum") %>"/>
@@ -327,7 +363,7 @@
 	        }
 	    }
 %>
-   <h3><%= "editForm".equals(action) ? "Edit Flight" : "Add New Flight" %></h3>
+<h3 id="flightForm"><%= "editForm".equals(action) ? "Edit Flight" : "Add New Flight" %></h3>
    <form method="post" action="manageFlights.jsp">
        <input type="hidden" name="actionType" value="<%= "editForm".equals(action) ? "edit" : "add" %>"/>
        <% if ("editForm".equals(action)) { %>
@@ -335,16 +371,20 @@
        <% } %>
        <table style="border: none;">
 	       	   <tr>
-	       	   		<td>Airline ID:</td>
-	       	   		<td><input type="text" name="airID" value="<%= airID %>"/></td>
-	       	   	</tr>
-	        	<tr>
-	        		<td>Flight Number:</td>
-	        		<td><input type="number" name="flightNum" value="<%= flightNum %>"/></td>
-	        	</tr>
+    				<td>Airline ID:</td>
+    				<td><input type="text" name="airID" value="<%= airID %>" <%= "editForm".equals(action) ? "readonly" : "" %> /></td>
+				</tr>
+				<tr>
+    				<td>Flight Number:</td>
+    				<td><input type="number" name="flightNum" value="<%= flightNum %>" <%= "editForm".equals(action) ? "readonly" : "" %> /></td>
+				</tr>
+	       	   
 	        	<tr>
 	        		<td>Flight Type:</td>
-	        		<td><input type="text" name="flightType" value="<%= flightType %>"/></td>
+					<td><select name="flightType">
+        				<option value="Domestic" <%= "Domestic".equals(flightType) ? "selected" : "" %>>Domestic</option>
+        				<option value="International" <%= "International".equals(flightType) ? "selected" : "" %>>International</option>
+    				</select></td>  		
 	        	</tr>
 	        	<tr>
 	        		<td>Price:</td
@@ -356,11 +396,11 @@
 	        	</tr>
 	        	<tr>
 	        		<td>Departure Date:</td>
-	        		<td><input type="date" name="departure_date" value="<%= departure_date %>"/></td>
+	        		<td><input type="date" name="departure_date" value="<%= departure_date != null ? departure_date.toString() : "" %>"/></td>
 	        	</tr>
 	        	<tr>
 	        		<td>Departure Time:</td>
-	        		<td><input type="time" name="departure_time" value="<%= departure_time %>"/></td>
+	        		<td><input type="time" name="departure_time" value="<%= departure_time != null ? departure_time.toString() : "" %>"/></td>
 	        	</tr>
 	        	<tr>
 	        		<td>Arrival Date:</td>
@@ -368,7 +408,7 @@
 	        	</tr>
 	        	<tr>
 	        		<td>Arrival Time:</td>
-	        		<td><input type="time" name="arrival_time" value="<%= arrival_time %>"/></td>
+	        		<td><input type="time" name="arrival_time" value="<%= arrival_time != null ? arrival_time.toString() : "" %>"/></td>
 	        	</tr>
 	        	<tr>
 	        		<td>Departure Port ID:</td>
@@ -388,18 +428,18 @@
 	       		 </tr>
 	        	<tr>
 	        		<td>Craft Number:</td>
-	        		<td><input type="number" name="craftNum" value="<%= craftNum %>"/></td>
+	        		<td><input type="number" name="craftNum" value="<%= craftNum %>" <%= "editForm".equals(action) ? "readonly" : "" %> /></td>
 	        	</tr>
 	        	<tr>
-	        		<td>Open First Class Seats:</td>
+	        		<td>First Class Seats:</td>
 	        		<td><input type="number" name="openFirstSeats" value="<%= openFirstSeats %>"/></td>
 	        	</tr>
 	        	<tr>
-	        		<td>Open Business Class Seats:</td>
+	        		<td>Business Class Seats:</td>
 	        		<td><input type="number" name="openBusinessSeats" value="<%= openBusinessSeats %>"/></td>
 	        	</tr>
 	        	<tr>
-	        		<td>Open Economy Seats:</td><td><input type="number" name="openEconomySeats" value="<%= openEconomySeats %>"/></td>
+	        		<td>Economy Seats:</td><td><input type="number" name="openEconomySeats" value="<%= openEconomySeats %>"/></td>
 	        	</tr>
         	<tr>
                <td colspan="2">

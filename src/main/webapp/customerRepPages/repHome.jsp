@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		<div style="margin-top: 10px;">
-			<h3>Reports & Lookups</h3>
+			<h3>Reports and Lookups</h3>
 			<div style="margin-top: 10px; display: flex; align-items: center;">
 				<form method="get" action="customerRepPages/searchWaitingList.jsp" style="margin-right: 10px;">
 					<input type="submit" value="Waiting List Lookup">

@@ -22,9 +22,8 @@
 </head>
 <body>
 
-    <!-- Home Button -->
     <div style="display: flex; align-items: center;">
-	  <h2>Search Flights for an Airport</h2>
+	  <h2>Airport Flight Listings - Departures and Arrivals</h2>
 	  <div style="margin-left: 20px;">
 	  	<form action="../repHome.jsp" method="get">
 	      <input type="submit" value="Customer Representative Home Page" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
@@ -32,7 +31,6 @@
 	  </div>
 	</div>
 
-    <!-- Search Form -->
     <form action="searchFlights.jsp" method="get">
         <label for="airID">Airport ID:</label><br>
         <input type="text" id="airport" name="airport" placeholder="e.g., JFK" required><br><br>
@@ -53,11 +51,15 @@
                     "departure_date, departure_time, arrival_date, arrival_time, " +
                     "dep_portID, arr_portID, craftNum " +
                     "FROM flight WHERE dep_portID = ? OR arr_portID = ? " +
-                    "ORDER BY departure_date, departure_time";
+                    "ORDER BY " +
+                    "CASE WHEN dep_portID = ? THEN departure_date ELSE arrival_date END," +
+                    "CASE WHEN dep_portID = ? THEN departure_time ELSE arrival_time END";
 
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, airport);
             ps.setString(2, airport);
+            ps.setString(3, airport);
+            ps.setString(4, airport);
             ResultSet rs = ps.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -67,6 +69,7 @@
                     <tr>
                     <th>Airline</th>
                     <th>Flight Number</th>
+                    <th>Direction</th>
                     <th>Type</th>
                     <th>Price</th>
                     <th>Departure Date</th>
@@ -83,6 +86,10 @@
                 <tr>
                     <td><%= rs.getString("airID") %></td>
                     <td><%= rs.getInt("flightNum") %></td>
+                    <td><% if (rs.getString("dep_portID").equalsIgnoreCase(airport)) 
+                                { out.print ("Departure"); }
+                    	   else { out.print ("Arrival");} %>
+                    </td>
                     <td><%= rs.getString("flightType") %></td>
                     <td><%= rs.getDouble("price") %></td>
                     <td><%= rs.getDate("departure_date") %></td>
