@@ -6,22 +6,17 @@
    <title>Manage Customer</title>
    <style>
        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
-       th { background-color: #f2f2f2; }
-       .action-btn { margin-right: 10px; }
-       .message { padding: 10px; margin-bottom: 15px; border-radius: 4px; }
-       .success { background-color: #d4edda; color: #155724; }
-       .error { background-color: #f8d7da; color: #721c24; }
    </style>
 </head>
 <body>
 	<div style="display: flex; align-items: center;">
 	  <h2>Customers</h2>
-	  <div style="margin-left: 20px;"> <form action="../adminHome.jsp" method="get">
-	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	  <div style="margin-left: 20px;">
+	  	<form action="../adminHome.jsp" method="get">
+	      <input type="submit" value="Admin Home">
 	    </form>
 	  </div>
 	</div>
-   
 <%
    // Process form submissions
    String actionType = request.getParameter("actionType");
@@ -63,7 +58,7 @@
                    insertPs.setString(3, email);
                    insertPs.setString(4, phone);
                    insertPs.setString(5, username);
-                   insertPs.setString(6, password); // Note: In production, you should hash passwords
+                   insertPs.setString(6, password);
                    insertPs.setString(7, dob);
                    
                    int rowsAffected = insertPs.executeUpdate();
@@ -113,7 +108,7 @@
                    
                    int paramIndex = 6;
                    if (password != null && !password.trim().isEmpty()) {
-                       updatePs.setString(paramIndex++, password); // Note: In production, you should hash passwords
+                       updatePs.setString(paramIndex++, password);
                    }
                    
                    updatePs.setString(paramIndex++, dob);

@@ -5,27 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-            text-align: left;
-        }
-        th, td {
-            border: 1px solid #ddd;
-         }
-        .price {
-            text-align: right;
-        }
-    </style>
+   <style>
+       table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+   </style>
 </head>
 <body>
     <div style="display: flex; align-items: center;">
 		<h2>Most Active Flights</h2>
 		<div style="margin-left: 20px;">
 			<form action="../adminHome.jsp" method="get">
-				<input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+				<input type="submit" value="Admin Home">
 			</form>
 		</div>
 	</div>
@@ -35,17 +24,12 @@
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
         
-        // Query to get the top 5 most active flights (flights with most tickets sold)
-        String query = "SELECT f.airID, f.flightNum, f.flightType, f.openFirstSeats, f.openBusinessSeats, " +
-               "f.openEconomySeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
-               "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum, " +
-               "COUNT(tf.ticketNum) as ticket_count " +
+        // top 5 most active flights (flights with most tickets sold)
+        String query = "SELECT f.*, COUNT(tf.ticketNum) as ticket_count " +
                "FROM flight f " +
                "JOIN ticketlistsflights tf ON f.flightNum = tf.flightNum AND f.airID = tf.airID " +
                "JOIN tickets t ON tf.ticketNum = t.ticketNum " +
-               "GROUP BY f.airID, f.flightNum, f.flightType, f.openFirstSeats, f.openBusinessSeats, " +
-               "f.openEconomySeats, f.price, f.operating_days, f.departure_date, f.departure_time, " +
-               "f.arrival_date, f.arrival_time, f.dep_portID, f.arr_portID, f.craftNum " +
+               "GROUP BY f.airID, f.flightNum, f.flightType " +
                "ORDER BY ticket_count DESC " +
                "LIMIT 5";
         
@@ -59,7 +43,7 @@
             hasResults = true;
             rs.beforeFirst();
         }
-        
+        //put select statement into an organized table
         if (hasResults) {
             %>
             <table>
@@ -113,7 +97,7 @@
         rs.close();
         ps.close();
         
-        // Additional query to show all flights ordered by activity
+        // show ALL flights ordered by activity
         String allFlightsQuery = "SELECT f.airID, f.flightNum, f.dep_portID, f.arr_portID, f.flightType, f.price, " +
                           "COUNT(tf.ticketNum) as ticket_count " +
                           "FROM flight f " +

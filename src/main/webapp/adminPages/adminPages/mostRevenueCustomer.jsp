@@ -5,28 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            margin: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-            text-align: left;
-        }
-        th, td {
-            border: 1px solid #ddd;
-         }
-
-    </style>
+   <style>
+       table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+   </style>
 </head>
 <body>
     <div style="display: flex; align-items: center;">
 		<h2>Customer with Most Revenue</h2>
 		<div style="margin-left: 20px;">
 			<form action="../adminHome.jsp" method="get">
-				<input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+				<input type="submit" value="Admin Home">
 			</form>
 		</div>
 	</div>

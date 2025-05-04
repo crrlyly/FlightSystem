@@ -3,19 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<style>
-table {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 20px;
-	border: 1px solid #ddd;
-	text-align: left;
-}
-th, td{
-	border: 1px solid #ddd;
-}
-</style>
+	<style>
+       table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+   </style>
 </head>
 
 <body>
@@ -23,7 +13,7 @@ th, td{
 	  <h2>Flight Reservations</h2>
 	  <div style="margin-left: 20px;">
 	  	<form action="../adminHome.jsp" method="get">
-	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	      <input type="submit" value="Admin Home">
 	    </form>
 	  </div>
 	</div>
@@ -88,7 +78,7 @@ th, td{
                 <table>
                     <tr>
                         <%
-                        // Generate table headers dynamically
+                        // table headers
                         for (int i = 1; i <= columnCount; i++) {
                             String columnName = metaData.getColumnName(i);
                         %>

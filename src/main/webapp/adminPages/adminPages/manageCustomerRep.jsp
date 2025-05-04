@@ -6,9 +6,6 @@
    <title>Manage Customer Representatives</title>
    <style>
        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
-       th { background-color: #f2f2f2; }
-       .action-btn { margin-right: 10px; }
-       .message { padding: 10px; margin-bottom: 15px; border-radius: 4px; }
    </style>
 </head>
 <body>
@@ -16,7 +13,7 @@
 	  <h2>Representatives</h2>
 	  <div style="margin-left: 20px;">
 	  	<form action="../adminHome.jsp" method="get">
-	      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+	      <input type="submit" value="Admin Home">
 	    </form>
 	   </div>
 	</div>

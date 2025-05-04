@@ -3,28 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-            text-align: left;
-        }
-        th, td {
-            border: 1px solid #ddd;
-         }
-        body {
-        	margin-top: 20px;
-        }
-
-    </style>
+   <style>
+       table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+   </style>
 </head>
+
 <body>
       <div style="display: flex; align-items: center;">
 		  <h2>Revenue Summaries Page</h2>
 		  <div style="margin-left: 20px;">
 		  	<form action="../adminHome.jsp" method="get">
-		      <input type="submit" value="Admin Home" style="background-color: darkgrey; color: white; border: 1px black; cursor: pointer;">
+		      <input type="submit" value="Admin Home">
 		    </form>
 		  </div>
 	</div>
@@ -33,7 +22,7 @@
         <h3>Select Filter Criteria</h3>
         
         <form method="post" action="revenues.jsp">
-            <div>
+            <div style="margin-bottom:10px">
                 <label>Filter by:</label>
                 <input type="radio" name="filterType" value="flight" id="filter-flight" <%= "flight".equals(request.getParameter("filterType")) ? "checked" : "" %>>
                 <label for="filter-flight">Flight</label>
@@ -143,7 +132,7 @@
                 </select>
             </div>
             
-            <button type="submit">Generate Revenue Summary</button>
+            <button type="submit" style="margin-top: 10px">Generate Revenue Summary</button>
         </form>
     </div>
     
@@ -156,7 +145,7 @@
             //event listener to check if user clicks a diff radio button
             document.querySelectorAll('input[name="filterType"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    flightFilter.style.display = (this.value === 'flight') ? 'block' : 'none'; // function as if else statements (if flight selected, display'block', else display nothing)
+                    flightFilter.style.display = (this.value === 'flight') ? 'block' : 'none'; // (if flight selected, display'block', else display nothing)
                     airlineFilter.style.display = (this.value === 'airline') ? 'block' : 'none';
                     customerFilter.style.display = (this.value === 'customer') ? 'block' : 'none';
                 });
