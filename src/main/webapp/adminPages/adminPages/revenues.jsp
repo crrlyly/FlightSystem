@@ -249,7 +249,7 @@
                         <h3>Revenue Summary for <%= filterDisplay %></h3>
 
                         <div class="summary-card">
-                            <p>Total Revenue: <%= totalRevenue %></p>
+                            <p>Total Revenue: <%= String.format("%.2f", totalRevenue) %></p>
                             <p>Total Tickets: <%= ticketCount %></p>
                             <p>Average Ticket Price: <%= String.format("%.2f", avgTicketPrice) %></p>
                         </div>
