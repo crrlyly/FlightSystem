@@ -109,21 +109,17 @@
                 out.println("<option value='Economy'" + (classType.equals("Economy") ? " selected" : "") + ">Economy</option>");
                 out.println("</select><br>");
 
-                out.println("<label>Flight Trip:</label>");
-                out.println("<select name='flightTrip'>");
-                out.println("<option value='Oneway'" + (flightTrip.equals("Oneway") ? " selected" : "") + ">Oneway</option>");
-                out.println("<option value='Roundtrip'" + (flightTrip.equals("Roundtrip") ? " selected" : "") + ">Roundtrip</option>");
-                out.println("</select><br>");
 
-                out.println("<label>Price: $" + price + "</label><br>");
+                out.println("<label>Price: $" + String.format("%.2f", price) + "</label><br>");
 
                 out.println("<input type='hidden' name='action' value='updateReservation' />");
                 out.println("<input type='hidden' name='originalPrice' value='" + price + "' />");
                 out.println("<input type='hidden' name='originalClass' value='" + classType + "' />");
 
 
-                out.println("<input type='submit' value='Update Reservation' />");
+                out.println("<input style='margin-top: 20px;' type='submit' value='Update Reservation' />");
                 out.println("</form>");
+                out.println("<a href='editReservation.jsp'>Back to Flight Reservation Table</a>");
             } else {
                 out.println("<div class='message error'>Reservation not found for Ticket Number: " + ticketNum + "</div>");
             }
