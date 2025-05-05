@@ -30,6 +30,18 @@
 	    }
 	    int userID = (int) userIDObj;
 	    
+	    String repFullName = (String) session.getAttribute("repFullName");
+	    boolean repStatus = (boolean) session.getAttribute("repStatus");
+	    Integer repIDObj = (Integer) session.getAttribute("repID");
+	    if (repIDObj == null) {
+	    	out.println("Customer Representative Session was terminated. Please log in as Customer Representative again.<br><br>");
+	    	out.println("<form action='../../logout.jsp' method='post' style='margin-top: 30px;'>");
+	    	out.println("<input type='submit' value='Logout'>");
+	    	out.println("</form>");
+	        return;
+	    }
+	    int repID = repIDObj;
+	    
 	    LocalDateTime now = LocalDateTime.now();
 	    String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	    
@@ -100,11 +112,25 @@
 	      
 	      	String sql2;
 	     	if(needWait1 == 1 || needWait2 == 1){
-		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+	     		if(repStatus == true){
+	     			
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', " + "'" + repFullName +  "'" + ", ?, ?, ?, ?, ?)";
+	     		}
+	     		else{
+	     			sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+	     		}
 
 	     	}
 	     	else{
-		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+	     		
+				if(repStatus == true){
+	     					
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', " + "'" + repFullName +  "'" + ", ?, ?, ?, ?, ?)";
+	     		}
+				else{
+					
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+				}
 
 	     	}
 	        PreparedStatement stmt3 = con.prepareStatement(sql2);
@@ -255,11 +281,26 @@
 	        
 	     	String sql2;
 	     	if(wait == 1){
-		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+				if(repStatus == true){
+	     			
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', " + "'" + repFullName +  "'" + ", ?, ?, ?, ?, ?)";
+	     		}
+				else{
+					
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('waitlist', null, ?, ?, ?, ?, ?)";
+				}
 
 	     	}
 	     	else{
-		        sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+	     		
+				if(repStatus == true){
+	     			
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', " + "'" + repFullName +  "'"  + ", ?, ?, ?, ?, ?)";
+	     		}
+				else{
+						
+		        	sql2 = "INSERT INTO tickets(ticket_status, repName, class, flight_trip, booking_price, purchase_date, userID) values ('ongoing', null, ?, ?, ?, ?, ?)";
+				}
 
 	     	}
 	        PreparedStatement stmt2 = con.prepareStatement(sql2);

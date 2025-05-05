@@ -33,6 +33,7 @@
 			if (rs.next()) {
 				session.setAttribute("user", username); 
 				session.setAttribute("userID", rs.getInt("userID"));
+			
 
 	           String role = rs.getString("userType");
 	           out.println("<h2>Login successful for user: " + username + "</h2>");

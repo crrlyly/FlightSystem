@@ -16,8 +16,23 @@
 	</head>
 	<body>
 		
-		<h1>Welcome to the customer home-page!</h1>
-		<a href="userProfile.jsp">View User Profile</a> 
+		<% 
+			Boolean repStatusObj = (Boolean) session.getAttribute("repStatus");
+	
+		    if (repStatusObj != null && repStatusObj) {
+				String repFullName = (String) session.getAttribute("repFullName");
+				String userFullName = (String) session.getAttribute("userFullName");
+				%> 
+				<h1>Welcome to <%= userFullName %>'s home-page!</h1>
+				<h3>Customer Representative: <%= repFullName %> <span style="color:green;">Active</span></h3> 
+				<a style="color: green;"href="../customerRepPages/repHome.jsp">Back to Customer Rep Page</a>
+				<div style="margin-bottom: 20px;"></div><% 				
+			}
+			else{
+				%> <h1>Welcome to the customer home-page!</h1> <%
+			}
+		%>
+		<a style="" href="userProfile.jsp">View User Profile</a> 
 		<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 20px 0px;'></div>
 		
 		<h2>Search For Flights:</h2>
@@ -69,13 +84,17 @@
 		
 		<div id='line' style='width: 100%; height: 2px; background-color:black; margin: 20px 0px;'></div>
 		
-		
-		<a href="qaSearchPage.jsp">Need help?</a>
-
-		
-		<form action="../logout.jsp" method="post" style="margin-top: 30px;">
-    		<input type="submit" value="Logout">
-		</form>
+		<%
+			    if (repStatusObj == null || !repStatusObj) {
+			%>
+			    <a href="qaSearchPage.jsp">Need help?</a>
+			
+			    <form action="../logout.jsp" method="post" style="margin-top: 30px;">
+			        <input type="submit" value="Logout">
+			    </form>
+			<%
+			    }
+		%>
 
 	<script>
 		

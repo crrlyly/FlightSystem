@@ -133,6 +133,7 @@
 	    ResultSet rscraft = stmt.executeQuery();
 	    
 	    String classType = rs3.getString("class");
+	    String repName = rs3.getString("repName");
 	    
 	    
 	    String totalSeatsString = classType + "SeatNum";
@@ -161,6 +162,10 @@
 			.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 			.append("</p>")
 			.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
+			
+			if(repName != null){
+				oneway.append("<p style='color: green;'>Customer Representative: " + repName);
+			}
 			
 			
 			//get top of waitlist
@@ -311,6 +316,13 @@
 				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
 				.append("</div>");
             	
+        	    String repName = rs4.getString("repName");
+
+            	
+            	if(repName != null){
+            		roundtrip.append("<p style='color: green;'>Customer Representative: " + repName);
+    			}
+            	
 
 				
 				if(openSpots == 2){
@@ -364,7 +376,7 @@
 
 <div id="on-container" style="display:none;">
 	<%
-	//display tickets that are in waitinglist
+	//display tickets that are in ongoing
 		String getOngoing = "SELECT * FROM tickets t JOIN ticketlistsflights tf USING (ticketNum) JOIN flight f USING (airID, flightnum) where t.userID = ? and flight_trip = 'Oneway' order by ticketnum asc";
 		PreparedStatement checkO = con.prepareStatement(getOngoing);
 		checkO.setInt(1, userID);
@@ -375,7 +387,7 @@
 		while (rsO.next()) {
 			String flightTrip = rsO.getString("flight_trip");
 			String ticketStat = rsO.getString("ticket_status");
-			
+			String repName = rsO.getString("repName");
 			if(ticketStat.equals("ongoing")){
 				
 				String depDate = rsO.getString("departure_date");
@@ -392,6 +404,9 @@
 				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 				.append("</p>")
 	            .append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
+	            if(repName != null){
+	            	onewayO.append("<p style='color: green;'>Customer Representative: " + repName);
+				}
 	            
 	            if(rsO.getString("class").equals("First") || rsO.getString("class").equals("Business")){
 					onewayO.append("<form method='post' action='waitListComponents/deleteTicket.jsp' style='padding-bottom: 10px;'>")
@@ -418,7 +433,7 @@
 		while (rsO2.next()) {
 			String flightTrip = rsO2.getString("flight_trip");
 			String ticketStat = rsO2.getString("ticket_status");
-			
+			String repName = rsO2.getString("repName");
 			if(ticketStat.equals("ongoing")){
 				
 				String depDate = rsO2.getString("departure_date");
@@ -445,6 +460,12 @@
 					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 					.append("</p>")
 					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
+	            	
+	            	if(repName != null){
+	            		roundtripO.append("<p style='color: green;'>Customer Representative: " + repName);
+					}
+	            	
+		            
 					
 
 		            if(rsO2.getString("class").equals("First") || rsO2.getString("class").equals("Business")){
@@ -494,7 +515,7 @@
 		while (rsP.next()) {
 			String flightTrip = rsP.getString("flight_trip");
 			String ticketStat = rsP.getString("ticket_status");
-			
+			String repName = rsP.getString("repName");
 			if(ticketStat.equals("past")){
 				
 				String depDate = rsP.getString("departure_date");
@@ -511,8 +532,13 @@
 				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 				.append("</p>")
 				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
-				.append("</div>")
-			    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+				.append("</div>");
+	            
+	            if(repName != null){
+					onewayP.append("<p style='color: green;'>Customer Representative: " + repName);
+				}
+	            
+			    onewayP.append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
 			}
 			
 			
@@ -527,7 +553,7 @@
 		while (rsP2.next()) {
 			String flightTrip = rsP2.getString("flight_trip");
 			String ticketStat = rsP2.getString("ticket_status");
-			
+			String repName = rsP2.getString("repName");
 			if(ticketStat.equals("past")){
 				
 				String depDate = rsP2.getString("departure_date");
@@ -554,8 +580,12 @@
 					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 					.append("</p>")
 					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
-					.append("</div>")
-				    .append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
+					.append("</div>");
+	            	if(repName != null){
+	            		roundtripP.append("<p style='color: green;'>Customer Representative: " + repName);
+					}
+					
+	            	roundtripP.append("<div id='line' style='width: 20%; height: 2px; background-color:black; margin: 10px 0px;'></div>");
 	            
 	            }
 			}
