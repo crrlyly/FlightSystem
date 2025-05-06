@@ -77,7 +77,7 @@
 			    block.append("<div style='margin-bottom: 70px;'>")
 			        .append("<h2>Question: </h2><p>").append(question).append("</p>")
 			        .append("<h4>Posted On: ").append(postedDate).append("</h4>")
-			        .append("<h2>Answer: </h2><p>").append(respond != null ? response : "Not yet answered.").append("</p>")
+			        .append("<h2>Answer: </h2><p>").append(respond != null ? respond : "Not yet answered.").append("</p>")
 			        .append("<h4>Answered On: ").append(answerDate != null ? answerDate : "Not yet answered.").append("</h4></div>");
 			
 			    if (respond == null) {
