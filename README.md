@@ -1,12 +1,6 @@
-Online Travel Reservation System
+**Online Travel Reservation System**
 
-
-CS 336: Principles of Information and Database Management
-Spring 2025 
-Instructor: Antonio Miranda Garcia**
-
-
-Group 20: Carly Chick, Hiloni Patel, Sydney Pacheco
+Carly Chick, Hiloni Patel, Sydney Pacheco
 _________________________________________________________________________
 
 
@@ -38,7 +32,6 @@ Functional Requirements:
       - View lists of flights arriving or departing from a particular airport.
 _________________________________________________________________________
 
-
 User Access Control:
 
 
@@ -47,7 +40,6 @@ User Access Control:
       
    Admin:  
       - Has full control over customer data, flight reservations, sales reports, and other system management tasks.
-
 
    Customer Representative: 
       - Can manage flight reservations for customers, respond to customer queries, and manage flight, airport, and aircraft data.
@@ -65,7 +57,6 @@ For example:
 1000 - available on thursdays
 ….
 1111111 - available on all days of the week.****
-
 
 
 
@@ -88,8 +79,6 @@ Waiting List:
 * Once the flight has an open spot and the user is at the top of the waitlist, there will be a button under their waitlisted ticket on the user profile that they can push in order to reserve their ticket.
 
 
-
-
 Past Tickets:
 * Can be viewed on the user profile.
 
@@ -99,22 +88,6 @@ Cancel Reservations:
 
 
 _________________________________________________________________________
-
-
-Files Included in This Submission:
-
-
-   1. Demo.mp4: A video demonstration showcasing the key features and step-by-step functionality of the system.
-   2. FlightSystem.zip: The zip file containing the complete source code of the project.
-   3. schema.sql: The SQL file containing the database schema, exported from MySQL Workbench.
-   4. ER Diagram: The Entity-Relationship diagram illustrating the database structure and relationships.
-   5. ProjectChecklist.pdf: A checklist of all implemented features with marks for each completed task.
-   6. README.txt: Detailed description of the project, including system features, admin and customer representative credentials, and how to use the system.
-
-
-_________________________________________________________________________
-
-
 
 
 Admin and Customer Representative Credentials:
