@@ -44,9 +44,9 @@
 			    <select name="year" id="year">
 			        <% 
 			            int currentYear = java.time.Year.now().getValue();
-			            for (int y = currentYear; y >= currentYear - 5; y--) {
+			            for (int y = currentYear; y >= currentYear - 5; y--) { // counts down from current year to current year -5 for dropdown menu
 			        %>
-			            <option value="<%= y %>"><%= y %></option>
+			            <option value="<%= y %>"><%= y %></option> <!-- ex: <option value="2025">2025</option> -->
 			        <% } %>
 			    </select>
 			    <button type="submit">Get Sales Report</button>

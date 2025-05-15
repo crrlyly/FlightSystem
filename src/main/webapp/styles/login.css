@@ -1,0 +1,153 @@
+@charset "UTF-8";
+
+:root {
+	--background: rgb(255, 255, 255);
+	--box: rgb(192, 192, 192);
+	--text: rgb(70, 70, 70);
+	--accent: rgb(27, 90, 161);
+	--input: rgb(224, 224, 224);
+}
+
+* {margin: 0; padding: 0;}
+
+html {
+  font-size: 12pt;
+  font-family: 'Raleway', sans-serif;
+  color: var(--text);
+  text-align: center;
+}
+
+body {
+ 	min-height:100vh;
+ 	background-image: url(../assets/login_page_image.jpg);
+ 	background-size: cover;
+ 	background-position: right;
+ 	overflow: hidden; /* makes sure it is not scrollable*/
+}
+
+.wrapper {
+	box-sizing: border-box;/* all borders and paddings will be created inwards (a.k.a accounts for any border and padding added)*/
+	background-color: var(--background);
+	height: 100vh;
+	width: max(40%, 600px); /* either 40% of viewport or 600px minimum */
+	padding: 10px;
+	border-radius: 0 20px 20px 0; /* rounds off top right and bottom right corners */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+h1 {
+	font-size: 3rem; /* means 3x initial font size (36pt) */
+	font-weight: 900;
+	text-transform: uppercase;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 15px;
+}
+
+form {
+	width: min(400px, 100%);
+	margin-top: 20px;
+	margin-bottom: 50px;
+	display: flex;
+	flex-direction: column; /* makes main axis for item alignment vertical */
+	align-items: center;
+	gap: 10px;
+}
+
+form > div { /* turns child div elements within form into a flexbox layout */
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+form label { /* icon styling */
+	flex-shrink: 0;
+	height: 40px;
+	width: 50px;
+	background-color: var(--accent); /* only for svg elements (use color: for png icons) */
+	border-radius: 10px 0 0 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+form input {
+	box-sizing: border-box;
+	flex-grow: 1;
+	min-width: 0;
+	height: 40px;
+	padding: 1em;
+	font: inherit;
+	border-radius: 0 10px 10px 0;
+	border: 2px solid var(--input);
+	border-left: none;
+	background-color: var(--input);
+	transition: 150ms ease;
+}
+
+form input:hover {
+	border-color: var(--accent);
+}
+
+form input:focus{
+	outline: none;
+	border-color: var(--text);
+}
+
+div:has(input:focus) > label{/* > is the "direct children combinator", which makes only direct children of the div with input focus have a bakground color change*/
+	background-color:var(--text);
+}
+form input::placeholder{
+	color: var(--text-color);
+}
+form button{
+	margin-top: 10px;
+	border: none;
+	border-radius: 1000px;
+	padding: 0.85em 4em; /* height, width padding (em is size ratio relative to element font size)*/
+	background-color: var(--accent);
+	color: var(--background);
+	font: inherit;
+	font-weight: 600;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+form button:hover{
+	background-color: var(--text);	
+}
+form button:focus{
+	outline: none;
+	background-color: var(--text);
+}
+
+
+/* 
+
+#login-form {
+	margin: 0 auto;
+	background-color: var(--box);
+	padding: 0 20px 20px 20px;
+	border: 3px solid black;
+	text-align: center;
+}
+
+input {
+	border: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	margin-top: 5px;
+	border-radius: 4px;
+	width: 250px;
+}
+
+input[type=text] {
+	
+} */
