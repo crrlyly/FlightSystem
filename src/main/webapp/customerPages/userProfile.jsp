@@ -77,7 +77,7 @@
 			    block.append("<div style='margin-bottom: 70px;'>")
 			        .append("<h2>Question: </h2><p>").append(question).append("</p>")
 			        .append("<h4>Posted On: ").append(postedDate).append("</h4>")
-			        .append("<h2>Answer: </h2><p>").append(respond != null ? response : "Not yet answered.").append("</p>")
+			        .append("<h2>Answer: </h2><p>").append(respond != null ? respond : "Not yet answered.").append("</p>")
 			        .append("<h4>Answered On: ").append(answerDate != null ? answerDate : "Not yet answered.").append("</h4></div>");
 			
 			    if (respond == null) {
@@ -125,6 +125,7 @@
 	while (rs3.next()) {
 		String flightTrip = rs3.getString("flight_trip");
 		String ticketStat = rs3.getString("ticket_status");
+		String ticketClass = rs3.getString("class");
 		
 		String sql = "SELECT * FROM flight f JOIN aircraft a USING (craftNum) WHERE f.airID = ? and f.flightnum = ?";
 	    PreparedStatement stmt = con.prepareStatement(sql);
@@ -161,6 +162,8 @@
 			.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 			.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 			.append("</p>")
+			.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
+
 			.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
 			
 			if(repName != null){
@@ -222,6 +225,7 @@
 	while (rs4.next()) {
 		String flightTrip = rs4.getString("flight_trip");
 		String ticketStat = rs4.getString("ticket_status");
+		String ticketClass = rs4.getString("class");
 		
 		
 		String sql = "SELECT * FROM flight f JOIN aircraft a USING (craftNum) WHERE f.airID = ? and f.flightnum = ?";
@@ -313,6 +317,7 @@
 				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 				.append("</p>")
+				.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
 				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
 				.append("</div>");
             	
@@ -388,6 +393,8 @@
 			String flightTrip = rsO.getString("flight_trip");
 			String ticketStat = rsO.getString("ticket_status");
 			String repName = rsO.getString("repName");
+			String ticketClass = rsO.getString("class");
+
 			if(ticketStat.equals("ongoing")){
 				
 				String depDate = rsO.getString("departure_date");
@@ -403,6 +410,7 @@
 				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 				.append("</p>")
+				.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
 	            .append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
 	            if(repName != null){
 	            	onewayO.append("<p style='color: green;'>Customer Representative: " + repName);
@@ -434,6 +442,7 @@
 			String flightTrip = rsO2.getString("flight_trip");
 			String ticketStat = rsO2.getString("ticket_status");
 			String repName = rsO2.getString("repName");
+			String ticketClass = rsO2.getString("class");
 			if(ticketStat.equals("ongoing")){
 				
 				String depDate = rsO2.getString("departure_date");
@@ -459,6 +468,7 @@
 					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 					.append("</p>")
+					.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
 					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>");
 	            	
 	            	if(repName != null){
@@ -516,6 +526,7 @@
 			String flightTrip = rsP.getString("flight_trip");
 			String ticketStat = rsP.getString("ticket_status");
 			String repName = rsP.getString("repName");
+			String ticketClass = rsP.getString("class");
 			if(ticketStat.equals("past")){
 				
 				String depDate = rsP.getString("departure_date");
@@ -531,6 +542,7 @@
 				.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 				.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 				.append("</p>")
+				.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
 				.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
 				.append("</div>");
 	            
@@ -554,6 +566,7 @@
 			String flightTrip = rsP2.getString("flight_trip");
 			String ticketStat = rsP2.getString("ticket_status");
 			String repName = rsP2.getString("repName");
+			String ticketClass = rsP2.getString("class");
 			if(ticketStat.equals("past")){
 				
 				String depDate = rsP2.getString("departure_date");
@@ -579,6 +592,7 @@
 					.append(" | Departs: ").append(depDate).append(" ").append(depTime)
 					.append(" | Arrives: ").append(arrDate).append(" ").append(arrTime)
 					.append("</p>")
+					.append("<p><strong>Class:: ").append(ticketClass).append("</strong></p>")
 					.append("<p><strong>Price:: $").append(String.format("%.2f", bookingPrice)).append("</strong></p>")
 					.append("</div>");
 	            	if(repName != null){

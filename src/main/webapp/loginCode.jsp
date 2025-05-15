@@ -40,10 +40,16 @@
 	           // Check user role and display appropriate content
 	           if ("customer".equalsIgnoreCase(role)) {
 	        	   response.sendRedirect("customerPages/customerHome.jsp");
+					session.setAttribute("repStatus", false);
+
 	           } else if ("customerrep".equalsIgnoreCase(role)) {
 	        	   response.sendRedirect("customerRepPages/repHome.jsp");
+					session.setAttribute("repStatus", true);
+
 	           } else if ("siteAdmin".equalsIgnoreCase(role)) {
 	        	   response.sendRedirect("adminPages/adminHome.jsp");
+					session.setAttribute("repStatus", false);
+
 	           }
 	        } else {
 	            out.println("<h2>Login failed. Incorrect username or password.</h2>");

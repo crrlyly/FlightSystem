@@ -93,7 +93,7 @@ CREATE TABLE `airlineassociatedairport` (
 
 LOCK TABLES `airlineassociatedairport` WRITE;
 /*!40000 ALTER TABLE `airlineassociatedairport` DISABLE KEYS */;
-INSERT INTO `airlineassociatedairport` VALUES ('UA','DFW'),('AA','JFK'),('UA','JFK'),('AA','LAX'),('DL','LAX'),('UA','LAX'),('AA','LHR'),('DL','LHR'),('AA','ORD'),('DL','ORD'),('UA','ORD');
+INSERT INTO `airlineassociatedairport` VALUES ('AA','ATL'),('UA','DFW'),('AA','JFK'),('UA','JFK'),('AA','LAX'),('DL','LAX'),('UA','LAX'),('AA','LHR'),('DL','LHR'),('DL','ORD'),('UA','ORD');
 /*!40000 ALTER TABLE `airlineassociatedairport` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +164,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','LAX','US Domestic Reg A','null',1,14,20,150),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,10,20,150),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,9,13,20,150),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',5,10,20,150),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,10,20,150),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',5,12,20,150),('DL',3562,'Domestic',1849.34,22,'2025-06-22','04:34:00','2025-06-22','08:30:00','LHR','ATL','US-6155',NULL,5,12,20,150),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,14,20,150),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,6,12,20,150),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',6,10,20,150),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,10,20,150),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,10,20,150);
+INSERT INTO `flight` VALUES ('AA',101,'Domestic',299.99,10,'2025-04-15','08:00:00','2025-04-15','11:00:00','JFK','ATL','US Domestic Reg A','null',1,1,20,151),('DL',202,'Domestic',199.99,20,'2025-04-16','13:00:00','2025-04-16','16:00:00','ORD','DFW','US Domestic Reg B',NULL,2,1,20,150),('DL',1002,'Domestic',894.99,73,'2025-05-16','16:30:00','2025-05-16','20:21:00','LHR','LAX','US-1195',NULL,9,1,20,150),('DL',1007,'International',709.47,66,'2025-04-22','07:30:00','2025-04-22','22:58:00','LAX','ORD',NULL,'INT-9797',5,1,20,150),('DL',1010,'Domestic',1382.96,22,'2025-05-10','02:18:00','2025-05-10','17:09:00','ATL','LHR','US-6155',NULL,2,3,21,153),('DL',1016,'International',1160.53,83,'2025-04-27','04:02:00','2025-04-27','15:01:00','ATL','LHR',NULL,'INT-9133',5,11,20,150),('DL',3562,'Domestic',1849.34,22,'2025-06-22','04:34:00','2025-06-22','08:30:00','LHR','ATL','US-6155',NULL,5,3,20,150),('UA',303,'International',599.99,40,'2025-04-17','22:00:00','2025-04-18','06:00:00','DFW','JFK',NULL,'INTL Reg Z',3,1,20,150),('UA',1000,'Domestic',602.88,106,'2025-05-06','00:36:00','2025-05-06','03:45:00','LHR','ATL','US-2338',NULL,6,1,20,150),('UA',1018,'International',1311.86,40,'2025-05-17','06:12:00','2025-05-17','17:25:00','ORD','LHR',NULL,'INT-6191',6,1,20,150),('UA',1019,'Domestic',1440.28,12,'2025-04-29','07:06:00','2025-04-29','19:11:00','JFK','LHR','US-3323',NULL,8,1,20,150),('UA',1020,'Domestic',420,20,'2025-04-16','18:00:00','2025-04-16','21:00:00','ATL','JFK','US-4451',NULL,8,1,20,150);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +192,7 @@ CREATE TABLE `postquestions` (
 
 LOCK TABLES `postquestions` WRITE;
 /*!40000 ALTER TABLE `postquestions` DISABLE KEYS */;
-INSERT INTO `postquestions` VALUES (2,1,'2025-04-01 09:30:00'),(2,5,'2025-04-01 11:00:00'),(2,9,'2025-04-01 12:15:00'),(3,2,'2025-04-01 10:00:00'),(3,6,'2025-04-01 11:10:00'),(3,10,'2025-04-01 12:30:00'),(3,11,'2025-04-20 00:52:00'),(3,12,'2025-04-21 16:25:00'),(3,13,'2025-04-23 11:06:00'),(3,14,'2025-04-23 11:55:00'),(4,3,'2025-04-01 10:15:00'),(4,7,'2025-04-01 11:30:00'),(6,4,'2025-04-01 10:30:00'),(6,8,'2025-04-01 12:00:00');
+INSERT INTO `postquestions` VALUES (2,1,'2025-04-01 09:30:00'),(2,5,'2025-04-01 11:00:00'),(2,9,'2025-04-01 12:15:00'),(3,2,'2025-04-01 10:00:00'),(3,6,'2025-04-01 11:10:00'),(3,10,'2025-04-01 12:30:00'),(3,11,'2025-04-20 00:52:00'),(3,12,'2025-04-21 16:25:00'),(3,13,'2025-04-23 11:06:00'),(3,14,'2025-04-23 11:55:00'),(4,3,'2025-04-01 10:15:00'),(4,7,'2025-04-01 11:30:00'),(6,4,'2025-04-01 10:30:00'),(6,8,'2025-04-01 12:00:00'),(9,15,'2025-05-05 21:32:00'),(10,16,'2025-05-05 21:40:00'),(11,17,'2025-05-05 21:51:00'),(13,18,'2025-05-05 22:22:00');
 /*!40000 ALTER TABLE `postquestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +220,7 @@ CREATE TABLE `provideanswer` (
 
 LOCK TABLES `provideanswer` WRITE;
 /*!40000 ALTER TABLE `provideanswer` DISABLE KEYS */;
-INSERT INTO `provideanswer` VALUES (1,1,'2025-04-01 13:00:00'),(2,7,'2025-04-01 13:05:00'),(3,1,'2025-04-01 13:10:00'),(4,7,'2025-04-01 13:15:00'),(5,1,'2025-04-01 13:20:00'),(6,7,'2025-04-01 13:25:00'),(7,1,'2025-04-01 13:30:00'),(8,7,'2025-04-01 13:35:00'),(9,1,'2025-04-01 13:40:00'),(10,7,'2025-04-01 13:45:00');
+INSERT INTO `provideanswer` VALUES (1,1,'2025-04-01 13:00:00'),(2,7,'2025-04-01 13:05:00'),(3,1,'2025-04-01 13:10:00'),(4,7,'2025-04-01 13:15:00'),(5,1,'2025-04-01 13:20:00'),(6,7,'2025-04-01 13:25:00'),(7,1,'2025-04-01 13:30:00'),(8,7,'2025-04-01 13:35:00'),(9,1,'2025-04-01 13:40:00'),(10,7,'2025-04-01 13:45:00'),(16,10,'2025-05-05 21:43:29');
 /*!40000 ALTER TABLE `provideanswer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +236,7 @@ CREATE TABLE `qatable` (
   `question` varchar(150) DEFAULT NULL,
   `response` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`questionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `qatable` (
 
 LOCK TABLES `qatable` WRITE;
 /*!40000 ALTER TABLE `qatable` DISABLE KEYS */;
-INSERT INTO `qatable` VALUES (1,'How early should I arrive at the airport?','We recommend arriving at least 2 hours before your flight.'),(2,'Can I bring a carry-on bag?','Yes, one carry-on and one personal item are allowed.'),(3,'How can I change my flight?','Log into your account and click \"Manage Booking\" to change your flight.'),(4,'Are meals provided on the flight?','Meals are provided on flights over 3 hours.'),(5,'Can I cancel my flight?','Yes, cancellations are allowed up to 24 hours before departure.'),(6,'What if my flight is delayed?','We will notify you by email and SMS with any updates.'),(7,'Do I need a printed ticket?','No, a digital boarding pass is sufficient.'),(8,'Can I book a round-trip ticket?','Absolutely! Just select \"Round Trip\" during your search.'),(9,'What payment methods do you accept?','We accept all major credit cards and PayPal.'),(10,'Can I choose my seat?','Yes, seat selection is available during checkout.'),(11,'Where is the soda machine?',NULL),(12,'Testing',NULL),(13,'random',NULL),(14,'jaskjfskgbj',NULL);
+INSERT INTO `qatable` VALUES (1,'How early should I arrive at the airport?','We recommend arriving at least 2 hours before your flight.'),(2,'Can I bring a carry-on bag?','Yes, one carry-on and one personal item are allowed.'),(3,'How can I change my flight?','Log into your account and click \"Manage Booking\" to change your flight.'),(4,'Are meals provided on the flight?','Meals are provided on flights over 3 hours.'),(5,'Can I cancel my flight?','Yes, cancellations are allowed up to 24 hours before departure.'),(6,'What if my flight is delayed?','We will notify you by email and SMS with any updates.'),(7,'Do I need a printed ticket?','No, a digital boarding pass is sufficient.'),(8,'Can I book a round-trip ticket?','Absolutely! Just select \"Round Trip\" during your search.'),(9,'What payment methods do you accept?','We accept all major credit cards and PayPal.'),(10,'Can I choose my seat?','Yes, seat selection is available during checkout.'),(11,'Where is the soda machine?',NULL),(12,'Testing',NULL),(13,'random',NULL),(14,'jaskjfskgbj',NULL),(15,'testing question???',NULL),(16,'abfhfbsbgbsjb test','responded'),(17,'how test ?',NULL),(18,'Can I get a drink?',NULL);
 /*!40000 ALTER TABLE `qatable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +273,7 @@ CREATE TABLE `ticketlistsflights` (
 
 LOCK TABLES `ticketlistsflights` WRITE;
 /*!40000 ALTER TABLE `ticketlistsflights` DISABLE KEYS */;
-INSERT INTO `ticketlistsflights` VALUES (6,'AA',101),(27,'AA',101),(9,'DL',1016),(25,'DL',1016),(28,'DL',1016),(29,'DL',1016),(29,'DL',3562),(9,'UA',1000),(25,'UA',1000);
+INSERT INTO `ticketlistsflights` VALUES (27,'AA',101),(34,'AA',101),(30,'DL',1010),(33,'DL',1010),(35,'DL',1010),(36,'DL',1010),(9,'DL',1016),(25,'DL',1016),(28,'DL',1016),(31,'DL',1016),(39,'DL',1016),(9,'UA',1000),(25,'UA',1000),(31,'UA',1000);
 /*!40000 ALTER TABLE `ticketlistsflights` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ CREATE TABLE `tickets` (
   PRIMARY KEY (`ticketNum`),
   KEY `userID` (`userID`),
   CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,7 +305,7 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
-INSERT INTO `tickets` VALUES (6,'past',NULL,'First','Oneway',1299.99,'2025-04-21 03:22:00',3),(9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(27,'waitlist',NULL,'First','Oneway',1319.99,'2025-04-23 11:18:00',3),(28,'ongoing',NULL,'First','Oneway',2402.96,'2025-04-27 23:34:00',3),(29,'waitlist',NULL,'First','Roundtrip',4252.3,'2025-04-27 23:38:00',3);
+INSERT INTO `tickets` VALUES (9,'ongoing',NULL,'First','Roundtrip',4232.3,'2025-04-21 16:12:00',3),(25,'ongoing',NULL,'First','Roundtrip',2763.41,'2025-04-22 02:54:00',3),(27,'waitlist',NULL,'Business','Oneway',619.99,'2025-04-23 11:18:00',3),(28,'ongoing',NULL,'First','Oneway',2402.96,'2025-04-27 23:34:00',3),(30,'ongoing','Hiloni Patel','First','Oneway',2280.5299999999997,'2025-05-04 23:53:00',3),(31,'waitlist','Hiloni Patel','Economy','Roundtrip',3352.3,'2025-05-05 00:25:00',3),(33,'ongoing','Hiloni Patel','Economy','Oneway',1280.53,'2025-05-05 22:05:00',3),(34,'ongoing','Hiloni Patel','Economy','Oneway',419.99,'2025-05-05 22:14:00',3),(35,'ongoing',NULL,'First','Oneway',2402.96,'2025-05-05 22:25:00',13),(36,'past',NULL,'Economy','Oneway',1502.96,'2025-05-05 22:25:00',13),(39,'ongoing',NULL,'First','Oneway',2180.5299999999997,'2025-05-06 02:00:00',13);
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +327,7 @@ CREATE TABLE `user` (
   `dob` date DEFAULT NULL,
   `userType` enum('customer','customerRep','siteAdmin') DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,7 +336,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'carly','chick','cchick@gmail.com','384-245-3421','ccarly','Cchicken242','2004-08-27','siteAdmin'),(2,'nadia','rivera','nadiarivera@gmail.com','8493948392','nadiarivera','testingUser','1993-06-15','customer'),(3,'elyssa','rose','elyrosa@gmail.com','2354323452','elyssa_travels','testingtest','2004-06-22','customer'),(4,'umaiza','mian','umaizeef@gmail.com','453-346-3452','umaizuh','tesingngnggn','1997-06-17','customer'),(5,'randy','chick','rchick111@verizon.net','465-256-2356','randychicken','awhbfjhbwa','2024-02-06','customer'),(6,'mark','zan','markzan@gmail.com','325-236-2367','markz','awfawf','2025-04-02','customer'),(7,'hiloni','patel','hpatel@gmail.com','103-405-2938','hpatel','testing','2004-09-13','customerRep');
+INSERT INTO `user` VALUES (1,'carly','chick','cchick@gmail.com','384-245-3421','ccarly','Cchicken242','2004-08-27','siteAdmin'),(2,'nadia','rivera','nadiarivera@gmail.com','8493948392','nadiarivera','testingUser','1993-06-15','customer'),(3,'elyssa','rose','elyrosa@gmail.com','2354323452','elyssa_travels','testingtest','2004-06-22','customer'),(4,'umaiza','mian','umaizeef@gmail.com','453-346-3452','umaizuh','tesingngnggn','1997-06-17','customer'),(5,'randy','chick','rchick111@verizon.net','465-256-2356','randychicken','awhbfjhbwa','2024-02-06','customer'),(6,'mark','zan','markzan@gmail.com','325-236-2367','markz','awfawf','2025-04-02','customer'),(7,'hiloni','patel','hpatel@gmail.com','103-405-2939','hpatel','testing','2004-09-13','customerRep'),(8,'giselle','flur','gflur@gmail.com','193-293-2948','randomuser','testingUser','2025-05-14','customer'),(9,'rosie','flur','rflur@gmail.com','193-293-5048','testuser','trail','2025-05-21','customer'),(10,'fazal','florence','faflor@gmail.com','193-245-5048','testuser1234','trail45','2025-05-15','customer'),(11,'mary','jane','mjane@gmail.com','384-385-3847','trailtestuser','ababababa','2025-05-07','customer'),(12,'flavia','paterson','fpaterson@gmail.com','485-386-2748','flaviap','testinginthetest','2025-05-14','customer'),(13,'shuri','grate','shurig@gmail.com','387-283-3948','shurig','asgg','2025-05-20','customer');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +364,7 @@ CREATE TABLE `waitinglist` (
 
 LOCK TABLES `waitinglist` WRITE;
 /*!40000 ALTER TABLE `waitinglist` DISABLE KEYS */;
-INSERT INTO `waitinglist` VALUES ('AA',101,27),('DL',1016,29),('DL',3562,29);
+INSERT INTO `waitinglist` VALUES ('AA',101,27),('UA',1000,31);
 /*!40000 ALTER TABLE `waitinglist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -377,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-03 23:48:03
+-- Dump completed on 2025-05-09 22:57:55

@@ -117,7 +117,6 @@
 						session.setAttribute("user", rs.getString("username")); 
 						session.setAttribute("userID", rs.getInt("userID"));
 						session.setAttribute("userFullName", rs.getString("fname") + " " + rs.getString("lname"));
-						session.setAttribute("repStatus", true);
 						
 						
 						%>

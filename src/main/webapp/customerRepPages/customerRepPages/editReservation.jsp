@@ -86,6 +86,8 @@
          try {
             ApplicationDB db = new ApplicationDB();
             Connection con = db.getConnection();
+            
+            //put in
 
             // Fetch the reservation details for the specific ticket number
             PreparedStatement ps = con.prepareStatement("SELECT * FROM tickets WHERE ticketNum = ?");
@@ -150,33 +152,53 @@
               return;
           }
           
-          if ("first".equalsIgnoreCase(originalClass)) {
-        	  originalPrice -= 1000.0;
-          } else if ("business".equalsIgnoreCase(originalClass)) {
-        	  originalPrice -= 300.0;
-          } else if ("economy".equalsIgnoreCase(originalClass)) {
-        	  originalPrice -= 100.0;
-          }
-          
-          if ("first".equalsIgnoreCase(classType)) {
-        	  originalPrice += 1000.0;
-          } else if ("business".equalsIgnoreCase(classType)) {
-        	  originalPrice += 300.0;
-          } else if ("economy".equalsIgnoreCase(classType)) {
-        	  originalPrice += 100.0;
-          }
-          
+          double updatedPrice = originalPrice;
+
+       if ("First".equalsIgnoreCase(originalClass)) {
+           updatedPrice -= 1000.0;
+       } else if ("Business".equalsIgnoreCase(originalClass)) {
+           updatedPrice -= 300.0;
+       } else if ("Economy".equalsIgnoreCase(originalClass)) {
+           updatedPrice -= 100.0;
+       }
+
+       if ("First".equalsIgnoreCase(classType)) {
+           updatedPrice += 1000.0;
+       } else if ("Business".equalsIgnoreCase(classType)) {
+           updatedPrice += 300.0;
+       } else if ("Economy".equalsIgnoreCase(classType)) {
+           updatedPrice += 100.0;
+       }
+
+       if (flightTrip == null || flightTrip.isEmpty()) {
+           try {
+               ApplicationDB db = new ApplicationDB();
+               Connection con = db.getConnection();
+
+               PreparedStatement ps = con.prepareStatement("SELECT flight_trip FROM tickets WHERE ticketNum = ?");
+               ps.setString(1, ticketNums);
+               ResultSet rs = ps.executeQuery();
+               if (rs.next()) {
+                   flightTrip = rs.getString("flight_trip"); // Retain the original flightTrip
+               }
+
+               con.close();
+           } catch (Exception e) {
+               out.println("<div class='message error'>Error fetching original flight trip: " + e.getMessage() + "</div>");
+               return;
+           }
+       }   
 
           try {
               ApplicationDB db = new ApplicationDB();
               Connection con = db.getConnection();
 
-              // Update reservation details in the tickets table
+              
               PreparedStatement ps = con.prepareStatement(
                   "UPDATE tickets SET class = ?, flight_trip = ?, booking_price = ? WHERE ticketNum = ?");
               ps.setString(1, classType);
               ps.setString(2, flightTrip);
-              ps.setDouble(3, originalPrice);
+              ps.setDouble(3, updatedPrice);  
               ps.setString(4, ticketNums);
 
               int rowsUpdated = ps.executeUpdate();

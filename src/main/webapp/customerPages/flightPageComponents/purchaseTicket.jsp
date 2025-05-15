@@ -30,17 +30,31 @@
 	    }
 	    int userID = (int) userIDObj;
 	    
-	    String repFullName = (String) session.getAttribute("repFullName");
-	    boolean repStatus = (boolean) session.getAttribute("repStatus");
-	    Integer repIDObj = (Integer) session.getAttribute("repID");
-	    if (repIDObj == null) {
-	    	out.println("Customer Representative Session was terminated. Please log in as Customer Representative again.<br><br>");
-	    	out.println("<form action='../../logout.jsp' method='post' style='margin-top: 30px;'>");
-	    	out.println("<input type='submit' value='Logout'>");
-	    	out.println("</form>");
-	        return;
+	    Boolean repStatus = (boolean) session.getAttribute("repStatus");
+	    Integer repIDObj;
+	    String repFullName = "";
+	    int repID;
+	    
+	    if(repStatus == true){
+	    	 repIDObj = (Integer) session.getAttribute("repID");
+	 	     repFullName = (String) session.getAttribute("repFullName");
+	 	     
+	 	    repIDObj = (Integer) session.getAttribute("repID");
+	 	    
+	 	   if (repIDObj == null) {
+		    	out.println("Customer Representative Session was terminated. Please log in as Customer Representative again.<br><br>");
+		    	out.println("<form action='../../logout.jsp' method='post' style='margin-top: 30px;'>");
+		    	out.println("<input type='submit' value='Logout'>");
+		    	out.println("</form>");
+		        return;
+		    }
+		    repID = repIDObj.intValue();
+
+
 	    }
-	    int repID = repIDObj;
+	    
+	    
+	 
 	    
 	    LocalDateTime now = LocalDateTime.now();
 	    String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
