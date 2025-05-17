@@ -6,11 +6,17 @@
 <!DOCTYPE>
 <html>
 	<head>
+		<link rel="stylesheet" href="styles/signup.css"/>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap">
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Sign Up</title>
 	</head>
 	<body>
-			<h1>Please Create Your Account!</h1>
+		<div class="wrapper">
+			<h1>Sign Up!</h1>
+			
 			<form method="post" action="signUpCode.jsp"> 
 				<div>
 	            	<label for="username">Create Username:</label>
@@ -20,14 +26,16 @@
 	            	<label for="password">Create Password:</label>
 	            	<input type="password" name="password" required>
 	        	</div>
-	        	<div>
-	            	<label for="fname">First Name:</label>
-	            	<input type="text" name="fname" required>
-	        	</div>
-	        	<div>
-	            	<label for="lname">Last Name:</label>
-	            	<input type="text" name="lname" required>
-	        	</div>
+	        	<div class="adjacent-fields">
+		        	<div>
+		            	<label for="fname">First Name:</label>
+		            	<input type="text" name="fname" required>
+		        	</div>
+		        	<div>
+		            	<label for="lname">Last Name:</label>
+		            	<input type="text" name="lname" required>
+		        	</div>
+		        </div>
 	        	<div>
 	            	<label for="email">Email:</label>         
 	            	<input type="email" name="email" required>
@@ -55,7 +63,7 @@
 	   		
 	    
 	    <a href="login.jsp">Go back to log in</a>	 
-	   
+	   </div>
 
 	</body>
 </html>

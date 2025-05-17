@@ -6,10 +6,10 @@
 <!DOCTYPE>
 <html>
 	<head>
-		<link href="styles/login.css" rel="stylesheet" />
+		<link rel="stylesheet" href="styles/login.css"/>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap">
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Customer Login Form</title>
 	</head>
