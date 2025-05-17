@@ -124,30 +124,3 @@ form button:focus{
 	outline: none;
 	background-color: var(--text);
 }
-
-
-/* 
-
-#login-form {
-	margin: 0 auto;
-	background-color: var(--box);
-	padding: 0 20px 20px 20px;
-	border: 3px solid black;
-	text-align: center;
-}
-
-input {
-	border: none;
-	-webkit-appearance: none;
-	-ms-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	outline: none;
-	margin-top: 5px;
-	border-radius: 4px;
-	width: 250px;
-}
-
-input[type=text] {
-	
-} */

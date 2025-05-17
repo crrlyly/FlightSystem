@@ -18,7 +18,7 @@
         out.println("<p>Error: You must be logged in to submit a question.</p>");
         return;
     }
-    int userID = (int) userIDObj;
+    int userID = (Integer) userIDObj;
     
     ApplicationDB db = new ApplicationDB();    
     Connection con = db.getConnection();    
@@ -64,8 +64,8 @@
 			
 			StringBuilder outputHtml = new StringBuilder();
 			StringBuilder outputHtml2 = new StringBuilder();
-			List<String> answered = new ArrayList<>();
-			List<String> unanswered = new ArrayList<>();
+			List<String> answered = new ArrayList<String>();
+			List<String> unanswered = new ArrayList<String>();
 			
 			while (rs2.next()) {
 			    String question = rs2.getString("question");
@@ -218,7 +218,7 @@
 	ResultSet rs4 = checking.executeQuery();    
 	int counter = 0;
 	
-	ArrayList<String> list = new ArrayList<>();
+	ArrayList<String> list = new ArrayList<String>();
 	
 	int openSpots = 0;
 	
