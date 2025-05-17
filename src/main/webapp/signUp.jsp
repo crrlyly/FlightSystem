@@ -15,15 +15,15 @@
 	</head>
 	<body>
 		<div class="wrapper">
-			<h1>Sign Up!</h1>
+			<h1>Create Account</h1>
 			
 			<form method="post" action="signUpCode.jsp"> 
 				<div>
-	            	<label for="username">Create Username:</label>
+	            	<label for="username">Username:</label>
 	            	<input type="text" name="username" required>
 	        	</div>
 	        	<div>
-	            	<label for="password">Create Password:</label>
+	            	<label for="password">Password:</label>
 	            	<input type="password" name="password" required>
 	        	</div>
 	        	<div class="adjacent-fields">
@@ -47,7 +47,6 @@
 	        	<div>
 	            	<label for="dob">Date of Birth:</label>
 	            	<input type="date" name="dob" required>
-	        	</div>
 	        	
 	        	<div>
 	            	<button type="submit">Sign Up</button>
