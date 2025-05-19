@@ -2,10 +2,9 @@
 
 :root {
 	--background: rgb(255, 255, 255);
-	--box: rgb(192, 192, 192);
+	--input: rgb(232, 233, 246);
 	--text: rgb(70, 70, 70);
 	--accent: rgb(27, 90, 161);
-	--input: rgb(224, 224, 224);
 }
 
 * {margin: 0; padding: 0;}
@@ -103,7 +102,7 @@ div:has(input:focus) > label{/* > is the "direct children combinator", which mak
 	background-color:var(--text);
 }
 form input::placeholder{
-	color: var(--text-color);
+	color: var(--text);
 }
 form button{
 	margin-top: 10px;

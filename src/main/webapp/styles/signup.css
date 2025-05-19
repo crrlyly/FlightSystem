@@ -2,11 +2,11 @@
 
 :root {
 	--background: rgb(255, 255, 255);
-	--box: rgb(192, 192, 192);
 	--text: rgb(70, 70, 70);
-	--text-light: rgb(179, 179, 179);
 	--accent: rgb(27, 90, 161);
-	--input: rgb(224, 224, 224);
+	--input: rgb(232, 233, 246);
+	--input-border: rgb(219, 219, 219);
+	
 }
 
 * {
@@ -78,16 +78,16 @@ form input {
 	padding: 1em;
 	font: inherit;
 	border-radius: 10px;
-	border: 2px solid var(--text-light);
+	border: 2px solid var(--input-border);
 	background-color: var(--input);
 	transition: 150ms ease;
 }
 form input:hover {
-	border-color: var(--text);
+	border-color: var(--accent);
 }
 form input:focus {
 	outline:none;
-	border-color: var(--accent);
+	border-color: var(--text);
 }
 
 button {
